@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_section_title">App updates</string>
+    <string name="update_installed_version">Installed version %1$s</string>
+    <string name="update_check_button">Check for updates</string>
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_up_to_date">You are on the latest version.</string>
+    <string name="update_never_checked">Not checked yet.</string>
+    <string name="update_last_checked">Last checked: %1$s</string>
+
+    <string name="update_available_title">Update available</string>
+    <string name="update_available_body">Version %1$s is ready to download.</string>
+    <string name="update_download_size">Download size: %1$s</string>
+    <string name="update_notes_title">What\'s new</string>
+    <string name="update_notes_empty">No release notes were provided for this version.</string>
+    <string name="update_download_install">Download and install</string>
+    <string name="update_later">Later</string>
+
+    <string name="update_downloading_title">Downloading update</string>
+    <string name="update_downloading_detail">%1$s of %2$s</string>
+
+    <string name="update_failed_title">Update could not be completed</string>
+    <string name="update_retry">Try again</string>
+    <string name="update_error_action">Recommended action: check your internet connection and try again.</string>
+    <string name="update_error_rate_limited">GitHub rate limit reached. Try again later.</string>
+    <string name="update_error_rate_limited_why">GitHub limits anonymous update checks. Waiting a few minutes is enough.</string>
+    <string name="update_error_no_release">No release has been published yet.</string>
+    <string name="update_error_network">Could not reach GitHub. Check your connection.</string>
+    <string name="update_error_invalid">The release version could not be read, so it was not offered.</string>
+    <string name="update_error_download">The download failed.</string>
+    <string name="update_error_checksum">The downloaded file did not match the published checksum. It was deleted and nothing was installed.</string>
+    <string name="update_error_checksum_why">A mismatch can mean a corrupted download or a tampered file. SecureBox always refuses to install it.</string>
+    <string name="update_error_missing_checksum">This release has no checksum, so SecureBox refused to install it.</string>
+    <string name="update_error_missing_checksum_why">Without a checksum the app cannot prove the file is intact. Ask the maintainer to publish SHA256SUMS.</string>
+    <string name="update_error_install">Android could not open the installer.</string>
+
+    <string name="update_permission_title">Allow installs</string>
+    <string name="update_permission_body">Android needs your permission before SecureBox can open the installer. SecureBox never installs anything silently.</string>
+    <string name="update_open_settings">Open settings</string>
+</resources>
