@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Réglages</string>
+    <string name="settings_subtitle">Choisissez l\'apparence de SecureBox, ses mises à jour et ce qu\'il protège.</string>
+
+    <string name="settings_section_language">Langue</string>
+    <string name="settings_section_language_hint">Les changements s\'appliquent immédiatement.</string>
+    <string name="settings_language_english">English</string>
+    <string name="settings_language_french">Français</string>
+
+    <string name="settings_section_device">Mode appareil</string>
+    <string name="settings_section_device_hint">Ne change que la disposition. La protection est identique dans les deux cas.</string>
+    <string name="settings_device_phone">Téléphone ou tablette</string>
+    <string name="settings_device_tv">Boîtier Android TV</string>
+    <string name="settings_device_detect_again">Détecter à nouveau</string>
+    <string name="settings_device_detected_tv">Détecté : Android TV</string>
+    <string name="settings_device_detected_phone">Détecté : téléphone ou tablette</string>
+
+    <string name="settings_section_theme">Thème</string>
+    <string name="settings_section_theme_hint">Le thème sombre est recommandé pour les boîtiers TV.</string>
+    <string name="settings_theme_dark">Sombre</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_system">Suivre le système</string>
+
+    <string name="settings_section_protection">Protection</string>
+    <string name="settings_firewall_title">Pare-feu local</string>
+    <string name="settings_firewall_body">Bloque l\'accès internet d\'une application sur cet appareil. Arrive en v0.2.0.</string>
+    <string name="settings_firewall_status">Bientôt</string>
+    <string name="settings_threat_intel_title">Threat Intelligence</string>
+    <string name="settings_threat_intel_body">Récupère une liste signée d\'applications et de domaines malveillants connus. Gratuit pendant l\'essai.</string>
+    <string name="settings_threat_intel_toggle">Activer Threat Intelligence</string>
+
+    <string name="settings_section_updates">Mises à jour</string>
+    <string name="settings_privacy_row_title">Politique de confidentialité</string>
+    <string name="settings_privacy_row_body">Ce que SecureBox fait de vos données — et ce qu\'il ne fait jamais.</string>
+    <string name="settings_section_about">À propos</string>
+    <string name="settings_about_version">Version %1$s</string>
+    <string name="settings_about_github">Voir le code sur GitHub</string>
+    <string name="settings_about_license">Licence : Apache 2.0</string>
+
+    <string name="privacy_title">Politique de confidentialité</string>
+    <string name="privacy_subtitle">La version courte et honnête de ce que fait SecureBox.</string>
+    <string name="privacy_no_telemetry_title">Aucune télémétrie</string>
+    <string name="privacy_no_telemetry_body">Aucune analyse d\'audience, aucun SDK publicitaire et aucun serveur de remontée de crashs. Rien n\'est collecté sur vous.</string>
+    <string name="privacy_on_device_title">Tout se passe sur votre appareil</string>
+    <string name="privacy_on_device_body">L\'analyse, l\'étude du trafic et la comparaison des menaces se font localement. Votre liste d\'applications ne quitte jamais le téléphone ou le boîtier TV.</string>
+    <string name="privacy_network_title">Seulement deux appels réseau</string>
+    <string name="privacy_network_body">L\'application contacte GitHub pour vérifier les mises à jour et, si vous l\'activez, télécharge le flux Threat Intelligence signé. Les deux sont en lecture seule.</string>
+    <string name="privacy_permissions_title">Chaque autorisation a un seul but</string>
+    <string name="privacy_permissions_body">Chaque autorisation sert uniquement à la fonction indiquée sur sa fiche. SecureBox ne demande jamais les SMS, les journaux d\'appels ou les contacts.</string>
+    <string name="privacy_controls_title">Vous gardez le contrôle</string>
+    <string name="privacy_controls_body">Vous pouvez désactiver le pare-feu, le flux et les notifications à tout moment. Les mises à jour demandent toujours confirmation avant de s\'installer.</string>
+    <string name="privacy_export_title">Vos journaux restent les vôtres</string>
+    <string name="privacy_export_body">SecureBox conserve des journaux de diagnostic facultatifs sur l\'appareil. Ils ne sont partagés que si vous les exportez vous-même.</string>
+    <string name="privacy_back">Retour</string>
+</resources>
