@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apps_title">Applications et autorisations</string>
+    <string name="apps_subtitle">Comprenez ce que chaque application installée peut faire sur cet appareil.</string>
+    <string name="apps_roadmap_banner">L\'analyseur de malwares et l\'auditeur d\'autorisations arrivent en v0.3.0.</string>
+    <string name="apps_planned_title">Prévu pour la v0.3.0</string>
+    <string name="apps_planned_one">Une note de risque pour chaque application, expliquée simplement.</string>
+    <string name="apps_planned_two">La détection des SDK de pistage et des combinaisons d\'autorisations dangereuses.</string>
+    <string name="apps_planned_three">Un badge clair Play Store, Système ou Installé manuellement pour chaque application.</string>
+</resources>

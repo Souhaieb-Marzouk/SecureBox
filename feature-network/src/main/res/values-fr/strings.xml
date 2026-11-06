@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_title">Réseau et bande passante</string>
+    <string name="network_subtitle">Voyez quelles applications utilisent votre internet — et arrêtez celles qui ne devraient pas.</string>
+    <string name="network_roadmap_banner">L\'analyse du trafic par application, le pare-feu local et le détecteur d\'anomalies arrivent en v0.2.0.</string>
+    <string name="network_planned_title">Prévu pour la v0.2.0</string>
+    <string name="network_planned_one">Totaux de téléchargement et d\'envoi par application, en direct et sur 7 jours.</string>
+    <string name="network_planned_two">Un pare-feu en un geste qui bloque l\'accès internet d\'une application.</string>
+    <string name="network_planned_three">Des alertes lorsqu\'une application envoie soudainement beaucoup plus que d\'habitude.</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="threats_title">Threats &amp; scans</string>
+    <string name="threats_subtitle">Check this device for known malware and risky settings.</string>
+    <string name="threats_roadmap_banner">On-device scanning arrives in v0.3.0, and the free Threat Intelligence trial in v0.5.0.</string>
+    <string name="threats_planned_title">Planned for v0.3.0 to v0.5.0</string>
+    <string name="threats_planned_one">Signature and behaviour scanning that never leaves the device.</string>
+    <string name="threats_planned_two">Weekly automatic scans and a scan right after boot.</string>
+    <string name="threats_planned_three">A dangerous-settings check with one-tap fixes.</string>
+    <string name="threats_privacy_note">Nothing is uploaded. SecureBox has no telemetry and no crash reporting servers.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_title">Network &amp; bandwidth</string>
+    <string name="network_subtitle">See which apps use your internet — and stop the ones that shouldn\'t.</string>
+    <string name="network_roadmap_banner">Per-app traffic analysis, the local firewall and the anomaly detector arrive in v0.2.0.</string>
+    <string name="network_planned_title">Planned for v0.2.0</string>
+    <string name="network_planned_one">Per-app download and upload totals, live and over 7 days.</string>
+    <string name="network_planned_two">A one-tap firewall that blocks an app\'s internet access.</string>
+    <string name="network_planned_three">Alerts when an app suddenly uploads far more than usual.</string>
+</resources>

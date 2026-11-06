@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="threats_title">Menaces et analyses</string>
+    <string name="threats_subtitle">Vérifiez cet appareil pour détecter les malwares connus et les réglages risqués.</string>
+    <string name="threats_roadmap_banner">L\'analyse sur l\'appareil arrive en v0.3.0 et l\'essai gratuit Threat Intelligence en v0.5.0.</string>
+    <string name="threats_planned_title">Prévu de la v0.3.0 à la v0.5.0</string>
+    <string name="threats_planned_one">Analyse par signatures et comportements qui ne quitte jamais l\'appareil.</string>
+    <string name="threats_planned_two">Analyses automatiques hebdomadaires et une analyse juste après le démarrage.</string>
+    <string name="threats_planned_three">Une vérification des réglages dangereux avec des corrections en un geste.</string>
+    <string name="threats_privacy_note">Rien n\'est envoyé. SecureBox n\'a ni télémétrie ni serveur de remontée de crashs.</string>
+</resources>

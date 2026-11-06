@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apps_title">Apps &amp; permissions</string>
+    <string name="apps_subtitle">Understand what every installed app can do on this device.</string>
+    <string name="apps_roadmap_banner">The malware scanner and permission auditor arrive in v0.3.0.</string>
+    <string name="apps_planned_title">Planned for v0.3.0</string>
+    <string name="apps_planned_one">A risk rating for every app, explained in plain language.</string>
+    <string name="apps_planned_two">Detection of tracking SDKs and dangerous permission combinations.</string>
+    <string name="apps_planned_three">A clear Play Store, System or Sideloaded badge for each app.</string>
+</resources>
