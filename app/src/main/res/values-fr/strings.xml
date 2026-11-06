@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SecureBox</string>
+
+    <string name="nav_dashboard">Tableau de bord</string>
+    <string name="nav_network">Réseau</string>
+    <string name="nav_apps">Applications</string>
+    <string name="nav_threats">Menaces</string>
+    <string name="nav_settings">Réglages</string>
+
+    <string name="integrity_warning">Cette copie de SecureBox a été modifiée après sa signature. Installez la version officielle depuis GitHub pour rétablir la protection complète.</string>
+    <string name="notification_channel_alerts">Alertes de sécurité</string>
+    <string name="notification_channel_alerts_description">Avertissements sur une activité inhabituelle des applications et les mises à jour disponibles.</string>
+</resources>

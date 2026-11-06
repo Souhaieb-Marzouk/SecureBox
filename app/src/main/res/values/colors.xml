@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="securebox_navy_950">#FF070F18</color>
+    <color name="securebox_teal">#FF00BFA5</color>
+    <color name="securebox_white">#FFFFFFFF</color>
+</resources>

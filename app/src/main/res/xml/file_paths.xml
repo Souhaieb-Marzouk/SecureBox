@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Only the verified update packages are shareable, and only to the system installer. -->
+    <cache-path
+        name="securebox_updates"
+        path="updates/" />
+</paths>

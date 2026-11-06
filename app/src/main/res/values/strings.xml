@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SecureBox</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_network">Network</string>
+    <string name="nav_apps">Apps</string>
+    <string name="nav_threats">Threats</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="integrity_warning">This copy of SecureBox was modified after it was signed. Install the official build from GitHub to restore full protection.</string>
+    <string name="notification_channel_alerts">Security alerts</string>
+    <string name="notification_channel_alerts_description">Warnings about unusual app activity and available updates.</string>
+</resources>
