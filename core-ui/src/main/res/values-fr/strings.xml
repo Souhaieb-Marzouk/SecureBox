@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_what_is_this">Qu\'est-ce que c\'est ?</string>
+    <string name="core_ui_close">Fermer</string>
+    <string name="core_ui_got_it">Compris</string>
+
+    <string name="score_grade_excellent">Excellent</string>
+    <string name="score_grade_good">Bon</string>
+    <string name="score_grade_fair">Moyen</string>
+    <string name="score_grade_at_risk">À risque</string>
+
+    <string name="alert_why">Pourquoi vous voyez ceci</string>
+    <string name="alert_recommended_action">Action recommandée</string>
+</resources>
