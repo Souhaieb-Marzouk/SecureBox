@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_brand_name">SecureBox</string>
+    <string name="onboarding_step_indicator">Étape %1$d sur %2$d</string>
+
+    <string name="onboarding_language_title">Choisissez votre langue</string>
+    <string name="onboarding_language_subtitle">SecureBox utilisera cette langue partout. Vous pourrez la changer plus tard dans les Réglages.</string>
+    <string name="onboarding_language_code_en">EN</string>
+    <string name="onboarding_language_code_fr">FR</string>
+    <string name="onboarding_language_english">English</string>
+    <string name="onboarding_language_french">Français</string>
+    <string name="onboarding_continue">Continuer</string>
+    <string name="onboarding_back">Retour</string>
+
+    <string name="onboarding_device_title">Quel appareil utilisez-vous ?</string>
+    <string name="onboarding_detected_tv">Nous avons détecté que vous utilisez un boîtier Android TV. Est-ce correct ?</string>
+    <string name="onboarding_detected_phone">Nous avons détecté que vous utilisez un téléphone ou une tablette. Est-ce correct ?</string>
+    <string name="onboarding_device_yes">Oui, continuer</string>
+    <string name="onboarding_device_switch_phone">Non, j\'utilise un téléphone</string>
+    <string name="onboarding_device_switch_tv">Non, j\'utilise un boîtier Android TV</string>
+    <string name="onboarding_device_hint">Cela ne change que l\'affichage. Votre protection reste exactement la même.</string>
+    <string name="onboarding_device_phone_short">Affichage téléphone</string>
+    <string name="onboarding_device_tv_short">Affichage TV</string>
+    <string name="onboarding_device_mode_current">Affichage : %1$s</string>
+
+    <string name="onboarding_permissions_title">Configurez votre protection</string>
+    <string name="onboarding_permissions_subtitle">Chaque autorisation est facultative et expliquée ci-dessous. Vous pourrez les accorder plus tard dans les Réglages.</string>
+    <string name="onboarding_permission_usage_title">Voir quelles applications utilisent des données</string>
+    <string name="onboarding_permission_usage_why">Permet à SecureBox d\'afficher la consommation internet de chaque application. Les statistiques sont lues sur votre appareil et ne sont jamais envoyées.</string>
+    <string name="onboarding_permission_vpn_title">Bloquer l\'accès internet des applications</string>
+    <string name="onboarding_permission_vpn_why">Un VPN local permet à SecureBox de couper l\'accès internet d\'une application. Aucun trafic ne quitte votre appareil.</string>
+    <string name="onboarding_permission_notifications_title">Vous avertir en cas de problème</string>
+    <string name="onboarding_permission_notifications_why">Envoie une alerte lorsqu\'une application consomme un volume inhabituel de données ou se comporte comme un malware.</string>
+    <string name="onboarding_permission_install_title">Installer les mises à jour de SecureBox</string>
+    <string name="onboarding_permission_install_why">Permet d\'installer une nouvelle version téléchargée depuis la publication GitHub officielle. Facultatif et utilisé uniquement à votre demande.</string>
+    <string name="onboarding_permission_install_howto">Sur l\'écran suivant, activez « Autoriser depuis cette source ».</string>
+    <string name="onboarding_permission_allow">Autoriser</string>
+    <string name="onboarding_permission_allowed">Autorisé</string>
+
+    <string name="onboarding_done_title">Vous êtes protégé</string>
+    <string name="onboarding_done_subtitle">Voici votre score de sécurité de départ. Il augmente à mesure que vous activez des protections.</string>
+    <string name="onboarding_done_open">Ouvrir SecureBox</string>
+    <string name="onboarding_done_score_description">Score de sécurité %1$d sur 100</string>
+</resources>
