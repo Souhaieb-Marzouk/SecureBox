@@ -46,6 +46,8 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 | 5 | v0.5.0 | Threat Intelligence add-on: signed feed, Ed25519 verification, free trial |
 | 6 | v1.0.0 | Localization review, accessibility/TalkBack pass, performance, real-device QA |
 
+The live, prioritized work list is kept in **[docs/backlog.html](docs/backlog.html)** (P0–P3, features and open issues). It is updated in the same commit as every change.
+
 ## Install
 
 1. Open the [Releases page](https://github.com/Souhaieb-Marzouk/SecureBox/releases).

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SecureBox Backlog</title>
+<style>
+  :root{
+    --bg:#070F18; --surface:#0B1622; --card:#12202F; --card-2:#16283A;
+    --line:#1B2C3F; --line-2:#2A4055;
+    --text:#E8EEF5; --muted:#A9BACB; --dim:#7E93A8;
+    --teal:#00BFA5; --teal-dim:#0A3B36;
+    --amber:#FFB300; --amber-dim:#3D2A00;
+    --red:#FF6B6B; --red-dim:#3A1212;
+    --blue:#6FB6FF; --blue-dim:#10263D;
+    --radius:16px;
+    --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:radial-gradient(1200px 600px at 20% -10%,#0F2233 0%,var(--bg) 55%) no-repeat,var(--bg);
+    color:var(--text);font-family:var(--font);line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal)}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 20px}
+
+  header.hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .brand svg{width:46px;height:46px;flex:none}
+  .brand .name{font-weight:800;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+  .brand .name span{color:var(--text)}
+  h1{margin:0 0 10px;font-size:clamp(30px,4vw,44px);line-height:1.1;letter-spacing:-.02em}
+  .sub{margin:0;max-width:760px;color:var(--muted);font-size:clamp(15px,1.6vw,18px)}
+  .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:20px;color:var(--dim);font-size:14px}
+  .meta b{color:var(--text);font-weight:600}
+  .bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:18px;max-width:520px}
+  .bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#5AE0C8);transition:width .3s ease}
+
+  .toolbar{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+    padding:16px 0;background:rgba(7,15,24,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .search{flex:1 1 260px;min-width:220px;position:relative}
+  .search input{width:100%;padding:12px 14px 12px 40px;border-radius:12px;border:1px solid var(--line-2);
+    background:var(--surface);color:var(--text);font:inherit;font-size:15px;outline:none}
+  .search input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,191,165,.18)}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--dim)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{cursor:pointer;border:1px solid var(--line-2);background:var(--surface);color:var(--muted);
+    padding:8px 12px;border-radius:99px;font:inherit;font-size:13px;font-weight:600;display:inline-flex;gap:7px;align-items:center}
+  .chip:hover{border-color:var(--teal);color:var(--text)}
+  .chip:focus-visible{outline:3px solid rgba(0,191,165,.5);outline-offset:2px}
+  .chip[aria-pressed="true"]{background:var(--teal-dim);border-color:var(--teal);color:var(--teal)}
+  .chip .n{font-family:var(--mono);font-size:12px;opacity:.8}
+
+  main{padding:26px 0 60px}
+  .group{margin:26px 0 6px}
+  .group h2{display:flex;align-items:center;gap:12px;margin:0 0 4px;font-size:20px}
+  .group h2 .dot{width:10px;height:10px;border-radius:50%}
+  .group h2 .n{font-family:var(--mono);font-size:13px;color:var(--dim);font-weight:500}
+  .group p.hint{margin:0 0 14px;color:var(--dim);font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+
+  article.card{background:linear-gradient(180deg,var(--card-2),var(--card));border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px 16px 14px;position:relative;overflow:hidden}
+  article.card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--dot,var(--line-2))}
+  article.card.p0{--dot:var(--red)} article.card.p1{--dot:var(--amber)}
+  article.card.p2{--dot:var(--teal)} article.card.p3{--dot:var(--dim)}
+  article.card.done{--dot:var(--teal);opacity:.82}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+  .id{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.04em}
+  .pill{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:99px;text-transform:uppercase}
+  .pill.p0{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,107,107,.4)}
+  .pill.p1{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,179,0,.4)}
+  .pill.p2{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(0,191,165,.35)}
+  .pill.p3{background:#1A2839;color:var(--muted);border:1px solid var(--line-2)}
+  .pill.feature{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(111,182,255,.35)}
+  .pill.issue{background:#2A1A1A;color:#FFB4B4;border:1px solid rgba(255,107,107,.3)}
+  .pill.done{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(0,191,165,.4)}
+  article h3{margin:2px 0 6px;font-size:16.5px;line-height:1.3;letter-spacing:-.005em}
+  article p.desc{margin:0 0 10px;color:var(--muted);font-size:14.5px}
+  article p.accept{margin:0 0 10px;font-size:13.5px;color:var(--text);background:rgba(0,191,165,.07);
+    border:1px dashed rgba(0,191,165,.28);border-radius:10px;padding:8px 10px}
+  article p.accept b{color:var(--teal);font-weight:700}
+  .foot{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;color:var(--dim);font-size:12.5px}
+  .foot .tag{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:2px 8px}
+
+  .empty{padding:50px 10px;text-align:center;color:var(--dim)}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-top:34px}
+  .panel h2{margin:0 0 10px;font-size:18px}
+  .panel ol,.panel ul{margin:8px 0 0;padding-left:20px;color:var(--muted);font-size:14.5px}
+  .panel li{margin:6px 0}
+  .panel code{font-family:var(--mono);font-size:12.5px;background:#0A1622;border:1px solid var(--line);
+    padding:1px 5px;border-radius:6px;color:#CFE3F5}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+  td:first-child{white-space:nowrap;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+  footer{border-top:1px solid var(--line);padding:24px 0 46px;color:var(--dim);font-size:13px}
+  .noscript{background:var(--red-dim);border:1px solid var(--red);color:#FFD2D2;padding:14px 16px;border-radius:12px;margin:20px 0}
+
+  @media (max-width:560px){
+    .toolbar{position:static}
+    .chips{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+    .chip{white-space:nowrap}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .toolbar,.hero .bar,footer .noprint{display:none}
+    article.card{break-inside:avoid;border:1px solid #ccc;background:#fff;color:#111}
+    article p.desc{color:#333}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2.5 20 5.5V11l-2.8 5.6L12 21l-5.2-4.4L4 11V5.5z" stroke="#00BFA5" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="m8.8 11.6 2.3 2.3 4.3-4.7" stroke="#00BFA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="name">Secure<span>Box</span></div>
+    </div>
+    <h1>Backlog — what is not done yet</h1>
+    <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
+    <div class="meta">
+      <span>Last updated <b id="lastUpdated">—</b></span>
+      <span>Baseline <b>v0.1.0</b></span>
+      <span><b id="openCount">0</b> open</span>
+      <span><b id="doneCount">0</b> done</span>
+      <span><b id="blockerCount">0</b> P0</span>
+    </div>
+    <div class="bar" aria-hidden="true"><div id="progress"></div></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search ID, title, area…" autocomplete="off" aria-label="Search backlog">
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filters"></div>
+  </div>
+
+  <main id="board" aria-live="polite"></main>
+
+  <section class="panel">
+    <h2>How this file is maintained</h2>
+    <ol>
+      <li><b>New feature</b> → add to <code>ITEMS</code> with <code>type:"feature"</code>, a priority, an area and a milestone. Give it the next free <code>SB-xxx</code> id.</li>
+      <li><b>Feature shipped</b> → either delete the entry (once released) or set <code>status:"done"</code> and <code>doneAt</code> so it appears under <b>Done</b> for one release, then remove it.</li>
+      <li><b>New issue faced</b> → add with <code>type:"issue"</code>, the symptom, the workaround (if any) and what “fixed” means.</li>
+      <li><b>Issue fixed</b> → set <code>status:"done"</code> + <code>doneAt</code> and reference the commit in the description. Never leave a fixed issue in the open list.</li>
+      <li><b>Every release</b> → re-rank P0–P3, update <code>LAST_UPDATED</code>, and add a row to the update log below.</li>
+    </ol>
+    <p class="sub" style="margin-top:14px;font-size:14px">
+      Priority meaning — <b>P0</b>: blocks a release or is a security/privacy risk; <b>P1</b>: must land in the next release; <b>P2</b>: planned next milestones or significant UX debt; <b>P3</b>: later milestones, polish and process.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>Update log</h2>
+    <table>
+      <thead><tr><th>Date</th><th>Change</th></tr></thead>
+      <tbody id="updateLog"></tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v0.1.0</span>.</div>
+  </footer>
+</div>
+
+<noscript>
+  <div class="wrap"><div class="noscript">This backlog renders with JavaScript. Enable it, or read the same data in <code>docs/backlog.html</code> source (<code>ITEMS</code> array).</div></div>
+</noscript>
+
+<script>
+"use strict";
+
+/* DATA_START */
+const ITEMS = [
+  { "id": "SB-001", "p": "P0", "type": "issue", "area": "QA / Release", "milestone": "v0.1.0", "status": "open",
+    "title": "v0.1.0 has not been installed on a physical phone",
+    "desc": "The release is built, signed and published, but onboarding, permission flows, locale switching and the update dialog have only been verified in code and unit tests.",
+    "doneWhen": "TESTING.md rows 1-10 and 17-19 pass on a real phone, with results recorded in the release notes." },
+
+  { "id": "SB-002", "p": "P0", "type": "issue", "area": "QA / TV", "milestone": "v0.1.0", "status": "open",
+    "title": "v0.1.0 has not been installed on a physical Android TV box",
+    "desc": "Leanback visibility, D-pad focus order, 10-foot typography and overscan have not been exercised on real hardware.",
+    "doneWhen": "TESTING.md rows 2 and 13-16 pass on a real TV box; the Leanback banner renders in the launcher." },
+
+  { "id": "SB-010", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "title": "Per-app bandwidth monitor",
+    "desc": "Live TrafficStats per UID plus historical NetworkStatsManager queries with 24h / 7d / 30d ranges, a sortable top-consumer list and a per-row Block Internet toggle.",
+    "doneWhen": "A test app's download and upload totals match TrafficStats, history survives a reboot, and the list sorts by total." },
+
+  { "id": "SB-011", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "title": "Bandwidth anomaly detector",
+    "desc": "Learn a 7-day per-app baseline, alert when an app exceeds 3x its baseline (configurable) or uploads more than 100 MB in an hour, with Block and Uninstall quick actions.",
+    "doneWhen": "A synthetic spike produces exactly one alert with working actions; normal usage produces none." },
+
+  { "id": "SB-012", "p": "P1", "type": "feature", "area": "Firewall", "milestone": "v0.2.0", "status": "open",
+    "title": "Per-app firewall over a local VPN",
+    "desc": "VpnService plus the native packet engine (NDK), Allow All / Block Unknown presets, per-app overrides, a persistent honest local-only notification and detection of another active VPN.",
+    "doneWhen": "A blocked app loses connectivity, unblocking restores it, another VPN is detected, and no packet leaves the device." },
+
+  { "id": "SB-013", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "title": "Open port and inbound listener monitor",
+    "desc": "Enumerate listening sockets owned by apps where permitted, and alert on unexpected internet-facing listeners that may indicate a backdoor or RAT.",
+    "doneWhen": "A local test server is reported with its owning app and port; a clean device reports nothing." },
+
+  { "id": "SB-014", "p": "P1", "type": "feature", "area": "UI / Network", "milestone": "v0.2.0", "status": "open",
+    "title": "Network screens for phone and TV",
+    "desc": "Replace the roadmap placeholder with charts, sortable list, block toggle and firewall settings in both shells, including D-pad focus states.",
+    "doneWhen": "Every network feature is reachable and usable in PhoneShell and TvShell without a touchscreen." },
+
+  { "id": "SB-015", "p": "P1", "type": "issue", "area": "Settings / Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "Threat Intelligence toggle is cosmetic",
+    "desc": "Settings offers an enabled-by-default toggle with a body text describing a signed feed, but v0.1.0 has no feed client. Users may believe protection is active when nothing is downloaded.",
+    "doneWhen": "Either the toggle is disabled/labelled 'available in v0.5' or the feed client ships and the toggle controls it." },
+
+  { "id": "SB-016", "p": "P1", "type": "issue", "area": "Release / Security", "milestone": "v0.1.0", "status": "open",
+    "title": "Signing keystore password stored in plaintext",
+    "desc": "signing.properties and _securebox_keys/credentials.txt contain the store password in clear text on disk. The keystore is the trust anchor for all future updates.",
+    "doneWhen": "The password lives in an encrypted store (or an environment-only secret) and the plaintext file is removed; the keystore is backed up offline." },
+
+  { "id": "SB-017", "p": "P1", "type": "issue", "area": "Dashboard", "milestone": "v0.2.0", "status": "open",
+    "title": "Security Score assumes the app is up to date",
+    "desc": "DashboardViewModel passes appIsUpToDate = true unconditionally, so the 30-point update factor is always awarded even when a newer release exists.",
+    "doneWhen": "The score reflects the last update check result and drops when an update is available." },
+
+  { "id": "SB-020", "p": "P2", "type": "feature", "area": "Threats", "milestone": "v0.3.0", "status": "open",
+    "title": "On-device malware scanner",
+    "desc": "Signature rules (YARA-style, bundled encrypted) plus heuristic checks for suspicious permission combos, known malicious SDKs and obfuscated code. Scans installed and sideloaded packages locally.",
+    "doneWhen": "The EICAR-style test sample is detected, a clean app is not, and nothing is uploaded." },
+
+  { "id": "SB-021", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "title": "Permission and tracker auditor",
+    "desc": "Human-readable permission summaries, detected tracking SDKs, red/amber/green risk ratings, and phone-specific checks for SMS, call log, contacts, notification listeners, overlays, accessibility and device admin.",
+    "doneWhen": "An app holding SMS + overlay + accessibility is flagged red with each reason in plain language." },
+
+  { "id": "SB-022", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "title": "Sideload and source checker",
+    "desc": "Badge every app as Play Store, System or Sideloaded, and show the installing package and timestamp where Android exposes them.",
+    "doneWhen": "A sideloaded APK is badged correctly with its installer details on phone and TV." },
+
+  { "id": "SB-023", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "title": "Suspicious component and behaviour detector",
+    "desc": "Flag accessibility services, device admin, hidden launcher icons, exported activities receiving external intents and foreground services masquerading as system apps.",
+    "doneWhen": "Each detector has a positive and a negative fixture in unit tests and a plain-language explanation in the UI." },
+
+  { "id": "SB-024", "p": "P2", "type": "feature", "area": "Threats", "milestone": "v0.3.0", "status": "open",
+    "title": "Scheduled and boot-time scans",
+    "desc": "WorkManager weekly quick scan plus a BOOT_COMPLETED receiver that runs a post-boot package scan, respecting the user's opt-out.",
+    "doneWhen": "A reboot triggers exactly one scan, the weekly job survives Doze, and disabling it stops both." },
+
+  { "id": "SB-025", "p": "P2", "type": "feature", "area": "Defense", "milestone": "v0.4.0", "status": "open",
+    "title": "RASP and anti-tampering",
+    "desc": "Detect debugger attachment, emulator or rooted environment, force-stop and APK signature mismatch; lock sensitive features and alert the user when tampering is suspected.",
+    "doneWhen": "Each check has a unit test and a visible degradation path; false positives are documented." },
+
+  { "id": "SB-026", "p": "P2", "type": "feature", "area": "Defense", "milestone": "v0.4.0", "status": "open",
+    "title": "Dangerous settings checker",
+    "desc": "One-tap audit of unknown sources, USB debugging, developer options, device admins, installed CA certificates and accessibility services, with Fix or step-by-step instructions.",
+    "doneWhen": "Every finding either deep-links to the correct settings screen or shows precise instructions." },
+
+  { "id": "SB-027", "p": "P2", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "title": "Automatic update check with WorkManager",
+    "desc": "The updater only checks on app start and manually. Add a periodic worker honouring the 12h cache and the user's interval setting, degrading silently when offline.",
+    "doneWhen": "A device left closed for a day still checks once, and failures never surface as dialogs." },
+
+  { "id": "SB-028", "p": "P2", "type": "feature", "area": "UI / Phone", "milestone": "v0.4.0", "status": "open",
+    "title": "Phone UX polish",
+    "desc": "Pull-to-refresh on lists, bottom sheets for app details, and optional swipe between the five tabs, as described in the phone shell specification.",
+    "doneWhen": "All three interactions work with one hand and do not break TV navigation." },
+
+  { "id": "SB-029", "p": "P2", "type": "feature", "area": "UI", "milestone": "v0.4.0", "status": "open",
+    "title": "WindowSizeClass adaptive layouts",
+    "desc": "Tablets and foldables currently get the phone layout. Use WindowSizeClass to switch navigation and content density.",
+    "doneWhen": "A tablet in landscape uses a navigation rail and a two-pane detail layout." },
+
+  { "id": "SB-030", "p": "P2", "type": "feature", "area": "UI / TV", "milestone": "v0.2.0", "status": "open",
+    "title": "TV initial focus and focus restoration",
+    "desc": "The TV shell does not request focus on a known element at startup, and returning to a tab may lose the previously focused card.",
+    "doneWhen": "Opening the app focuses the first action card, and switching tabs restores the last focused item." },
+
+  { "id": "SB-031", "p": "P2", "type": "feature", "area": "Alerts", "milestone": "v0.2.0", "status": "open",
+    "title": "Post real security notifications",
+    "desc": "The security-alerts channel is created but no notification is ever posted. Wire anomaly, firewall and update alerts with actions and a TV-friendly summary.",
+    "doneWhen": "An anomaly produces a notification with Block and Uninstall actions on a phone." },
+
+  { "id": "SB-032", "p": "P2", "type": "feature", "area": "Settings", "milestone": "v0.2.0", "status": "open",
+    "title": "Re-check permissions on resume app-wide",
+    "desc": "Permission state is only refreshed during onboarding. Revoking usage access in system settings leaves Settings and the score stale until restart.",
+    "doneWhen": "Revoking a permission and returning to the app updates the score and the affected rows immediately." },
+
+  { "id": "SB-033", "p": "P2", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "title": "Post-install confirmation and version refresh",
+    "desc": "After the system installer finishes, the app has no way to confirm success or refresh the displayed version; users must relaunch.",
+    "doneWhen": "After an update the About section shows the new version without a manual restart, or an explicit prompt explains the restart." },
+
+  { "id": "SB-034", "p": "P2", "type": "feature", "area": "Testing", "milestone": "v0.2.0", "status": "open",
+    "title": "Instrumented UI tests and a CI emulator matrix",
+    "desc": "Only the onboarding screen has a Compose test. Add update-dialog, settings and TV-navigation tests, and run them on a phone AVD and a Leanback API 33+ AVD in CI.",
+    "doneWhen": "CI runs connected tests on both emulators for every pull request." },
+
+  { "id": "SB-035", "p": "P2", "type": "feature", "area": "Release", "milestone": "v0.3.0", "status": "open",
+    "title": "Play Store compliance review",
+    "desc": "Validate package visibility declarations, VPN service disclosure, data safety form, target SDK policy and the self-update installer flow against current Play rules.",
+    "doneWhen": "A written compliance checklist is complete and the app passes Play pre-launch report." },
+
+  { "id": "SB-036", "p": "P2", "type": "issue", "area": "Tooling", "milestone": "v0.2.0", "status": "open",
+    "title": "In-session builds fail in Documents\\GitHub\\SecureBox",
+    "desc": "The DSH sandbox blocks child processes such as aapt2 from writing outside the session workspace, so Gradle cannot build in the project folder from the agent session. The user's own terminal is unaffected.",
+    "doneWhen": "Either the session workspace is the project folder, or builds are redirected to a writable build root." },
+
+  { "id": "SB-040", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "Signed threat feed client with Ed25519 verification",
+    "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally.",
+    "doneWhen": "A tampered payload is rejected and reported, and a valid payload updates the ruleset atomically." },
+
+  { "id": "SB-041", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "Enhanced detection hooks",
+    "desc": "The feed must update the scanner ruleset, the tracker SDK list and the DNS blocklist used by the firewall, without a code change.",
+    "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh." },
+
+  { "id": "SB-042", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "Threat Intelligence status card",
+    "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier.",
+    "doneWhen": "The card reflects real feed state and the manual update works offline-safe." },
+
+  { "id": "SB-043", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "24-hour feed auto-update",
+    "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline.",
+    "doneWhen": "The job runs once per day, honours opt-out, and never blocks the UI." },
+
+  { "id": "SB-044", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "title": "Starter feed and signing-key workflow",
+    "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app.",
+    "doneWhen": "CI can sign a feed, the app verifies it, and the private key never enters the repository." },
+
+  { "id": "SB-045", "p": "P3", "type": "feature", "area": "i18n", "milestone": "v1.0.0", "status": "open",
+    "title": "Full French review",
+    "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'.",
+    "doneWhen": "TRANSLATION_TODO.md is empty and no English leaks remain in a full walkthrough." },
+
+  { "id": "SB-046", "p": "P3", "type": "feature", "area": "Accessibility", "milestone": "v1.0.0", "status": "open",
+    "title": "Accessibility pass",
+    "desc": "TalkBack labels for the score, cards and dialogs, D-pad traversal order, focus visibility on TV, contrast verification and large-font layout checks.",
+    "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale." },
+
+  { "id": "SB-047", "p": "P3", "type": "feature", "area": "Performance", "milestone": "v1.0.0", "status": "open",
+    "title": "Performance tuning",
+    "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions.",
+    "doneWhen": "Cold start is under one second on a mid-range phone and the universal APK stays under 40 MB." },
+
+  { "id": "SB-048", "p": "P3", "type": "feature", "area": "Release", "milestone": "v1.0.0", "status": "open",
+    "title": "End-to-end QA and v1.0.0 release",
+    "desc": "Complete the full TESTING.md checklist on a real phone and TV box, fix everything found, and publish v1.0.0 with hashes and notes.",
+    "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published." },
+
+  { "id": "SB-049", "p": "P3", "type": "feature", "area": "Updates", "milestone": "v0.3.0", "status": "open",
+    "title": "Markdown renderer improvements",
+    "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text.",
+    "doneWhen": "Links are clickable and code fences render without breaking the dialog." },
+
+  { "id": "SB-050", "p": "P3", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "title": "Clean up cached update packages",
+    "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions.",
+    "doneWhen": "The updater keeps at most the current verified file and deletes the rest on start." },
+
+  { "id": "SB-051", "p": "P3", "type": "feature", "area": "Supply chain", "milestone": "v1.0.0", "status": "open",
+    "title": "Sign SHA256SUMS with a detached Ed25519 signature",
+    "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub.",
+    "doneWhen": "SHA256SUMS.sig is published and a documented verification command validates it." },
+
+  { "id": "SB-052", "p": "P3", "type": "feature", "area": "Build", "milestone": "v0.2.0", "status": "open",
+    "title": "x86_64 ABI split for emulators",
+    "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK.",
+    "doneWhen": "A securebox-x86_64-release.apk is produced and documented." },
+
+  { "id": "SB-053", "p": "P3", "type": "feature", "area": "Settings", "milestone": "v0.5.0", "status": "open",
+    "title": "Paid-tier 'Upgrade available' placeholder",
+    "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now.",
+    "doneWhen": "A disabled link with local copy appears only when a paid tier is flagged." },
+
+  { "id": "SB-054", "p": "P3", "type": "issue", "area": "Release", "milestone": "v0.1.0", "status": "open",
+    "title": "v0.1.0 release title uses a hyphen instead of an em dash",
+    "desc": "The published title is 'v0.1.0 - Foundation & Update System'; the specification requires 'v0.1.0 — Foundation & Update System'.",
+    "doneWhen": "The GitHub release title matches RELEASE_TITLE.txt exactly." },
+
+  { "id": "SB-055", "p": "P3", "type": "issue", "area": "Tooling", "milestone": "v0.1.0", "status": "open",
+    "title": "Stale SecureBox-dist copy in the old workspace",
+    "desc": "C:\\Users\\Mercenary\\Documents\\deepseek-harness\\Random\\SecureBox-dist still holds a flat v0.1.0 copy; the canonical staging area is Documents\\GitHub\\SecureBox-dist.",
+    "doneWhen": "The stale folder is deleted or clearly marked as archived." },
+
+  { "id": "SB-056", "p": "P3", "type": "issue", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "title": "UpdatePhase.Verifying is dead code",
+    "desc": "The state exists in the ViewModel but is never emitted; hashing happens inside the repository while Downloading stays visible.",
+    "doneWhen": "Either the phase is emitted before hashing or it is removed." },
+
+  { "id": "SB-057", "p": "P3", "type": "issue", "area": "Build", "milestone": "v0.2.0", "status": "open",
+    "title": "Unused dependencies and catalog entries",
+    "desc": "compose-material-icons-extended, work-runtime-ktx and lifecycle-process are declared but unused; they add maintenance noise.",
+    "doneWhen": "The version catalog and module dependencies contain only what is referenced." },
+
+  { "id": "SB-D01", "p": "P1", "type": "issue", "area": "CI", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "CI failed at setup-android",
+    "desc": "android-actions/setup-android@v3 tried to install the retired 'tools' package. Fixed by calling the runner's bundled sdkmanager directly (commit efec0ca)." },
+
+  { "id": "SB-D02", "p": "P1", "type": "issue", "area": "Build / Signing", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Release APKs failed to sign (keyPassword missing)",
+    "desc": "Kotlin DSL name shadowing made the signing config assign its own properties. Fixed by renaming the local values." },
+
+  { "id": "SB-D03", "p": "P1", "type": "issue", "area": "Lint / TV", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Lint error MissingTvBanner",
+    "desc": "Added app/src/main/res/drawable-*/tv_banner.png and android:banner on the application." },
+
+  { "id": "SB-D04", "p": "P1", "type": "issue", "area": "Lint", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Lint error NewApi for windowLightNavigationBar",
+    "desc": "The attribute requires API 27; removed it for minSdk 26." },
+
+  { "id": "SB-D05", "p": "P2", "type": "issue", "area": "Integrity", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Debug builds showed a false tampering warning",
+    "desc": "The release certificate hash was baked into every build type. It is now set only for release builds." },
+
+  { "id": "SB-D06", "p": "P2", "type": "issue", "area": "Updates", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Background update failures popped error dialogs",
+    "desc": "Silent startup checks now swallow network and rate-limit failures; only an explicit check surfaces them." },
+
+  { "id": "SB-D07", "p": "P1", "type": "issue", "area": "CI / Release", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-07",
+    "title": "Release workflow failed while publishing a duplicate release",
+    "desc": "Publishing moved to a manual step; the workflow now builds, signs, checksums and uploads artifacts only (commit 75f2bed)." },
+
+  { "id": "SB-D08", "p": "P2", "type": "issue", "area": "Docs", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-07",
+    "title": "Release notes overstated device verification",
+    "desc": "Reworded to state that physical phone and TV sign-off is still pending." },
+
+  { "id": "SB-D09", "p": "P2", "type": "issue", "area": "CI", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "title": "Gradle wrapper was not executable on Linux",
+    "desc": "Set the executable bit on gradlew in the Git index." }
+];
+/* DATA_END */
+
+const LAST_UPDATED = "2026-11-07";
+
+const UPDATE_LOG = [
+  { d: "2026-11-07", t: "Backlog created. v0.1.0 published manually. Automated release publishing removed from CI (75f2bed). Added P0 device-QA issues, all remaining milestones, and a Done section for fixes shipped while building v0.1.0." },
+  { d: "2026-11-06", t: "Milestone 1 completed: onboarding, dual shells, verified self-update system, signed APKs." }
+];
+
+const PRIORITIES = ["P0", "P1", "P2", "P3"];
+const PRIORITY_HINT = {
+  P0: "Blocks a release or is a security/privacy risk. Fix before anything else.",
+  P1: "Must land in the next release (v0.2.0) or is a correctness/honesty problem.",
+  P2: "Planned for the next milestones, or significant UX and testing debt.",
+  P3: "Later milestones, polish, process and supply-chain hardening."
+};
+
+const state = { kind: "all", q: "" };
+
+const el = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function isDone(i) { return i.status === "done"; }
+
+function matches(item) {
+  if (state.kind === "done") {
+    if (!isDone(item)) return false;
+  } else if (state.kind === "feature" || state.kind === "issue") {
+    if (item.type !== state.kind || isDone(item)) return false;
+  } else if (PRIORITIES.includes(state.kind)) {
+    if (item.p !== state.kind || isDone(item)) return false;
+  } else if (isDone(item)) {
+    return false;
+  }
+  if (state.q) {
+    const hay = [item.id, item.title, item.desc, item.area, item.milestone].join(" ").toLowerCase();
+    if (!hay.includes(state.q)) return false;
+  }
+  return true;
+}
+
+function counts() {
+  const open = ITEMS.filter((i) => !isDone(i));
+  return {
+    open: open.length,
+    done: ITEMS.length - open.length,
+    p0: open.filter((i) => i.p === "P0").length,
+    p1: open.filter((i) => i.p === "P1").length,
+    p2: open.filter((i) => i.p === "P2").length,
+    p3: open.filter((i) => i.p === "P3").length,
+    feature: open.filter((i) => i.type === "feature").length,
+    issue: open.filter((i) => i.type === "issue").length,
+  };
+}
+
+function chip(label, key, n) {
+  return `<button class="chip" data-k="${esc(key)}" aria-pressed="${state.kind === key}" type="button">${esc(label)}<span class="n">${n}</span></button>`;
+}
+
+function renderChips() {
+  const c = counts();
+  el("chips").innerHTML =
+    chip("All open", "all", c.open) +
+    chip("P0", "P0", c.p0) +
+    chip("P1", "P1", c.p1) +
+    chip("P2", "P2", c.p2) +
+    chip("P3", "P3", c.p3) +
+    chip("Features", "feature", c.feature) +
+    chip("Issues", "issue", c.issue) +
+    chip("Done", "done", c.done);
+}
+
+function card(item) {
+  const done = isDone(item);
+  const accept = item.doneWhen
+    ? `<p class="accept"><b>Done when:</b> ${esc(item.doneWhen)}</p>`
+    : "";
+  const donePill = done ? `<span class="pill done">Done${item.doneAt ? " · " + esc(item.doneAt) : ""}</span>` : "";
+  const priorityPill = `<span class="pill ${item.p.toLowerCase()}">${esc(item.p)}</span>`;
+  return `<article class="card ${item.p.toLowerCase()}${done ? " done" : ""}">
+    <div class="row">
+      <span class="id">${esc(item.id)}</span>
+      ${priorityPill}
+      <span class="pill ${esc(item.type)}">${esc(item.type)}</span>
+      ${donePill}
+    </div>
+    <h3>${esc(item.title)}</h3>
+    <p class="desc">${esc(item.desc)}</p>
+    ${accept}
+    <div class="foot">
+      <span class="tag">${esc(item.area)}</span>
+      <span class="tag">${esc(item.milestone)}</span>
+    </div>
+  </article>`;
+}
+
+function group(title, key, items, hint) {
+  if (!items.length) return "";
+  return `<section class="group">
+    <h2><span class="dot" style="background:${key === "done" ? "var(--teal)" : key === "P0" ? "var(--red)" : key === "P1" ? "var(--amber)" : key === "P2" ? "var(--teal)" : "var(--dim)"}"></span>
+      ${esc(title)} <span class="n">${items.length}</span></h2>
+    <p class="hint">${esc(hint)}</p>
+    <div class="grid">${items.map(card).join("")}</div>
+  </section>`;
+}
+
+function render() {
+  const visible = ITEMS.filter(matches);
+  let html = "";
+
+  if (state.kind === "done") {
+    html = group("Done", "done", visible, "Fixed or shipped. Kept for one release for traceability, then removed.");
+  } else {
+    PRIORITIES.forEach((p) => {
+      const items = visible.filter((i) => i.p === p && !isDone(i));
+      html += group(p, p, items, PRIORITY_HINT[p]);
+    });
+  }
+  if (!html) {
+    html = `<div class="empty"><h2>Nothing matches</h2><p>Try a different filter or clear the search.</p></div>`;
+  }
+  el("board").innerHTML = html;
+}
+
+function renderMeta() {
+  const c = counts();
+  el("lastUpdated").textContent = LAST_UPDATED;
+  el("openCount").textContent = c.open;
+  el("doneCount").textContent = c.done;
+  el("blockerCount").textContent = c.p0;
+  const total = ITEMS.length || 1;
+  el("progress").style.width = Math.round((c.done / total) * 100) + "%";
+  el("progress").title = c.done + " of " + total + " items done";
+  el("footVersion").textContent = "v0.1.0";
+}
+
+function renderLog() {
+  el("updateLog").innerHTML = UPDATE_LOG
+    .map((r) => `<tr><td>${esc(r.d)}</td><td>${esc(r.t)}</td></tr>`)
+    .join("");
+}
+
+el("chips").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-k]");
+  if (!btn) return;
+  state.kind = btn.dataset.k;
+  renderChips();
+  render();
+});
+
+el("search").addEventListener("input", (e) => {
+  state.q = e.target.value.trim().toLowerCase();
+  render();
+});
+
+renderMeta();
+renderChips();
+renderLog();
+render();
+
+const ids = ITEMS.map((i) => i.id);
+const dupes = ids.filter((id, idx) => ids.indexOf(id) !== idx);
+if (dupes.length) console.error("Duplicate backlog ids:", dupes);
+</script>
+</body>
+</html>
