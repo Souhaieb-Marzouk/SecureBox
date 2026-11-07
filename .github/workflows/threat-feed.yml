@@ -21,23 +21,36 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Write signing key
+      # A missing secret must not fail the workflow: maintainers can sign locally and commit the
+      # .sig file. The check is done in a step output because `secrets` cannot be used in `if`.
+      - name: Check signing key
+        id: key
         env:
           THREAT_FEED_KEY: ${{ secrets.THREAT_FEED_KEY }}
         run: |
-          if [ -z "$THREAT_FEED_KEY" ]; then
-            echo "THREAT_FEED_KEY secret is not configured; skipping." >&2
-            exit 1
+          if [ -n "$THREAT_FEED_KEY" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::warning title=Threat feed signing skipped::THREAT_FEED_KEY is not configured; sign locally and commit latest.json.sig."
           fi
-          printf '%s\n' "$THREAT_FEED_KEY" > "$RUNNER_TEMP/threat-feed.pem"
+
+      - name: Write signing key
+        if: steps.key.outputs.present == 'true'
+        env:
+          THREAT_FEED_KEY: ${{ secrets.THREAT_FEED_KEY }}
+        run: printf '%s\n' "$THREAT_FEED_KEY" > "$RUNNER_TEMP/threat-feed.pem"
 
       - name: Sign latest.json
+        if: steps.key.outputs.present == 'true'
         run: node tools/sign-release.mjs --file threat-intel/latest.json --key "$RUNNER_TEMP/threat-feed.pem"
 
       - name: Verify before committing
+        if: steps.key.outputs.present == 'true'
         run: node tools/verify-release.mjs --file threat-intel/latest.json --sig threat-intel/latest.json.sig --key docs/threat-feed-public.pem
 
       - name: Commit signature
+        if: steps.key.outputs.present == 'true'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: threat-intel/latest.json.sig

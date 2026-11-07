@@ -9,7 +9,10 @@ plugins {
 android {
     namespace = "io.securebox.feature.onboarding"
     compileSdk = 34
-    defaultConfig { minSdk = 26 }
+    defaultConfig {
+        minSdk = 26
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

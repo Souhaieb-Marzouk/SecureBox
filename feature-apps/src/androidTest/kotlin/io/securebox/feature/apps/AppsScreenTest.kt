@@ -1,5 +1,6 @@
 package io.securebox.feature.apps
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -69,9 +70,15 @@ class AppsScreenTest {
 
     @Test
     fun riskyFilterHidesSafeApps() {
+        val filter = mutableStateOf(AppsFilter.ALL)
         composeRule.setContent {
             SecureBoxTheme(darkTheme = true) {
-                AppsScreen(state = state, onFilter = {}, onSelect = {}, onRefresh = {})
+                AppsScreen(
+                    state = state.copy(filter = filter.value),
+                    onFilter = { filter.value = it },
+                    onSelect = {},
+                    onRefresh = {},
+                )
             }
         }
         composeRule.onNodeWithText("Risky").performClick()

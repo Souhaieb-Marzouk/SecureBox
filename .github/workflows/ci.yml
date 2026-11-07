@@ -126,4 +126,9 @@ jobs:
           target: ${{ matrix.target }}
           arch: ${{ matrix.arch }}
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest --stacktrace
+          script: >
+            ./gradlew
+            :feature-onboarding:connectedDebugAndroidTest
+            :feature-apps:connectedDebugAndroidTest
+            :feature-threats:connectedDebugAndroidTest
+            --stacktrace

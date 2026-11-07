@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.ui.theme.SecureBoxTheme
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -67,7 +68,7 @@ class OnboardingScreenTest {
             .onNodeWithText("We detected you are using an Android TV Box. Is that correct?")
             .assertIsDisplayed()
         composeRule.onNodeWithText("No, I'm using a phone").performClick()
-        assert(confirmed == false)
+        assertEquals(false, confirmed)
     }
 
     @Test
@@ -78,6 +79,6 @@ class OnboardingScreenTest {
             onConfirmDevice = { confirmed = it },
         )
         composeRule.onNodeWithText("Yes, continue").performClick()
-        assert(confirmed == true)
+        assertEquals(true, confirmed)
     }
 }

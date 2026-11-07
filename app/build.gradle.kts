@@ -159,4 +159,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     debugImplementation(libs.compose.ui.tooling)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext.junit)
 }
