@@ -11,6 +11,7 @@ import io.securebox.feature.dashboard.DashboardRoute
 import io.securebox.feature.network.NetworkRoute
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
+import io.securebox.feature.threats.HardeningRoute
 import io.securebox.feature.threats.ThreatsRoute
 
 /** One navigation graph, used unchanged by both the phone and TV shells. */
@@ -33,7 +34,12 @@ fun SecureBoxNavHost(
         }
         composable(Routes.NETWORK) { NetworkRoute() }
         composable(Routes.APPS) { AppsRoute() }
-        composable(Routes.THREATS) { ThreatsRoute() }
+        composable(Routes.THREATS) {
+            ThreatsRoute(onOpenHardening = { navController.navigate(Routes.HARDENING) })
+        }
+        composable(Routes.HARDENING) {
+            HardeningRoute(onBack = { navController.popBackStack() })
+        }
         composable(Routes.SETTINGS) {
             SettingsRoute(onOpenPrivacy = { navController.navigate(Routes.PRIVACY) })
         }

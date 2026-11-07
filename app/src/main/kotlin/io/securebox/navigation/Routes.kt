@@ -13,6 +13,7 @@ object Routes {
     const val THREATS: String = "threats"
     const val SETTINGS: String = "settings"
     const val PRIVACY: String = "privacy"
+    const val HARDENING: String = "hardening"
 }
 
 data class NavItem(

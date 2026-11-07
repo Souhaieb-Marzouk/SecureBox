@@ -32,6 +32,15 @@
     <string name="settings_threat_intel_coming">Not active yet — planned for v0.5.0.</string>
 
     <string name="settings_section_updates">Updates</string>
+    <string name="settings_integrity_title">Device integrity</string>
+    <string name="settings_integrity_ok">No tampering detected.</string>
+    <string name="settings_integrity_warning">This build looks tampered or is being debugged. App updates are locked until it is reinstalled from an official release.</string>
+    <string name="settings_integrity_checking">Checking…</string>
+    <string name="settings_integrity_recheck">Check again</string>
+    <string name="settings_integrity_debugger">A debugger is attached.</string>
+    <string name="settings_integrity_emulator">Running in an emulator.</string>
+    <string name="settings_integrity_rooted">The device appears to be rooted.</string>
+    <string name="settings_integrity_signature">The APK signature does not match the official build.</string>
     <string name="settings_privacy_row_title">Privacy policy</string>
     <string name="settings_privacy_row_body">What SecureBox does with your data — and what it never does.</string>
     <string name="settings_section_about">About</string>

@@ -19,6 +19,9 @@
     <string name="threats_scheduled_body">S\'exécute en arrière-plan et après le démarrage lorsqu\'elle est activée. N\'envoie jamais rien.</string>
     <string name="threats_rules_version">Jeu de règles de signatures v%1$d</string>
     <string name="threats_rules_unavailable">Règles de signatures indisponibles — les contrôles d\'autorisations et de composants fonctionnent toujours.</string>
+    <string name="threats_hardening_title">Durcissement de l\'appareil</string>
+    <string name="threats_hardening_body">Vérifiez les options développeur, le débogage USB, l\'accessibilité, les administrateurs et les certificats utilisateur.</string>
+    <string name="threats_hardening_action">Vérifier les réglages</string>
 
     <string name="threats_level_safe">Sûre</string>
     <string name="threats_level_low">Faible</string>
@@ -26,4 +29,22 @@
     <string name="threats_level_high">Élevé</string>
     <string name="threats_level_critical">Critique</string>
     <string name="threats_score_badge">%1$d · %2$s</string>
+
+    <string name="hardening_title">Durcissement de l\'appareil</string>
+    <string name="hardening_subtitle">Les réglages système les plus exploités par les attaquants, avec un raccourci pour chacun.</string>
+    <string name="hardening_checking">Vérification des réglages système…</string>
+    <string name="hardening_clear">Aucun réglage dangereux n\'est activé.</string>
+    <string name="hardening_found">%1$d réglages dangereux sont activés.</string>
+    <string name="hardening_active">Activé</string>
+    <string name="hardening_active_count">%1$d actifs</string>
+    <string name="hardening_inactive">Désactivé</string>
+    <string name="hardening_fix">Corriger</string>
+    <string name="hardening_back">Retour</string>
+    <string name="hardening_recheck">Vérifier à nouveau</string>
+    <string name="hardening_developer_options">Options développeur</string>
+    <string name="hardening_usb_debugging">Débogage USB</string>
+    <string name="hardening_accessibility">Services d\'accessibilité</string>
+    <string name="hardening_device_admin">Administrateurs de l\'appareil</string>
+    <string name="hardening_user_ca">Certificats installés par l\'utilisateur</string>
+    <string name="hardening_install_unknown">Installer des applications inconnues</string>
 </resources>

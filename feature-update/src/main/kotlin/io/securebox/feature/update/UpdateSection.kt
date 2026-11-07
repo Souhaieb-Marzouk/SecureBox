@@ -159,6 +159,7 @@ private fun failureMessage(kind: UpdateFailure): String =
             UpdateFailure.CHECKSUM_MISMATCH -> R.string.update_error_checksum
             UpdateFailure.MISSING_CHECKSUM -> R.string.update_error_missing_checksum
             UpdateFailure.INSTALL -> R.string.update_error_install
+            UpdateFailure.INTEGRITY -> R.string.update_error_integrity
         },
     )
 

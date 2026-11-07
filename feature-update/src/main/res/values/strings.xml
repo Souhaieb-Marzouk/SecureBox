@@ -35,6 +35,7 @@
     <string name="update_error_missing_checksum">This release has no checksum, so SecureBox refused to install it.</string>
     <string name="update_error_missing_checksum_why">Without a checksum the app cannot prove the file is intact. Ask the maintainer to publish SHA256SUMS.</string>
     <string name="update_error_install">Android could not open the installer.</string>
+    <string name="update_error_integrity">This build was modified, so updates are locked. Reinstall SecureBox from an official release.</string>
 
     <string name="update_permission_title">Allow installs</string>
     <string name="update_permission_body">Android needs your permission before SecureBox can open the installer. SecureBox never installs anything silently.</string>

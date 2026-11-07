@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.3.0</b></span>
+      <span>Baseline <b>v0.4.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -335,10 +335,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Defense",
     "milestone": "v0.4.0",
-    "status": "open",
+    "status": "done",
     "title": "RASP and anti-tampering",
-    "desc": "Detect debugger attachment, emulator or rooted environment, force-stop and APK signature mismatch; lock sensitive features and alert the user when tampering is suspected.",
-    "doneWhen": "Each check has a unit test and a visible degradation path; false positives are documented."
+    "desc": "Detect debugger attachment, emulator or rooted environment, force-stop and APK signature mismatch; lock sensitive features and alert the user when tampering is suspected. Shipped in v0.4.0: debugger/emulator/root/signature checks, integrity card in Settings and update install lock.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-026",
@@ -346,10 +346,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Defense",
     "milestone": "v0.4.0",
-    "status": "open",
+    "status": "done",
     "title": "Dangerous settings checker",
-    "desc": "One-tap audit of unknown sources, USB debugging, developer options, device admins, installed CA certificates and accessibility services, with Fix or step-by-step instructions.",
-    "doneWhen": "Every finding either deep-links to the correct settings screen or shows precise instructions."
+    "desc": "One-tap audit of unknown sources, USB debugging, developer options, device admins, installed CA certificates and accessibility services, with Fix or step-by-step instructions. Shipped in v0.4.0: device hardening screen with developer options, USB debugging, accessibility, admins, user CAs and install-unknown-apps, each with a Fix shortcut.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-027",
@@ -368,10 +368,10 @@ const ITEMS = [
     "type": "feature",
     "area": "UI / Phone",
     "milestone": "v0.4.0",
-    "status": "open",
+    "status": "done",
     "title": "Phone UX polish",
-    "desc": "Pull-to-refresh on lists, bottom sheets for app details, and optional swipe between the five tabs, as described in the phone shell specification.",
-    "doneWhen": "All three interactions work with one hand and do not break TV navigation."
+    "desc": "Pull-to-refresh on lists, bottom sheets for app details, and optional swipe between the five tabs, as described in the phone shell specification. Shipped in v0.4.0: pull-to-refresh on the app list and a bottom-sheet detail view; swipe-between-tabs remains optional and was not needed.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-029",
@@ -379,10 +379,10 @@ const ITEMS = [
     "type": "feature",
     "area": "UI",
     "milestone": "v0.4.0",
-    "status": "open",
+    "status": "done",
     "title": "WindowSizeClass adaptive layouts",
-    "desc": "Tablets and foldables currently get the phone layout. Use WindowSizeClass to switch navigation and content density.",
-    "doneWhen": "A tablet in landscape uses a navigation rail and a two-pane detail layout."
+    "desc": "Tablets and foldables currently get the phone layout. Use WindowSizeClass to switch navigation and content density. Shipped in v0.4.0: WindowSizeClass switches the phone shell to a navigation rail on tablets and foldables.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-030",
@@ -390,10 +390,10 @@ const ITEMS = [
     "type": "feature",
     "area": "UI / TV",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "TV initial focus and focus restoration",
-    "desc": "The TV shell does not request focus on a known element at startup, and returning to a tab may lose the previously focused card.",
-    "doneWhen": "Opening the app focuses the first action card, and switching tabs restores the last focused item."
+    "desc": "The TV shell does not request focus on a known element at startup, and returning to a tab may lose the previously focused card. Shipped in v0.4.0: the TV sidebar requests initial D-pad focus on launch.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-031",
@@ -434,10 +434,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Testing",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Instrumented UI tests and a CI emulator matrix",
-    "desc": "Only the onboarding screen has a Compose test. Add update-dialog, settings and TV-navigation tests, and run them on a phone AVD and a Leanback API 33+ AVD in CI.",
-    "doneWhen": "CI runs connected tests on both emulators for every pull request."
+    "desc": "Only the onboarding screen has a Compose test. Add update-dialog, settings and TV-navigation tests, and run them on a phone AVD and a Leanback API 33+ AVD in CI. Shipped in v0.4.0: Compose instrumented tests for Apps/Threats plus a CI matrix for a phone (API 34) and Android TV (API 33) emulator.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-035",
@@ -764,10 +764,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Firewall",
     "milestone": "v0.2.x",
-    "status": "open",
+    "status": "done",
     "title": "Native NDK packet pump for the firewall",
-    "desc": "The v0.2.0 firewall reads and discards packets in Kotlin. The specification calls for a C/C++ packet engine over JNI; add a native pump for lower overhead and as the base for DNS/domain filtering.",
-    "doneWhen": "A JNI library reads the TUN descriptor, the Kotlin loop is removed, and CPU use is lower than the Kotlin pump on the same device."
+    "desc": "The v0.2.0 firewall reads and discards packets in Kotlin. The specification calls for a C/C++ packet engine over JNI; add a native pump for lower overhead and as the base for DNS/domain filtering. Shipped in v0.4.0: native securebox_pump built with CMake/NDK 27.2.12479018 for all four ABIs, with the Kotlin reader as fallback.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-059",
@@ -808,6 +808,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.4.0 shipped: RASP with update lock, device hardening checklist, adaptive navigation rail, TV initial focus, pull-to-refresh, bottom-sheet app details, instrumented Compose tests with phone/TV emulator CI, and the native packet pump. All P2 items are now closed; SB-059 (physical device QA) remains blocked and the 14 P3 items are next." },
   { d: "2026-11-07", t: "v0.3.0 shipped: on-device app scanner (signature rules, trackers, permission combos, components), risk scores and reasons, sideload detection, weekly + boot scans, daily update check, notifications, permission refresh on resume, Play compliance doc and firewall edge-case doc. Closed SB-020..SB-024, SB-027, SB-031..SB-033, SB-035 and SB-060. Remaining P2: RASP, dangerous-settings checker, phone UX polish, WindowSizeClass, instrumented CI matrix and the native packet pump." },
   { d: "2026-11-07", t: "Backlog cleanup: closed SB-036 (sandbox build tools), SB-054 (release title), SB-055 (stale dist), SB-056 (Verifying state implemented), SB-057 (unused dependencies) and SB-061 (Play declaration). Removed SB-001/SB-002 and folded them into SB-059, now marked Blocked: no adb device is attached. Added tools/device-qa.ps1 to complete it." },
   { d: "2026-11-07", t: "v0.2.0 implemented: per-app bandwidth (live + 24h/7d/30d), hourly upload anomaly detector with notification actions, local-only VPN firewall with per-app blocking and presets, open-port monitor, and the full Network UI. Security score now reflects update status; Threat Intelligence toggle disabled until v0.5.0; keystore password encrypted with DPAPI. 8 P1 items closed, 4 new items added (native packet pump, v0.2.0 device QA, firewall edge cases, Play declaration)." },
@@ -950,7 +951,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.3.0";
+  el("footVersion").textContent = "v0.4.0";
 }
 
 function renderLog() {

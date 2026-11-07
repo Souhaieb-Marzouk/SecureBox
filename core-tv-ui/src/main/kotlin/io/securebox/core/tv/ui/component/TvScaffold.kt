@@ -17,8 +17,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import io.securebox.core.tv.ui.theme.TvDimens
@@ -42,6 +46,9 @@ fun TvScaffold(
     onNavigate: (String) -> Unit,
     content: @Composable () -> Unit,
 ) {
+    val firstItemFocus = remember { FocusRequester() }
+    LaunchedEffect(Unit) { runCatching { firstItemFocus.requestFocus() } }
+
     Row(
         modifier =
             Modifier
@@ -76,12 +83,13 @@ fun TvScaffold(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(6.dp),
             ) {
-                entries.forEach { entry ->
+                entries.forEachIndexed { index, entry ->
                     TvNavItem(
                         icon = entry.icon,
                         label = entry.label,
                         selected = entry.route == selectedRoute,
                         onClick = { onNavigate(entry.route) },
+                        modifier = if (index == 0) Modifier.focusRequester(firstItemFocus) else Modifier,
                     )
                     Spacer(modifier = Modifier.padding(top = 4.dp))
                 }

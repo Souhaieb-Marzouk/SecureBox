@@ -12,6 +12,7 @@ import io.securebox.core.domain.model.DownloadResult
 import io.securebox.core.domain.model.ReleaseInfo
 import io.securebox.core.domain.model.UpdateDecision
 import io.securebox.core.domain.repository.UpdateRepository
+import io.securebox.core.domain.security.IntegrityRepository
 import io.securebox.core.domain.update.UpdateEvaluator
 import java.io.File
 import javax.inject.Inject
@@ -30,6 +31,7 @@ enum class UpdateFailure {
     CHECKSUM_MISMATCH,
     MISSING_CHECKSUM,
     INSTALL,
+    INTEGRITY,
 }
 
 sealed interface UpdatePhase {
@@ -67,6 +69,7 @@ data class UpdateUiState(
     val phase: UpdatePhase = UpdatePhase.Idle,
     val lastCheckedAtMillis: Long? = null,
     val installPermissionGranted: Boolean = true,
+    val integrityCompromised: Boolean = false,
 )
 
 @HiltViewModel
@@ -76,6 +79,7 @@ class UpdateViewModel
         private val updateRepository: UpdateRepository,
         private val apkInstaller: ApkInstaller,
         private val appVersion: AppVersion,
+        private val integrityRepository: IntegrityRepository,
     ) : ViewModel() {
         private val _state = MutableStateFlow(UpdateUiState(installedVersion = appVersion.versionName))
         val state: StateFlow<UpdateUiState> = _state.asStateFlow()
@@ -84,6 +88,11 @@ class UpdateViewModel
             viewModelScope.launch {
                 val last = updateRepository.lastCheckedAtMillis()
                 _state.update { it.copy(lastCheckedAtMillis = last) }
+            }
+            viewModelScope.launch {
+                runCatching { integrityRepository.check() }.onSuccess { report ->
+                    _state.update { it.copy(integrityCompromised = report.compromised) }
+                }
             }
             // Silent check using the 12h cache; it only shows UI when an update actually exists.
             checkForUpdate(force = false)
@@ -118,6 +127,10 @@ class UpdateViewModel
 
         fun downloadAndInstall() {
             val release = (_state.value.phase as? UpdatePhase.Available)?.release ?: return
+            if (_state.value.integrityCompromised) {
+                fail(UpdateFailure.INTEGRITY)
+                return
+            }
             viewModelScope.launch {
                 _state.update { it.copy(phase = UpdatePhase.Downloading(0f, 0L, 0L)) }
                 val primaryAbi = Build.SUPPORTED_ABIS.firstOrNull()

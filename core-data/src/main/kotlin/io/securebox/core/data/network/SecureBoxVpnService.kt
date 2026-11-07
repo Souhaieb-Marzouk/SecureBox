@@ -133,15 +133,19 @@ class SecureBoxVpnService : VpnService() {
     private fun startPump(descriptor: ParcelFileDescriptor) {
         pump =
             Thread {
-                val buffer = ByteArray(32 * 1024)
-                try {
-                    FileInputStream(descriptor.fileDescriptor).use { input ->
-                        while (!Thread.currentThread().isInterrupted) {
-                            if (input.read(buffer) < 0) break
+                if (NativePacketPump.available) {
+                    runCatching { NativePacketPump.drain(descriptor.fd) }
+                } else {
+                    val buffer = ByteArray(32 * 1024)
+                    try {
+                        FileInputStream(descriptor.fileDescriptor).use { input ->
+                            while (!Thread.currentThread().isInterrupted) {
+                                if (input.read(buffer) < 0) break
+                            }
                         }
+                    } catch (_: IOException) {
+                        // Tunnel closed.
                     }
-                } catch (_: IOException) {
-                    // Tunnel closed.
                 }
             }.apply {
                 name = "securebox-vpn-pump"

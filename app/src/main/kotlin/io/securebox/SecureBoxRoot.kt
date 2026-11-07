@@ -15,7 +15,10 @@ import io.securebox.shell.TvShell
  * stored device mode. Both shells share the same navigation graph and screens.
  */
 @Composable
-fun SecureBoxRoot(state: MainUiState) {
+fun SecureBoxRoot(
+    state: MainUiState,
+    expandedLayout: Boolean = false,
+) {
     val darkTheme =
         when (state.settings.themeMode) {
             ThemeMode.DARK -> true
@@ -40,7 +43,7 @@ fun SecureBoxRoot(state: MainUiState) {
 
         else -> {
             SecureBoxTheme(darkTheme = darkTheme) {
-                PhoneShell(showIntegrityWarning = showIntegrityWarning)
+                PhoneShell(showIntegrityWarning = showIntegrityWarning, expanded = expandedLayout)
             }
         }
     }

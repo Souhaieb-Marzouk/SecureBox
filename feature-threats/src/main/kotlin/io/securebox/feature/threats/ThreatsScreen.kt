@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -37,12 +38,16 @@ import io.securebox.core.ui.component.StatusBanner
 import java.util.Date
 
 @Composable
-fun ThreatsRoute(viewModel: ThreatsViewModel = hiltViewModel()) {
+fun ThreatsRoute(
+    onOpenHardening: () -> Unit,
+    viewModel: ThreatsViewModel = hiltViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     ThreatsScreen(
         state = state,
         onScan = viewModel::scanNow,
         onScheduled = viewModel::setScheduled,
+        onOpenHardening = onOpenHardening,
     )
 }
 
@@ -51,6 +56,7 @@ fun ThreatsScreen(
     state: ThreatsUiState,
     onScan: () -> Unit,
     onScheduled: (Boolean) -> Unit,
+    onOpenHardening: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -162,6 +168,20 @@ fun ThreatsScreen(
                         )
                     }
                     Switch(checked = state.scheduled, onCheckedChange = onScheduled)
+                }
+            }
+        }
+
+        item {
+            SecureCard {
+                Text(text = stringResource(R.string.threats_hardening_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(R.string.threats_hardening_body),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                OutlinedButton(onClick = onOpenHardening) {
+                    Text(stringResource(R.string.threats_hardening_action))
                 }
             }
         }

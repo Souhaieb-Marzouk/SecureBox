@@ -10,6 +10,8 @@ import io.securebox.core.domain.model.AppVersion
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ThemeMode
 import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.security.IntegrityReport
+import io.securebox.core.domain.security.IntegrityRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +23,7 @@ data class SettingsUiState(
     val settings: AppSettings = AppSettings(),
     val installedVersion: String = "",
     val detectionMessage: DeviceMode? = null,
+    val integrity: IntegrityReport? = null,
 )
 
 @HiltViewModel
@@ -29,6 +32,7 @@ class SettingsViewModel
     constructor(
         private val settingsRepository: SettingsRepository,
         private val deviceModeDetector: DeviceModeDetector,
+        private val integrityRepository: IntegrityRepository,
         appVersion: AppVersion,
     ) : ViewModel() {
         private val _state = MutableStateFlow(SettingsUiState(installedVersion = appVersion.versionName))
@@ -38,6 +42,15 @@ class SettingsViewModel
             viewModelScope.launch {
                 settingsRepository.settings.collect { settings ->
                     _state.update { it.copy(settings = settings) }
+                }
+            }
+            refreshIntegrity()
+        }
+
+        fun refreshIntegrity() {
+            viewModelScope.launch {
+                runCatching { integrityRepository.check() }.onSuccess { report ->
+                    _state.update { it.copy(integrity = report) }
                 }
             }
         }

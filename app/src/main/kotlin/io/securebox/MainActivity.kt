@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,15 +29,20 @@ import io.securebox.core.ui.theme.SecureBoxTheme
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val state by viewModel.state.collectAsStateWithLifecycle()
+            val windowSizeClass = calculateWindowSizeClass(this)
             if (state.isLoading) {
                 SecureBoxTheme(darkTheme = true) { LoadingScreen() }
             } else {
                 ApplyAppLanguage(state.settings.language)
-                SecureBoxRoot(state = state)
+                SecureBoxRoot(
+                    state = state,
+                    expandedLayout = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact,
+                )
             }
         }
     }

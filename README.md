@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.3.0` — App Security Scanner |
+| **Current release** | `v0.4.0` — Hardening & Platform Polish |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
@@ -24,12 +24,14 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Every number is explained.** Each screen has a one-sentence "what this does", and every technical term has an inline "What is this?" chip.
 - **One codebase, two shells.** A touch-first bottom-navigation shell for phones and a D-pad-first 10-foot shell for TV boxes, selected automatically and overridable at any time.
 
-## What works today (v0.3.0)
+## What works today (v0.4.0)
 
 - **First-run onboarding**: language selection (EN/FR), automatic TV/phone detection with manual override, and plain-language permission explainers.
-- **Two UI shells**: `PhoneShell` (bottom navigation) and `TvShell` (sidebar + large focus rings), sharing one navigation graph.
+- **Two UI shells**: `PhoneShell` (bottom bar on phones, navigation rail on tablets) and `TvShell` (sidebar + large focus rings), sharing one navigation graph.
+- **Device integrity (RASP)**: debugger, emulator, root and signature checks, with updates locked on a tampered build.
+- **Device hardening**: one screen for developer options, USB debugging, accessibility, admins, user certificates and install-unknown-apps, each with a Fix shortcut.
 - **App security scan**: signature rules, tracker SDKs, dangerous permission combos, exported components, accessibility services, device admins and hidden launchers — all on-device.
-- **Per-app risk score**: 0–100 with plain-language reasons, All / Risky / Sideloaded filters, and a detail dialog for every finding.
+- **Per-app risk score**: 0–100 with plain-language reasons, All / Risky / Sideloaded filters, and a bottom-sheet detail view.
 - **Sideload awareness**: Play Store / System / Sideloaded badges with installer details.
 - **Automatic scans**: weekly and post-boot scans, controlled by a user preference, plus a notification when risky apps are found.
 - **Per-app bandwidth**: live rates plus 24 h / 7 d / 30 d history, sorted by consumption, with a block switch on every row.

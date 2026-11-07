@@ -32,6 +32,15 @@
     <string name="settings_threat_intel_coming">Pas encore actif — prévu pour la v0.5.0.</string>
 
     <string name="settings_section_updates">Mises à jour</string>
+    <string name="settings_integrity_title">Intégrité de l\'appareil</string>
+    <string name="settings_integrity_ok">Aucune altération détectée.</string>
+    <string name="settings_integrity_warning">Cette version semble altérée ou en cours de débogage. Les mises à jour sont verrouillées jusqu\'à réinstallation depuis une version officielle.</string>
+    <string name="settings_integrity_checking">Vérification…</string>
+    <string name="settings_integrity_recheck">Vérifier à nouveau</string>
+    <string name="settings_integrity_debugger">Un débogueur est attaché.</string>
+    <string name="settings_integrity_emulator">Exécution dans un émulateur.</string>
+    <string name="settings_integrity_rooted">L\'appareil semble être rooté.</string>
+    <string name="settings_integrity_signature">La signature de l\'APK ne correspond pas à la version officielle.</string>
     <string name="settings_privacy_row_title">Politique de confidentialité</string>
     <string name="settings_privacy_row_body">Ce que SecureBox fait de vos données — et ce qu\'il ne fait jamais.</string>
     <string name="settings_section_about">À propos</string>

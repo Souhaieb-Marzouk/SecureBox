@@ -53,8 +53,8 @@ android {
         applicationId = "io.securebox"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "0.3.0"
+        versionCode = 5
+        versionName = "0.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -130,6 +130,7 @@ kotlin {
 
 dependencies {
     implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3.window.size)
 
     implementation(project(":core-domain"))
     implementation(project(":core-data"))

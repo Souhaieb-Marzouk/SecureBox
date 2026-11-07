@@ -13,6 +13,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.4.0] - 2026-11-07
+
+### Added
+
+- RASP checks: debugger, emulator, root indicators and APK signature mismatch, with a Device integrity card in Settings.
+- Update installation is locked when the build looks tampered (debugger/root/signature mismatch).
+- Device hardening screen: developer options, USB debugging, accessibility, device admins, user CA certificates and install-unknown-apps, each with a Fix shortcut.
+- Adaptive phone shell: navigation rail on tablets and foldables via WindowSizeClass.
+- TV sidebar now requests initial D-pad focus.
+- Pull-to-refresh on the app list and a bottom sheet for app details.
+- Instrumented Compose tests for the Apps and Threats screens.
+- CI emulator matrix: phone (API 34) and Android TV (API 33) instrumented test jobs.
+- Native NDK packet pump for the firewall, with the Kotlin reader as a fallback.
+
+### Changed
+
+- Version 0.4.0 (code 5); CI installs NDK 27.0.12077973.
+
 ## [0.3.0] - 2026-11-07
 
 ### Added

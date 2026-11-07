@@ -15,6 +15,8 @@ import io.securebox.core.data.network.AndroidPortRepository
 import io.securebox.core.data.network.AndroidTrafficRepository
 import io.securebox.core.data.network.FirewallRepositoryImpl
 import io.securebox.core.data.permission.AndroidPlatformPermissions
+import io.securebox.core.data.security.AndroidDeviceSettingsRepository
+import io.securebox.core.data.security.AndroidIntegrityRepository
 import io.securebox.core.data.security.AndroidSecurityRepository
 import io.securebox.core.data.settings.SettingsRepositoryImpl
 import io.securebox.core.data.settings.secureBoxDataStore
@@ -25,6 +27,8 @@ import io.securebox.core.domain.network.PortRepository
 import io.securebox.core.domain.network.TrafficRepository
 import io.securebox.core.domain.permission.PlatformPermissions
 import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.security.DeviceSettingsRepository
+import io.securebox.core.domain.security.IntegrityRepository
 import io.securebox.core.domain.security.PermissionAuditor
 import io.securebox.core.domain.security.RiskScorer
 import io.securebox.core.domain.security.SecurityRepository
@@ -82,4 +86,12 @@ abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindSecurityRepository(impl: AndroidSecurityRepository): SecurityRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindIntegrityRepository(impl: AndroidIntegrityRepository): IntegrityRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDeviceSettingsRepository(impl: AndroidDeviceSettingsRepository): DeviceSettingsRepository
 }

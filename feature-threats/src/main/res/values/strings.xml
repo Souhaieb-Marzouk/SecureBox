@@ -19,6 +19,9 @@
     <string name="threats_scheduled_body">Runs in the background and after boot when enabled. Never uploads anything.</string>
     <string name="threats_rules_version">Signature ruleset v%1$d</string>
     <string name="threats_rules_unavailable">Signature rules unavailable — permission and component checks still work.</string>
+    <string name="threats_hardening_title">Device hardening</string>
+    <string name="threats_hardening_body">Check developer options, USB debugging, accessibility, device admins and user certificates.</string>
+    <string name="threats_hardening_action">Check device settings</string>
 
     <string name="threats_level_safe">Safe</string>
     <string name="threats_level_low">Low</string>
@@ -26,4 +29,22 @@
     <string name="threats_level_high">High</string>
     <string name="threats_level_critical">Critical</string>
     <string name="threats_score_badge">%1$d · %2$s</string>
+
+    <string name="hardening_title">Device hardening</string>
+    <string name="hardening_subtitle">The system settings attackers abuse most often, with a shortcut to fix each one.</string>
+    <string name="hardening_checking">Checking system settings…</string>
+    <string name="hardening_clear">No dangerous setting is enabled.</string>
+    <string name="hardening_found">%1$d dangerous settings are enabled.</string>
+    <string name="hardening_active">Enabled</string>
+    <string name="hardening_active_count">%1$d active</string>
+    <string name="hardening_inactive">Off</string>
+    <string name="hardening_fix">Fix</string>
+    <string name="hardening_back">Back</string>
+    <string name="hardening_recheck">Check again</string>
+    <string name="hardening_developer_options">Developer options</string>
+    <string name="hardening_usb_debugging">USB debugging</string>
+    <string name="hardening_accessibility">Accessibility services</string>
+    <string name="hardening_device_admin">Device administrators</string>
+    <string name="hardening_user_ca">User-installed certificates</string>
+    <string name="hardening_install_unknown">Install unknown apps</string>
 </resources>

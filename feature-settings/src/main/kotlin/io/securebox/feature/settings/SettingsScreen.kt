@@ -21,6 +21,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ThemeMode
+import io.securebox.core.domain.security.IntegrityIssue
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -54,6 +56,7 @@ fun SettingsRoute(
         onDeviceMode = viewModel::setDeviceMode,
         onDetectAgain = viewModel::detectAgain,
         onThreatIntelEnabled = viewModel::setThreatIntelEnabled,
+        onRefreshIntegrity = viewModel::refreshIntegrity,
         onOpenPrivacy = onOpenPrivacy,
     )
 }
@@ -66,6 +69,7 @@ fun SettingsScreen(
     onDeviceMode: (DeviceMode) -> Unit,
     onDetectAgain: () -> Unit,
     onThreatIntelEnabled: (Boolean) -> Unit,
+    onRefreshIntegrity: () -> Unit,
     onOpenPrivacy: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -214,6 +218,41 @@ fun SettingsScreen(
             }
         }
 
+        item { SectionTitle(text = stringResource(R.string.settings_integrity_title)) }
+        item {
+            SecureCard {
+                val report = state.integrity
+                if (report == null) {
+                    Text(
+                        text = stringResource(R.string.settings_integrity_checking),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                } else {
+                    Text(
+                        text =
+                            if (report.compromised) {
+                                stringResource(R.string.settings_integrity_warning)
+                            } else {
+                                stringResource(R.string.settings_integrity_ok)
+                            },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = if (report.compromised) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                    )
+                    report.issues.forEach { issue ->
+                        Text(
+                            text = integrityIssueLabel(issue),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    TextButton(onClick = onRefreshIntegrity) {
+                        Text(stringResource(R.string.settings_integrity_recheck))
+                    }
+                }
+            }
+        }
+
         item { SectionTitle(text = stringResource(R.string.settings_section_updates)) }
         item { UpdateSection() }
 
@@ -327,3 +366,15 @@ private fun LinkRow(
         Text(text = label, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
     }
 }
+
+
+@Composable
+private fun integrityIssueLabel(issue: IntegrityIssue): String =
+    stringResource(
+        when (issue) {
+            IntegrityIssue.DEBUGGER_ATTACHED -> R.string.settings_integrity_debugger
+            IntegrityIssue.EMULATOR -> R.string.settings_integrity_emulator
+            IntegrityIssue.ROOTED -> R.string.settings_integrity_rooted
+            IntegrityIssue.SIGNATURE_MISMATCH -> R.string.settings_integrity_signature
+        },
+    )

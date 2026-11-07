@@ -8,6 +8,7 @@ plugins {
 android {
     namespace = "io.securebox.core.data"
     compileSdk = 34
+    ndkVersion = "27.2.12479018"
 
     defaultConfig {
         minSdk = 26
@@ -18,6 +19,16 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+            // Keep native staging inside the (possibly redirected) build directory so restricted
+            // environments do not need write access to the checkout root.
+            buildStagingDirectory = layout.buildDirectory.dir("cxx").get().asFile
+        }
     }
 
     compileOptions {
@@ -42,3 +53,4 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 }
+

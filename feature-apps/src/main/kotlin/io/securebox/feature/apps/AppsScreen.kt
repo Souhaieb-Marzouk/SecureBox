@@ -11,14 +11,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -46,6 +50,7 @@ import io.securebox.core.domain.security.InstallSource
 import io.securebox.core.domain.security.RiskLevel
 import io.securebox.core.ui.component.BannerSeverity
 import io.securebox.core.ui.component.ScreenHeading
+import io.securebox.core.ui.component.PullToRefreshBox
 import io.securebox.core.ui.component.StatusBanner
 import io.securebox.core.ui.icon.SecureBoxIcons
 import java.util.Date
@@ -80,11 +85,12 @@ fun AppsScreen(
             }
         }
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
+    PullToRefreshBox(refreshing = state.loading, onRefresh = onRefresh, modifier = modifier) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
         item {
             ScreenHeading(
                 title = stringResource(R.string.apps_title),
@@ -145,6 +151,7 @@ fun AppsScreen(
         }
         items(visible, key = { it.app.packageName }) { report ->
             AppRow(report = report, onClick = { onSelect(report) })
+        }
         }
     }
 
@@ -211,6 +218,7 @@ private fun RiskBadge(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AppDetailDialog(
     report: AppRiskReport,
@@ -221,57 +229,60 @@ private fun AppDetailDialog(
         DateFormat
             .getDateFormat(context)
             .format(Date(report.app.firstInstallTimeMillis))
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(report.app.label) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp)
+                    .padding(bottom = 32.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Text(text = report.app.label, style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = stringResource(R.string.apps_detail_meta, report.app.versionName, installed),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = stringResource(R.string.apps_detail_rating, report.score, riskLabel(report.level)),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = stringResource(R.string.apps_detail_findings),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            if (report.findings.isEmpty()) {
                 Text(
-                    text = stringResource(R.string.apps_detail_meta, report.app.versionName, installed),
-                    style = MaterialTheme.typography.bodySmall,
+                    text = stringResource(R.string.apps_detail_no_findings),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                Text(
-                    text = stringResource(R.string.apps_detail_rating, report.score, riskLabel(report.level)),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(
-                    text = stringResource(R.string.apps_detail_findings),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-                if (report.findings.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.apps_detail_no_findings),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                } else {
-                    report.findings.take(10).forEach { finding ->
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Box(
-                                modifier =
-                                    Modifier
-                                        .padding(top = 7.dp)
-                                        .size(6.dp)
-                                        .background(severityColor(finding.severity), CircleShape),
-                            )
-                            Text(
-                                text = findingLabel(finding),
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
+            } else {
+                report.findings.take(10).forEach { finding ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .padding(top = 7.dp)
+                                    .size(6.dp)
+                                    .background(severityColor(finding.severity), CircleShape),
+                        )
+                        Text(
+                            text = findingLabel(finding),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
                     }
                 }
-                Text(
-                    text = stringResource(R.string.apps_detail_permissions, report.app.permissions.size),
-                    style = MaterialTheme.typography.titleSmall,
-                )
             }
-        },
-        confirmButton = {
+            Text(
+                text = stringResource(R.string.apps_detail_permissions, report.app.permissions.size),
+                style = MaterialTheme.typography.titleSmall,
+            )
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.apps_detail_close)) }
-        },
-    )
+        }
+    }
 }
 
 @Composable

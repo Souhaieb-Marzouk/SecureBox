@@ -35,6 +35,7 @@
     <string name="update_error_missing_checksum">Cette publication n\'a pas d\'empreinte, SecureBox a donc refusé de l\'installer.</string>
     <string name="update_error_missing_checksum_why">Sans empreinte, l\'application ne peut pas prouver que le fichier est intact. Demandez au mainteneur de publier SHA256SUMS.</string>
     <string name="update_error_install">Android n\'a pas pu ouvrir l\'installateur.</string>
+    <string name="update_error_integrity">Cette version a été modifiée, les mises à jour sont donc verrouillées. Réinstallez SecureBox depuis une version officielle.</string>
 
     <string name="update_permission_title">Autoriser les installations</string>
     <string name="update_permission_body">Android a besoin de votre autorisation avant que SecureBox puisse ouvrir l\'installateur. SecureBox n\'installe jamais rien en silence.</string>
