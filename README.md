@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.5.1` — Threat Intelligence & Polish |
+| **Current release** | `v0.5.2` — Clarity & Live Traffic |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |

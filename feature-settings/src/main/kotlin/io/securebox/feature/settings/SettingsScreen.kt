@@ -229,15 +229,22 @@ fun SettingsScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 } else {
+                    val signatureMismatch = report.issues.contains(IntegrityIssue.SIGNATURE_MISMATCH)
+                    val advisory = report.issues.isNotEmpty() && !signatureMismatch
                     Text(
                         text =
-                            if (report.compromised) {
-                                stringResource(R.string.settings_integrity_warning)
-                            } else {
-                                stringResource(R.string.settings_integrity_ok)
+                            when {
+                                signatureMismatch -> stringResource(R.string.settings_integrity_warning)
+                                advisory -> stringResource(R.string.settings_integrity_advisory)
+                                else -> stringResource(R.string.settings_integrity_ok)
                             },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (report.compromised) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                        color =
+                            when {
+                                signatureMismatch -> MaterialTheme.colorScheme.error
+                                advisory -> MaterialTheme.colorScheme.tertiary
+                                else -> MaterialTheme.colorScheme.primary
+                            },
                     )
                     report.issues.forEach { issue ->
                         Text(
@@ -391,6 +398,7 @@ private fun integrityIssueLabel(issue: IntegrityIssue): String =
             IntegrityIssue.DEBUGGER_ATTACHED -> R.string.settings_integrity_debugger
             IntegrityIssue.EMULATOR -> R.string.settings_integrity_emulator
             IntegrityIssue.ROOTED -> R.string.settings_integrity_rooted
+            IntegrityIssue.TEST_KEYS -> R.string.settings_integrity_test_keys
             IntegrityIssue.SIGNATURE_MISMATCH -> R.string.settings_integrity_signature
         },
     )

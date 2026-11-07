@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.5.1</b></span>
+      <span>Baseline <b>v0.5.2</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-066",
+    "p": "P1",
+    "type": "issue",
+    "area": "Integrity / TV",
+    "milestone": "v0.5.2",
+    "status": "done",
+    "title": "TV box falsely reported a tampered build and displayed the wrong installed version",
+    "desc": "Rooted/test-key TV firmware was treated as a compromised build, locking updates and showing \"tampered or debugged\". v0.5.2 makes root/test-keys/emulator advisory, keeps only an APK signature mismatch as an update lock, reports test-keys separately, and reads the installed version from PackageManager with the build number shown in the update card.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-065",
+    "p": "P1",
+    "type": "issue",
+    "area": "Network",
+    "milestone": "v0.5.2",
+    "status": "done",
+    "title": "Live bandwidth showed only SecureBox",
+    "desc": "TrafficStats.getUidRxBytes/TxBytes return UNSUPPORTED for other apps on Android 8+, so Live contained only SecureBox. v0.5.2 reads NetworkStatsManager for every UID from boot (Wi-Fi, mobile and Ethernet), keeping the ViewModel delta as the live rate. Open ports and Upload anomalies now explain their purpose and ports gained a Rescan action.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-064",
+    "p": "P1",
+    "type": "issue",
+    "area": "Apps",
+    "milestone": "v0.5.2",
+    "status": "done",
+    "title": "Apps risk scores and permission counts were unexplained and not actionable",
+    "desc": "Users saw labels such as \"0 Critical\" and \"Permissions requested: 24\" with no explanation of the 0-100 scale or how to act. v0.5.2 adds a how-to-read card, legend, attention summary, two-line level/score badges, plain-language meaning per level, a sensitive-first permission list with human labels, and buttons opening app settings, uninstall, accessibility, overlay, usage and device-admin screens.",
+    "doneAt": "2026-11-07"
+  },
   {
     "id": "SB-063",
     "p": "P1",
@@ -830,6 +863,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.5.2: Apps tab now explains scores and provides system-settings actions; Live bandwidth lists every app via NetworkStatsManager (including Ethernet); Open ports/Upload anomalies explain themselves; rooted/test-key TV boxes are advisory instead of tampered; installed version/build read from PackageManager." },
   { d: "2026-11-07", t: "v0.5.1 audit release: fixed the IPv6 firewall bypass, feed byte stability and CI asset/signature gaps, FileProvider debug installs, feed size/validation, worker constraints, backup rules, plurals/icons and dashboard firewall scoring. Full gates pass; 44 unit tests." },
   { d: "2026-11-07", t: "v0.5.0: signed threat feed (Ed25519) with status screen and daily updates, signed release manifests, markdown links/code fences, update cache cleanup, x86_64 split, paid-tier placeholder, French review closed, 400 ms cold start. 11 P3 items closed; SB-041 (DNS enforcement), SB-046 (TalkBack/font pass) and SB-048 (TV + v1.0.0 publish) are explicitly blocked." },
   { d: "2026-11-07", t: "v0.4.1 confirmed on phone: N2 (VPN key + Protecting N apps), N3 (Wi-Fi and mobile data) and N5 (usage-access revoke/grant) pass, and SB-062 is verified (compact rail + Use phone layout). Remaining in SB-059: N6, re-sign check and the physical TV box." },
@@ -977,7 +1011,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.5.1";
+  el("footVersion").textContent = "v0.5.2";
 }
 
 function renderLog() {

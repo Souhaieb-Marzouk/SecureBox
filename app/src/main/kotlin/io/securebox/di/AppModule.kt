@@ -1,8 +1,11 @@
 package io.securebox.di
 
+import android.content.Context
+import androidx.core.content.pm.PackageInfoCompat
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.securebox.BuildConfig
 import io.securebox.core.data.security.PackageSignatureVerifier
@@ -25,7 +28,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppVersion(): AppVersion = AppVersion(versionName = BuildConfig.VERSION_NAME, versionCode = BuildConfig.VERSION_CODE)
+    fun provideAppVersion(
+        @ApplicationContext context: Context,
+    ): AppVersion =
+        runCatching {
+            val info = context.packageManager.getPackageInfo(context.packageName, 0)
+            AppVersion(
+                versionName = info.versionName ?: BuildConfig.VERSION_NAME,
+                versionCode = PackageInfoCompat.getLongVersionCode(info).toInt(),
+            )
+        }.getOrDefault(
+            AppVersion(versionName = BuildConfig.VERSION_NAME, versionCode = BuildConfig.VERSION_CODE),
+        )
 
     /**
      * Set at build time from the release keystore. When the build is unsigned (local debug work)

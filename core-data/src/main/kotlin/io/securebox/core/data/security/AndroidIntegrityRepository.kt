@@ -28,6 +28,7 @@ class AndroidIntegrityRepository
                     issues += IntegrityIssue.DEBUGGER_ATTACHED
                 }
                 if (isEmulator()) issues += IntegrityIssue.EMULATOR
+                if (Build.TAGS?.contains("test-keys") == true) issues += IntegrityIssue.TEST_KEYS
                 if (isRooted()) issues += IntegrityIssue.ROOTED
                 if (signatureVerifier.verify().reason == SignatureCheck.Reason.MISMATCH) {
                     issues += IntegrityIssue.SIGNATURE_MISMATCH
@@ -52,7 +53,6 @@ class AndroidIntegrityRepository
         }
 
         private fun isRooted(): Boolean {
-            if (Build.TAGS?.contains("test-keys") == true) return true
             val paths =
                 listOf(
                     "/system/app/Superuser.apk",

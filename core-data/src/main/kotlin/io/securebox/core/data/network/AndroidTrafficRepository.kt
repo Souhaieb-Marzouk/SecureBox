@@ -4,7 +4,7 @@ import android.app.usage.NetworkStats
 import android.app.usage.NetworkStatsManager
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.TrafficStats
+import android.os.SystemClock
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.securebox.core.domain.network.AppTraffic
 import io.securebox.core.domain.network.TrafficRange
@@ -30,15 +30,23 @@ class AndroidTrafficRepository
 
         override suspend fun liveTotals(): List<AppTraffic> =
             withContext(Dispatchers.IO) {
-                registry
-                    .byUid()
-                    .map { (uid, entry) ->
+                // TrafficStats.getUidRxBytes/TxBytes return UNSUPPORTED for other apps on Android 8+,
+                // which is why the live list used to contain only SecureBox. NetworkStatsManager
+                // provides per-UID counters for every app; use the since-boot window so the ViewModel
+                // can keep deriving a live rate from consecutive samples.
+                val now = System.currentTimeMillis()
+                val sinceBoot = now - SystemClock.elapsedRealtime()
+                val totals = aggregate(sinceBoot, now)
+                val apps = registry.byUid()
+                totals
+                    .mapNotNull { (uid, value) ->
+                        val entry = apps[uid] ?: return@mapNotNull null
                         AppTraffic(
                             packageName = entry.packageName,
                             label = entry.label,
                             uid = uid,
-                            rxBytes = TrafficStats.getUidRxBytes(uid).coerceAtLeast(0L),
-                            txBytes = TrafficStats.getUidTxBytes(uid).coerceAtLeast(0L),
+                            rxBytes = value.rx,
+                            txBytes = value.tx,
                             isSystem = entry.isSystem,
                         )
                     }.filter { it.totalBytes > 0 }
@@ -108,7 +116,7 @@ class AndroidTrafficRepository
         ): Map<Int, Totals> {
             val manager = statsManager ?: return emptyMap()
             val result = LinkedHashMap<Int, Totals>()
-            for (networkType in intArrayOf(ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE)) {
+            for (networkType in intArrayOf(ConnectivityManager.TYPE_WIFI, ConnectivityManager.TYPE_MOBILE, ConnectivityManager.TYPE_ETHERNET)) {
                 try {
                     manager.querySummary(networkType, null, startMillis, endMillis).use { stats ->
                         val bucket = NetworkStats.Bucket()

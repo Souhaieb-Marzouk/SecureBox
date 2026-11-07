@@ -9,6 +9,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.5.2] - 2026-11-07
+
+### Added
+
+- Apps tab explainer, risk legend, attention summary, two-line risk badges, plain-language rating meanings.
+- Sensitive-first permission list with human-readable labels and system-settings actions (app settings, uninstall, accessibility, overlay, usage, device admin).
+- Network explainers for Open ports and Upload anomalies; ports Rescan action.
+
+### Fixed
+
+- Live bandwidth showed only SecureBox because `TrafficStats` hides other UIDs; it now uses `NetworkStatsManager` for every app, including Ethernet.
+- Apps scores like “0 Critical” and permission counts are now explained and actionable.
+- Rooted/test-key TV boxes no longer show a tampered-build warning; only signature mismatch locks updates.
+- Installed version now comes from `PackageManager` and shows the build number.
+
 ## [0.5.1] - 2026-11-07
 
 ### Added

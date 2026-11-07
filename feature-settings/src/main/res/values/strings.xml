@@ -34,13 +34,15 @@
 
     <string name="settings_section_updates">Updates</string>
     <string name="settings_integrity_title">Device integrity</string>
-    <string name="settings_integrity_ok">No tampering detected.</string>
-    <string name="settings_integrity_warning">This build looks tampered or is being debugged. App updates are locked until it is reinstalled from an official release.</string>
+    <string name="settings_integrity_ok">No integrity issues detected.</string>
+    <string name="settings_integrity_warning">The APK signature does not match the official build. Updates are locked until you reinstall SecureBox from an official release.</string>
+    <string name="settings_integrity_advisory">This device shows integrity signals that are common on rooted or test-key TV boxes. Updates remain available, but treat the device as less trusted. Details below.</string>
     <string name="settings_integrity_checking">Checking…</string>
     <string name="settings_integrity_recheck">Check again</string>
-    <string name="settings_integrity_debugger">A debugger is attached.</string>
+    <string name="settings_integrity_debugger">A debugger is attached to this build.</string>
     <string name="settings_integrity_emulator">Running in an emulator.</string>
-    <string name="settings_integrity_rooted">The device appears to be rooted.</string>
+    <string name="settings_integrity_rooted">The device appears to be rooted. This is common on some TV boxes and is advisory.</string>
+    <string name="settings_integrity_test_keys">The system build uses test keys. This is common on TV boxes and AOSP firmware and is advisory.</string>
     <string name="settings_integrity_signature">The APK signature does not match the official build.</string>
     <string name="settings_paid_title">Threat Intelligence</string>
     <string name="settings_paid_body">A paid tier with signed feed updates is planned. This placeholder is local only — there is no purchase flow, account or backend.</string>

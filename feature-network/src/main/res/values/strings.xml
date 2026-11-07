@@ -23,18 +23,21 @@
     <string name="network_range_day">24 h</string>
     <string name="network_range_week">7 days</string>
     <string name="network_range_month">30 days</string>
-    <string name="network_live_hint">Refreshes every 2 seconds. The totals shown are since the last boot.</string>
+    <string name="network_live_hint">Refreshes every 2 seconds. Shows every app with traffic since the last boot; the rate is the activity since the previous refresh.</string>
     <string name="network_history_hint">Totals for the selected period, read from Android\'s own statistics.</string>
-    <string name="network_no_usage">No traffic recorded yet. Use the internet for a moment and come back.</string>
+    <string name="network_no_usage">No per-app traffic is visible yet. Make sure usage access is granted, use the internet for a moment, then refresh.</string>
 
     <string name="network_ports_title">Open ports</string>
+    <string name="network_ports_explainer">Apps listening on a port can accept connections from other devices on your network. “Internet-facing” ports are reachable beyond this device; “Local only” ports are limited to this device.</string>
     <string name="network_ports_unavailable">Android restricts /proc/net on this version, so listening ports cannot be listed. This is a platform limit, not a clean result.</string>
     <string name="network_ports_empty">No app is listening on a port.</string>
+    <string name="network_ports_rescan">Rescan</string>
     <string name="network_ports_exposed">Internet-facing</string>
     <string name="network_ports_local">Local only</string>
     <string name="network_port_label">%1$s %2$d</string>
 
     <string name="network_anomaly_title">Upload anomalies</string>
+    <string name="network_anomaly_explainer">Compares each app\'s upload in the last hour with its 7-day hourly average. It is a prompt to check the app, not proof of wrongdoing.</string>
     <string name="network_anomaly_never">No check has run yet. SecureBox checks hourly when the app is installed.</string>
     <string name="network_anomaly_last">Last check: %1$s</string>
     <string name="network_anomaly_none">No unusual uploads detected.</string>

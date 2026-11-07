@@ -23,18 +23,21 @@
     <string name="network_range_day">24 h</string>
     <string name="network_range_week">7 jours</string>
     <string name="network_range_month">30 jours</string>
-    <string name="network_live_hint">Actualisé toutes les 2 secondes. Les totaux affichés datent du dernier démarrage.</string>
+    <string name="network_live_hint">Actualisé toutes les 2 secondes. Affiche toutes les applications ayant du trafic depuis le dernier démarrage ; le débit correspond à l\'activité depuis le rafraîchissement précédent.</string>
     <string name="network_history_hint">Totaux pour la période sélectionnée, lus depuis les statistiques d\'Android.</string>
-    <string name="network_no_usage">Aucun trafic enregistré pour le moment. Utilisez internet un instant puis revenez.</string>
+    <string name="network_no_usage">Aucun trafic par application n\'est visible. Vérifiez que l\'accès à l\'usage est accordé, utilisez internet un instant, puis actualisez.</string>
 
     <string name="network_ports_title">Ports ouverts</string>
+    <string name="network_ports_explainer">Les applications qui écoutent sur un port peuvent accepter des connexions d\'autres appareils de votre réseau. Les ports « exposés à internet » sont joignables au-delà de cet appareil ; les ports « locaux » sont limités à cet appareil.</string>
     <string name="network_ports_unavailable">Android limite l\'accès à /proc/net sur cette version : les ports en écoute ne peuvent pas être listés. C\'est une limite de la plateforme, pas un résultat rassurant.</string>
     <string name="network_ports_empty">Aucune application n\'écoute sur un port.</string>
+    <string name="network_ports_rescan">Réanalyser</string>
     <string name="network_ports_exposed">Exposé à internet</string>
     <string name="network_ports_local">Local uniquement</string>
     <string name="network_port_label">%1$s %2$d</string>
 
     <string name="network_anomaly_title">Anomalies d\'envoi</string>
+    <string name="network_anomaly_explainer">Compare l\'envoi de chaque application sur la dernière heure avec sa moyenne horaire des 7 derniers jours. C\'est une invitation à vérifier l\'application, pas une preuve de malveillance.</string>
     <string name="network_anomaly_never">Aucune vérification n\'a encore eu lieu. SecureBox vérifie toutes les heures.</string>
     <string name="network_anomaly_last">Dernière vérification : %1$s</string>
     <string name="network_anomaly_none">Aucun envoi inhabituel détecté.</string>

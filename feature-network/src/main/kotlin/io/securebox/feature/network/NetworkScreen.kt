@@ -233,7 +233,7 @@ fun NetworkScreen(
             }
         }
 
-        item { PortsCard(state.ports) }
+        item { PortsCard(state.ports, onRefresh = onRefresh) }
         item { AnomalyCard(state.anomaly) }
     }
 }
@@ -446,9 +446,24 @@ private fun AppIcon(
 }
 
 @Composable
-private fun PortsCard(ports: PortScanResult) {
+private fun PortsCard(
+    ports: PortScanResult,
+    onRefresh: () -> Unit,
+) {
     SecureCard {
-        Text(text = stringResource(R.string.network_ports_title), style = MaterialTheme.typography.titleLarge)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(R.string.network_ports_title),
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.weight(1f),
+            )
+            TextButtonLabel(text = stringResource(R.string.network_ports_rescan), onClick = onRefresh)
+        }
+        Text(
+            text = stringResource(R.string.network_ports_explainer),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         when {
             !ports.available -> {
                 Text(
@@ -504,6 +519,11 @@ private fun PortRow(port: ListeningPort) {
 private fun AnomalyCard(snapshot: AnomalySnapshot) {
     SecureCard {
         Text(text = stringResource(R.string.network_anomaly_title), style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = stringResource(R.string.network_anomaly_explainer),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
         val lastChecked = snapshot.lastCheckedAtMillis
         Text(
             text =

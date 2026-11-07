@@ -1,5 +1,9 @@
 package io.securebox.feature.apps
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.text.format.DateFormat
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -23,8 +27,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -50,6 +56,7 @@ import io.securebox.core.domain.security.InstallSource
 import io.securebox.core.domain.security.RiskLevel
 import io.securebox.core.ui.component.BannerSeverity
 import io.securebox.core.ui.component.ScreenHeading
+import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.component.PullToRefreshBox
 import io.securebox.core.ui.component.StatusBanner
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -96,6 +103,28 @@ fun AppsScreen(
                 title = stringResource(R.string.apps_title),
                 subtitle = stringResource(R.string.apps_subtitle),
             )
+        }
+        item {
+            SecureCard {
+                Text(text = stringResource(R.string.apps_how_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(R.string.apps_how_body),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.apps_legend),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (state.reports.isNotEmpty()) {
+                    val attention = state.reports.count { it.level == RiskLevel.HIGH || it.level == RiskLevel.CRITICAL }
+                    Text(
+                        text = stringResource(R.string.apps_summary, state.reports.size, attention),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+                }
+            }
         }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -209,12 +238,21 @@ private fun RiskBadge(
             RiskLevel.HIGH, RiskLevel.CRITICAL -> MaterialTheme.colorScheme.error
         }
     Surface(shape = RoundedCornerShape(50), color = color.copy(alpha = 0.14f)) {
-        Text(
-            text = stringResource(R.string.apps_score_badge, score, riskLabel(level)),
-            style = MaterialTheme.typography.labelLarge,
-            color = color,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+        ) {
+            Text(
+                text = riskLabel(level),
+                style = MaterialTheme.typography.labelLarge,
+                color = color,
+            )
+            Text(
+                text = stringResource(R.string.apps_score_badge, score),
+                style = MaterialTheme.typography.labelSmall,
+                color = color.copy(alpha = 0.8f),
+            )
+        }
     }
 }
 
@@ -250,6 +288,15 @@ private fun AppDetailDialog(
                 style = MaterialTheme.typography.titleMedium,
             )
             Text(
+                text = stringResource(R.string.apps_detail_what),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Text(
+                text = riskMeaning(report.level),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
                 text = stringResource(R.string.apps_detail_findings),
                 style = MaterialTheme.typography.titleSmall,
             )
@@ -276,9 +323,102 @@ private fun AppDetailDialog(
                     }
                 }
             }
+
             Text(
-                text = stringResource(R.string.apps_detail_permissions, report.app.permissions.size),
+                text = stringResource(R.string.apps_detail_permissions_title, report.app.permissions.size),
                 style = MaterialTheme.typography.titleSmall,
+            )
+            val sortedPermissions = report.app.permissions.sortedByDescending { permissionWeight(it) }
+            if (sortedPermissions.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.apps_detail_no_permissions),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else {
+                sortedPermissions.take(10).forEach { permission ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .padding(top = 7.dp)
+                                    .size(5.dp)
+                                    .background(MaterialTheme.colorScheme.primary, CircleShape),
+                        )
+                        Text(
+                            text = permissionLabel(permission),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+                }
+                if (sortedPermissions.size > 10) {
+                    Text(
+                        text = stringResource(R.string.apps_permissions_more, sortedPermissions.size - 10),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Text(
+                text = stringResource(R.string.apps_detail_permissions_note),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            Text(
+                text = stringResource(R.string.apps_detail_actions),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Button(
+                onClick = { openAppSettings(context, report.app.packageName) },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(stringResource(R.string.apps_action_open_settings))
+            }
+            if (!report.app.isSystem && report.app.packageName != context.packageName) {
+                OutlinedButton(
+                    onClick = { uninstallApp(context, report.app.packageName) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.apps_action_uninstall))
+                }
+            }
+            val codes = report.findings.map { it.code }.toSet()
+            if (FindingCode.ACCESSIBILITY in codes ||
+                FindingCode.COMBO_SMS_ACCESSIBILITY in codes ||
+                FindingCode.COMBO_OVERLAY_ACCESSIBILITY in codes
+            ) {
+                TextButton(onClick = { openSystemSettings(context, Settings.ACTION_ACCESSIBILITY_SETTINGS) }) {
+                    Text(stringResource(R.string.apps_action_accessibility))
+                }
+            }
+            if (FindingCode.OVERLAY in codes || FindingCode.COMBO_OVERLAY_ACCESSIBILITY in codes) {
+                TextButton(
+                    onClick = {
+                        openSystemSettings(
+                            context,
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:${report.app.packageName}"),
+                        )
+                    },
+                ) {
+                    Text(stringResource(R.string.apps_action_overlay))
+                }
+            }
+            if (FindingCode.USAGE_ACCESS in codes) {
+                TextButton(onClick = { openSystemSettings(context, Settings.ACTION_USAGE_ACCESS_SETTINGS) }) {
+                    Text(stringResource(R.string.apps_action_usage))
+                }
+            }
+            if (FindingCode.DEVICE_ADMIN in codes || FindingCode.COMBO_SMS_ADMIN in codes) {
+                TextButton(onClick = { openSystemSettings(context, Settings.ACTION_SECURITY_SETTINGS) }) {
+                    Text(stringResource(R.string.apps_action_admin))
+                }
+            }
+            Text(
+                text = stringResource(R.string.apps_action_note),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.apps_detail_close)) }
         }
@@ -351,6 +491,89 @@ private fun severityColor(level: RiskLevel) =
         RiskLevel.MEDIUM -> MaterialTheme.colorScheme.tertiary
         RiskLevel.HIGH, RiskLevel.CRITICAL -> MaterialTheme.colorScheme.error
     }
+
+@Composable
+private fun riskMeaning(level: RiskLevel): String =
+    stringResource(
+        when (level) {
+            RiskLevel.SAFE -> R.string.apps_detail_mean_safe
+            RiskLevel.LOW -> R.string.apps_detail_mean_low
+            RiskLevel.MEDIUM -> R.string.apps_detail_mean_medium
+            RiskLevel.HIGH -> R.string.apps_detail_mean_high
+            RiskLevel.CRITICAL -> R.string.apps_detail_mean_critical
+        },
+    )
+
+private fun permissionWeight(permission: String): Int {
+    val simple = permission.substringAfterLast('.')
+    return when {
+        simple.contains("SMS") || simple.contains("CALL_LOG") -> 100
+        simple.contains("ACCESSIBILITY") || simple.contains("DEVICE_ADMIN") -> 95
+        simple.contains("SYSTEM_ALERT_WINDOW") -> 90
+        simple.contains("CONTACTS") || simple.contains("CAMERA") || simple.contains("RECORD_AUDIO") -> 80
+        simple.contains("LOCATION") -> 70
+        simple.contains("INSTALL_PACKAGES") -> 65
+        simple.contains("USAGE") -> 60
+        else -> 0
+    }
+}
+
+@Composable
+private fun permissionLabel(permission: String): String {
+    val simple = permission.substringAfterLast('.')
+    return when (simple) {
+        "CAMERA" -> stringResource(R.string.perm_camera)
+        "RECORD_AUDIO" -> stringResource(R.string.perm_microphone)
+        "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACCESS_BACKGROUND_LOCATION" -> stringResource(R.string.perm_location)
+        "READ_CONTACTS", "WRITE_CONTACTS" -> stringResource(R.string.perm_contacts)
+        "READ_SMS", "SEND_SMS", "RECEIVE_SMS", "READ_MMS", "SEND_MMS" -> stringResource(R.string.perm_sms)
+        "READ_CALL_LOG", "WRITE_CALL_LOG" -> stringResource(R.string.perm_call_log)
+        "READ_PHONE_STATE" -> stringResource(R.string.perm_phone)
+        "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "READ_MEDIA_IMAGES", "READ_MEDIA_VIDEO", "READ_MEDIA_AUDIO",
+        "MANAGE_EXTERNAL_STORAGE" -> stringResource(R.string.perm_storage)
+
+        "POST_NOTIFICATIONS" -> stringResource(R.string.perm_notifications)
+        "PACKAGE_USAGE_STATS" -> stringResource(R.string.perm_usage)
+        "SYSTEM_ALERT_WINDOW" -> stringResource(R.string.perm_overlay)
+        "BIND_ACCESSIBILITY_SERVICE" -> stringResource(R.string.perm_accessibility)
+        "BIND_DEVICE_ADMIN" -> stringResource(R.string.perm_admin)
+        "REQUEST_INSTALL_PACKAGES" -> stringResource(R.string.perm_install)
+        "QUERY_ALL_PACKAGES" -> stringResource(R.string.perm_query_all)
+        "INTERNET" -> stringResource(R.string.perm_internet)
+        "ACCESS_NETWORK_STATE" -> stringResource(R.string.perm_network)
+        "RECEIVE_BOOT_COMPLETED" -> stringResource(R.string.perm_boot)
+        "FOREGROUND_SERVICE" -> stringResource(R.string.perm_foreground)
+        "WAKE_LOCK" -> stringResource(R.string.perm_wake_lock)
+        else -> simple.replace('_', ' ').lowercase().replaceFirstChar { it.uppercase() }
+    }
+}
+
+private fun openAppSettings(
+    context: Context,
+    packageName: String,
+) {
+    openSystemSettings(context, Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName"))
+}
+
+private fun uninstallApp(
+    context: Context,
+    packageName: String,
+) {
+    openSystemSettings(context, Intent.ACTION_DELETE, Uri.parse("package:$packageName"))
+}
+
+private fun openSystemSettings(
+    context: Context,
+    action: String,
+    data: Uri? = null,
+) {
+    val intent =
+        Intent(action).apply {
+            if (data != null) setData(data)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+    runCatching { context.startActivity(intent) }
+}
 
 @Composable
 private fun findingLabel(finding: Finding): String {

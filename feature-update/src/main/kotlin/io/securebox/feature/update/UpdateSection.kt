@@ -87,7 +87,7 @@ fun UpdateSection(
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(text = stringResource(R.string.update_section_title), style = MaterialTheme.typography.titleMedium)
                 Text(
-                    text = stringResource(R.string.update_installed_version, state.installedVersion),
+                    text = stringResource(R.string.update_installed_version, state.installedVersion, state.installedVersionCode),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

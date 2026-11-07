@@ -66,6 +66,7 @@ sealed interface UpdatePhase {
 
 data class UpdateUiState(
     val installedVersion: String,
+    val installedVersionCode: Int = 0,
     val phase: UpdatePhase = UpdatePhase.Idle,
     val lastCheckedAtMillis: Long? = null,
     val installPermissionGranted: Boolean = true,
@@ -81,7 +82,12 @@ class UpdateViewModel
         private val appVersion: AppVersion,
         private val integrityRepository: IntegrityRepository,
     ) : ViewModel() {
-        private val _state = MutableStateFlow(UpdateUiState(installedVersion = appVersion.versionName))
+        private val _state = MutableStateFlow(
+            UpdateUiState(
+                installedVersion = appVersion.versionName,
+                installedVersionCode = appVersion.versionCode,
+            ),
+        )
         val state: StateFlow<UpdateUiState> = _state.asStateFlow()
 
         init {
