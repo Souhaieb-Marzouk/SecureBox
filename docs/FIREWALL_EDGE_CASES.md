@@ -62,6 +62,7 @@ service stops instead of creating a tunnel that would capture all traffic.
 
 ## What the firewall does not do
 
-- It does not filter by domain, port or protocol (that arrives with the DNS blocklist in v0.5.0).
+- It does not filter by domain, port or protocol. Domain blocking needs a forwarding-DNS design and
+  is not implemented; the threat feed's `domains` list is stored but not enforced.
 - It does not proxy or inspect payloads; it drops packets.
 - It does not block apps that use a different user profile or a separate VPN.

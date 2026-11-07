@@ -10,6 +10,7 @@ import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.SecurityInputs
 import io.securebox.core.domain.model.SecurityScore
 import io.securebox.core.domain.model.UpdateDecision
+import io.securebox.core.domain.network.FirewallRepository
 import io.securebox.core.domain.repository.SettingsRepository
 import io.securebox.core.domain.repository.UpdateRepository
 import io.securebox.core.domain.update.UpdateEvaluator
@@ -35,6 +36,7 @@ class DashboardViewModel
         private val calculateSecurityScore: CalculateSecurityScoreUseCase,
         private val updateRepository: UpdateRepository,
         private val appVersion: AppVersion,
+        private val firewallRepository: FirewallRepository,
     ) : ViewModel() {
         private val updateAvailable = MutableStateFlow(false)
 
@@ -52,14 +54,19 @@ class DashboardViewModel
         }
 
         val state: StateFlow<DashboardUiState> =
-            combine(settingsRepository.settings, updateAvailable) { settings, hasUpdate ->
+            combine(
+                settingsRepository.settings,
+                firewallRepository.state,
+                updateAvailable,
+            ) { settings, firewall, hasUpdate ->
                 DashboardUiState(
                     score =
                         calculateSecurityScore(
                             SecurityInputs(
                                 usageAccessGranted = settings.usageAccessGranted,
                                 notificationsGranted = settings.notificationsGranted,
-                                firewallPrepared = settings.vpnPrepared,
+                                // Consent alone is not protection: the tunnel must actually be running.
+                                firewallPrepared = firewall.enabled && firewall.running,
                                 appIsUpToDate = !hasUpdate,
                             ),
                         ),

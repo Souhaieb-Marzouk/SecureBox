@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="scan_notification_title">
+        <item quantity="one">Scan found %1$d risky app</item>
+        <item quantity="other">Scan found %1$d risky apps</item>
+    </plurals>
+    <plurals name="scan_notification_body">
+        <item quantity="one">%1$d app is high risk with %2$d findings. Open SecureBox to review it. Nothing left your device.</item>
+        <item quantity="other">%1$d apps are high risk with %2$d findings. Open SecureBox to review them. Nothing left your device.</item>
+    </plurals>
+</resources>

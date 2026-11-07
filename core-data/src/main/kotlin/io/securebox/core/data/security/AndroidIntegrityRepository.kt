@@ -1,7 +1,6 @@
 package io.securebox.core.data.security
 
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Debug
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -72,16 +71,4 @@ class AndroidIntegrityRepository
             // Magisk leaves a hidden mount marker in most versions.
             return File("/sbin/magisk").exists() || File("/system/xbin/magisk").exists()
         }
-
-        private fun signatureConfigured(): Boolean =
-            context.packageManager
-                .getPackageInfo(
-                    context.packageName,
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        PackageManager.GET_SIGNING_CERTIFICATES
-                    } else {
-                        @Suppress("DEPRECATION")
-                        PackageManager.GET_SIGNATURES
-                    },
-                ).packageName == context.packageName
     }

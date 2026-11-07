@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="scan_notification_title">
+        <item quantity="one">L\'analyse a trouvé %1$d application à risque</item>
+        <item quantity="many">L\'analyse a trouvé %1$d applications à risque</item>
+        <item quantity="other">L\'analyse a trouvé %1$d applications à risque</item>
+    </plurals>
+    <plurals name="scan_notification_body">
+        <item quantity="one">%1$d application est à risque élevé avec %2$d constats. Ouvrez SecureBox pour l\'examiner. Rien n\'a quitté votre appareil.</item>
+        <item quantity="many">%1$d applications sont à risque élevé avec %2$d constats. Ouvrez SecureBox pour les examiner. Rien n\'a quitté votre appareil.</item>
+        <item quantity="other">%1$d applications sont à risque élevé avec %2$d constats. Ouvrez SecureBox pour les examiner. Rien n\'a quitté votre appareil.</item>
+    </plurals>
+</resources>

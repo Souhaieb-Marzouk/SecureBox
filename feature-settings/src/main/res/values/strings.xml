@@ -25,7 +25,7 @@
     <string name="settings_section_protection">Protection</string>
     <string name="settings_firewall_title">Local firewall</string>
     <string name="settings_firewall_body">Blocks an app\'s internet access on this device.</string>
-    <string name="settings_firewall_status">Coming soon</string>
+    <string name="settings_firewall_status">Configure in Network</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
     <string name="settings_threat_intel_body">A signed feed can add detection rules, trackers and domains without an app update. Updates are optional and verified on-device.</string>
     <string name="settings_threat_intel_toggle">Enable Threat Intelligence</string>

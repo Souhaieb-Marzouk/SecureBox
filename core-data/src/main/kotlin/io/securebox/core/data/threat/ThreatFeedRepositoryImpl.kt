@@ -83,6 +83,11 @@ class ThreatFeedRepositoryImpl
                     runCatching { parse(payload.toString(Charsets.UTF_8)) }.getOrElse {
                         return@withContext FeedUpdateResult.Failed(context.getString(io.securebox.core.data.R.string.feed_error_parse))
                     }
+                if (feed.version <= 0 ||
+                    (feed.rules.isEmpty() && feed.trackerPrefixes.isEmpty() && feed.domains.isEmpty())
+                ) {
+                    return@withContext FeedUpdateResult.Failed(context.getString(io.securebox.core.data.R.string.feed_error_parse))
+                }
                 val currentVersion = prefs[Keys.FEED_JSON]?.let { runCatching { parse(it).version }.getOrNull() }
                 if (currentVersion != null && feed.version <= currentVersion) {
                     dataStore.edit { it[Keys.CHECKED_AT] = System.currentTimeMillis() }
@@ -95,7 +100,7 @@ class ThreatFeedRepositoryImpl
                     it[Keys.INSTALLED_AT] = System.currentTimeMillis()
                     it[Keys.CHECKED_AT] = System.currentTimeMillis()
                 }
-                val status = status() ?: return@withContext FeedUpdateResult.Failed("stored feed unreadable")
+                val status = status() ?: return@withContext FeedUpdateResult.Failed(context.getString(io.securebox.core.data.R.string.feed_error_parse))
                 FeedUpdateResult.Updated(status)
             }
 
@@ -104,7 +109,19 @@ class ThreatFeedRepositoryImpl
                 val request = Request.Builder().url(url).header("User-Agent", "SecureBox-Android").build()
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) return null
-                    response.body?.bytes()
+                    val body = response.body ?: return null
+                    if (body.contentLength() > MAX_FEED_BYTES) return null
+                    val output = java.io.ByteArrayOutputStream()
+                    val buffer = ByteArray(16 * 1024)
+                    body.byteStream().use { input ->
+                        while (true) {
+                            val read = input.read(buffer)
+                            if (read <= 0) break
+                            output.write(buffer, 0, read)
+                            if (output.size().toLong() > MAX_FEED_BYTES) return null
+                        }
+                    }
+                    output.toByteArray()
                 }
             }.getOrNull()
 
@@ -141,6 +158,7 @@ class ThreatFeedRepositoryImpl
 
         private companion object {
             const val CHECK_INTERVAL_MILLIS: Long = 24L * 60 * 60 * 1000
+            const val MAX_FEED_BYTES: Long = 2L * 1024 * 1024
         }
     }
 

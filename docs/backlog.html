@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.5.0</b></span>
+      <span>Baseline <b>v0.5.1</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,17 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-063",
+    "p": "P1",
+    "type": "issue",
+    "area": "Security / Build",
+    "milestone": "v0.5.1",
+    "status": "done",
+    "title": "Deep audit: firewall IPv6 bypass, signed-feed byte stability and build integrity",
+    "desc": "Audit of all modules and the release pipeline found and fixed: the firewall only captured IPv4 (blocked apps could bypass over IPv6); the signed feed could break after a Windows checkout because of CRLF conversion (fixed with .gitattributes); the release workflow omitted x86_64, did not verify the feed and could publish unsigned sums; the FileProvider authority was hardcoded and broke debug installs; feed downloads had no size cap/version validation; unknown/empty feeds were accepted; daily workers lacked network constraints; backup rules were implicit; plural/notification and icon resources were incomplete; the dashboard counted firewall consent instead of a running tunnel; BUILDING/SECURITY/TESTING docs were stale. All fixes are in v0.5.1 and the full gates pass.",
+    "doneAt": "2026-11-07"
+  },
   {
     "id": "SB-062",
     "p": "P0",
@@ -480,7 +491,7 @@ const ITEMS = [
     "milestone": "v0.5.0",
     "status": "done",
     "title": "Signed threat feed client with Ed25519 verification",
-    "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally. Shipped in v0.5.0: Ed25519-verified feed client with atomic DataStore storage and 3 tests.",
+    "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally. Shipped in v0.5.1: Ed25519-verified feed client with atomic DataStore storage and 3 tests.",
     "doneAt": "2026-11-07"
   },
   {
@@ -502,7 +513,7 @@ const ITEMS = [
     "milestone": "v0.5.0",
     "status": "done",
     "title": "Threat Intelligence status card",
-    "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier. Shipped in v0.5.0: Threat Intelligence status screen with version, counts, dates, signature state, Update now and the paid placeholder.",
+    "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier. Shipped in v0.5.1: Threat Intelligence status screen with version, counts, dates, signature state, Update now and the paid placeholder.",
     "doneAt": "2026-11-07"
   },
   {
@@ -513,7 +524,7 @@ const ITEMS = [
     "milestone": "v0.5.0",
     "status": "done",
     "title": "24-hour feed auto-update",
-    "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline. Shipped in v0.5.0: daily ThreatFeedWorker honouring both the module toggle and auto-update preference.",
+    "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline. Shipped in v0.5.1: daily ThreatFeedWorker honouring both the module toggle and auto-update preference.",
     "doneAt": "2026-11-07"
   },
   {
@@ -524,7 +535,7 @@ const ITEMS = [
     "milestone": "v0.5.0",
     "status": "done",
     "title": "Starter feed and signing-key workflow",
-    "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app. Shipped in v0.5.0: starter threat-intel/latest.json, Ed25519 signing tool and the threat-feed CI workflow.",
+    "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app. Shipped in v0.5.1: starter threat-intel/latest.json, Ed25519 signing tool and the threat-feed CI workflow.",
     "doneAt": "2026-11-07"
   },
   {
@@ -535,7 +546,7 @@ const ITEMS = [
     "milestone": "v1.0.0",
     "status": "done",
     "title": "Full French review",
-    "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'. Shipped in v0.5.0: TRANSLATION_TODO closed; VPN, GitHub quota and completion-title wording reviewed, stale roadmap copy removed.",
+    "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'. Shipped in v0.5.1: TRANSLATION_TODO closed; VPN, GitHub quota and completion-title wording reviewed, stale roadmap copy removed.",
     "doneAt": "2026-11-07"
   },
   {
@@ -557,7 +568,7 @@ const ITEMS = [
     "milestone": "v1.0.0",
     "status": "done",
     "title": "Performance tuning",
-    "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions. Shipped in v0.5.0: cold start 400-414 ms over three runs on OPPO CPH2173, universal APK 2.29 MB; budgets documented in docs/PERFORMANCE.md.",
+    "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions. Shipped in v0.5.1: cold start 400-414 ms over three runs on OPPO CPH2173, universal APK 2.29 MB; budgets documented in docs/PERFORMANCE.md.",
     "doneAt": "2026-11-07"
   },
   {
@@ -579,7 +590,7 @@ const ITEMS = [
     "milestone": "v0.3.0",
     "status": "done",
     "title": "Markdown renderer improvements",
-    "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text. Shipped in v0.5.0: clickable http(s) links and fenced code blocks in release notes.",
+    "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text. Shipped in v0.5.1: clickable http(s) links and fenced code blocks in release notes.",
     "doneAt": "2026-11-07"
   },
   {
@@ -590,7 +601,7 @@ const ITEMS = [
     "milestone": "v0.2.0",
     "status": "done",
     "title": "Clean up cached update packages",
-    "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions. Shipped in v0.5.0: cacheDir/updates is cleaned before each download, keeping at most the verified file.",
+    "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions. Shipped in v0.5.1: cacheDir/updates is cleaned before each download, keeping at most the verified file.",
     "doneAt": "2026-11-07"
   },
   {
@@ -601,7 +612,7 @@ const ITEMS = [
     "milestone": "v1.0.0",
     "status": "done",
     "title": "Sign SHA256SUMS with a detached Ed25519 signature",
-    "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub. Shipped in v0.5.0: SHA256SUMS.sig (Ed25519), tools/sign-release.mjs and tools/verify-release.mjs, docs/RELEASE_SIGNING.md.",
+    "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub. Shipped in v0.5.1: SHA256SUMS.sig (Ed25519), tools/sign-release.mjs and tools/verify-release.mjs, docs/RELEASE_SIGNING.md.",
     "doneAt": "2026-11-07"
   },
   {
@@ -612,7 +623,7 @@ const ITEMS = [
     "milestone": "v0.2.0",
     "status": "done",
     "title": "x86_64 ABI split for emulators",
-    "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK. Shipped in v0.5.0: securebox-x86_64-release.apk produced and preferred by the updater on x86_64.",
+    "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK. Shipped in v0.5.1: securebox-x86_64-release.apk produced and preferred by the updater on x86_64.",
     "doneAt": "2026-11-07"
   },
   {
@@ -623,7 +634,7 @@ const ITEMS = [
     "milestone": "v0.5.0",
     "status": "done",
     "title": "Paid-tier 'Upgrade available' placeholder",
-    "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now. Shipped in v0.5.0: FeatureFlags.PAID_TIER_AVAILABLE guards a local-only Settings card.",
+    "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now. Shipped in v0.5.1: FeatureFlags.PAID_TIER_AVAILABLE guards a local-only Settings card.",
     "doneAt": "2026-11-07"
   },
   {
@@ -819,6 +830,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.5.1 audit release: fixed the IPv6 firewall bypass, feed byte stability and CI asset/signature gaps, FileProvider debug installs, feed size/validation, worker constraints, backup rules, plurals/icons and dashboard firewall scoring. Full gates pass; 44 unit tests." },
   { d: "2026-11-07", t: "v0.5.0: signed threat feed (Ed25519) with status screen and daily updates, signed release manifests, markdown links/code fences, update cache cleanup, x86_64 split, paid-tier placeholder, French review closed, 400 ms cold start. 11 P3 items closed; SB-041 (DNS enforcement), SB-046 (TalkBack/font pass) and SB-048 (TV + v1.0.0 publish) are explicitly blocked." },
   { d: "2026-11-07", t: "v0.4.1 confirmed on phone: N2 (VPN key + Protecting N apps), N3 (Wi-Fi and mobile data) and N5 (usage-access revoke/grant) pass, and SB-062 is verified (compact rail + Use phone layout). Remaining in SB-059: N6, re-sign check and the physical TV box." },
   { d: "2026-11-07", t: "v0.4.1 hotfix: SB-062 closed. Switching to TV mode on a phone now collapses the sidebar to an icon rail and shows a Use phone layout escape. Do not publish 0.4.0. Phone manual checklist recorded; N6, re-sign check and the physical TV box remain in SB-059." },
@@ -965,7 +977,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.5.0";
+  el("footVersion").textContent = "v0.5.1";
 }
 
 function renderLog() {

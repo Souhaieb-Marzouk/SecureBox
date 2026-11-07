@@ -62,7 +62,15 @@ fun TvShell(
     TvScaffold(
         appName = stringResource(R.string.app_name),
         entries = entries,
-        selectedRoute = if (currentRoute == Routes.PRIVACY) Routes.SETTINGS else currentRoute,
+        selectedRoute =
+            if (currentRoute == Routes.PRIVACY ||
+                currentRoute == Routes.HARDENING ||
+                currentRoute == Routes.THREAT_INTEL
+            ) {
+                Routes.SETTINGS
+            } else {
+                currentRoute
+            },
         onNavigate = { route -> navController.navigateToTopLevel(route) },
     ) {
         Column(modifier = Modifier.fillMaxSize()) {

@@ -8,7 +8,6 @@ import androidx.core.content.FileProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.securebox.core.domain.install.ApkInstaller
 import io.securebox.core.domain.install.InstallOutcome
-import io.securebox.core.network.BuildConfig
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,7 +42,9 @@ class ApkInstallerImpl
                 val uri =
                     FileProvider.getUriForFile(
                         context,
-                        BuildConfig.FILE_PROVIDER_AUTHORITY,
+                        // Must match the manifest's ${applicationId}.fileprovider, including any
+                        // debug applicationIdSuffix.
+                        "${context.packageName}.fileprovider",
                         file,
                     )
                 val intent =

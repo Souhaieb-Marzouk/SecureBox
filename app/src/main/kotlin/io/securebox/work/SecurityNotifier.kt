@@ -16,11 +16,22 @@ object SecurityNotifier {
         highRiskApps: Int,
         findings: Int,
     ) {
-        val body = context.getString(R.string.scan_notification_body, highRiskApps, findings)
+        val body =
+            context.resources.getQuantityString(
+                R.plurals.scan_notification_body,
+                highRiskApps,
+                highRiskApps,
+                findings,
+            )
         post(
             context = context,
             id = NOTIFICATION_SCAN,
-            title = context.getString(R.string.scan_notification_title, highRiskApps),
+            title =
+                context.resources.getQuantityString(
+                    R.plurals.scan_notification_title,
+                    highRiskApps,
+                    highRiskApps,
+                ),
             body = body,
         )
     }

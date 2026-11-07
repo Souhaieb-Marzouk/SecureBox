@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.5.0` — Threat Intelligence & Polish |
+| **Current release** | `v0.5.1` — Threat Intelligence & Polish |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
@@ -42,7 +42,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Self-update system**: GitHub Releases API, 12-hour cache, semantic version comparison, SHA-256 verification against the published `SHA256SUMS`, FileProvider hand-off to the system installer, and graceful handling of GitHub rate limits.
 - **Security score**: a transparent 0–100 score with weighted, documented factors, now aware of available updates.
 - **APK self-integrity check**: the app verifies its own signing certificate at startup.
-- **Settings**: language, device mode (with re-detection), theme, Threat Intelligence (explicitly not active before v0.5.0), update check, privacy policy, about.
+- **Settings**: language, device mode (with re-detection), theme, Threat Intelligence (signed feed with manual and daily updates), update check, privacy policy, about.
 - **Docs & policies**: `PRIVACY.md`, `SECURITY.md`, `BUILDING.md`, `TESTING.md`.
 - **CI/CD**: GitHub Actions builds, tests, lints, signs and hashes APKs on tag push and uploads them as workflow artifacts; the GitHub Release itself is published manually.
 
@@ -54,7 +54,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 | 2 | v0.2.0 | Per-app bandwidth, anomaly detection, local VPN firewall, open-port monitor |
 | 3 | v0.3.0 | Malware scanner, permission & tracker auditor, sideload checker, component detector |
 | 4 | v0.4.0 | RASP, dangerous-settings checker, hardening wizards, scheduled scans |
-| 5 | v0.5.0 | Threat Intelligence add-on: signed feed, Ed25519 verification, free trial |
+| 5 | **v0.5.1** | Threat Intelligence add-on: signed feed, Ed25519 verification, free trial |
 | 6 | v1.0.0 | Localization review, accessibility/TalkBack pass, performance, real-device QA |
 
 The live, prioritized work list is kept in **[docs/backlog.html](docs/backlog.html)** (P0–P3, features and open issues). It is updated in the same commit as every change.
@@ -109,7 +109,7 @@ feature-network/      Network: bandwidth, anomaly alerts, VPN firewall, port mon
 feature-apps/         App risk auditing, permissions, trackers and sideload detection
 feature-threats/      On-device scanning, results and scheduled scans
 feature-settings/     Settings and privacy policy
-feature-threatintel/  Isolated, feature-flagged add-on (v0.5.0)
+feature-threatintel/  Signed threat feed, status and daily updates
 feature-update/       Update UI, ViewModel and Markdown release notes
 ```
 

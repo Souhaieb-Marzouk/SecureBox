@@ -46,6 +46,9 @@ jobs:
       - name: Reject hardcoded user-facing strings
         run: ./gradlew verifyNoHardcodedStrings --stacktrace
 
+      - name: Verify the signed threat feed
+        run: node tools/verify-release.mjs --file threat-intel/latest.json --sig threat-intel/latest.json.sig --key docs/threat-feed-public.pem
+
       - name: Unit tests
         run: ./gradlew testDebugUnitTest test --stacktrace
 

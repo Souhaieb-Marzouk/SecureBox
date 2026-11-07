@@ -26,7 +26,7 @@ None of the above is transmitted anywhere. Uninstalling SecureBox removes it.
 ## Network requests
 
 1. **Update check** — an HTTPS `GET` to `https://api.github.com/repos/Souhaieb-Marzouk/SecureBox/releases/latest`, with a `SecureBox-Android` User-Agent. GitHub sees your IP address and User-Agent, as it would for any HTTPS request. No token, no account and no identifier is sent. Results are cached for 12 hours by default.
-2. **Threat Intelligence feed (v0.5.0, opt-in)** — an HTTPS `GET` for a signed, versioned JSON file. The signature is verified with an Ed25519 public key embedded in the app. No query parameters identify you or your device.
+2. **Threat Intelligence feed (v0.5.1, opt-in)** — an HTTPS `GET` for a signed, versioned JSON file. The signature is verified with an Ed25519 public key embedded in the app. No query parameters identify you or your device.
 
 There are no other network connections. The VPN module (v0.2.0) is **local-only**: it routes packets through an on-device filter and never sends traffic to a SecureBox server. There is no SecureBox server.
 

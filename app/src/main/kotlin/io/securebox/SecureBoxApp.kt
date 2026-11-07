@@ -3,8 +3,9 @@ package io.securebox
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.os.Build
+import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
@@ -30,7 +31,6 @@ class SecureBoxApp : Application() {
      * never be silently dropped, and its importance stays at DEFAULT (no sound spam on TV boxes).
      */
     private fun createAlertChannel() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         val channel =
             NotificationChannel(
                 CHANNEL_SECURITY_ALERTS,
@@ -71,7 +71,10 @@ class SecureBoxApp : Application() {
 
     /** Daily update check; silent when offline or already current. */
     private fun scheduleUpdateChecks() {
-        val request = PeriodicWorkRequestBuilder<UpdateCheckWorker>(24, TimeUnit.HOURS).build()
+        val request =
+            PeriodicWorkRequestBuilder<UpdateCheckWorker>(24, TimeUnit.HOURS)
+                .setConstraints(NETWORK_CONSTRAINTS)
+                .build()
         WorkManager
             .getInstance(this)
             .enqueueUniquePeriodicWork(
@@ -83,7 +86,10 @@ class SecureBoxApp : Application() {
 
     /** Daily signed-feed refresh; the worker re-checks both feed preferences. */
     private fun scheduleThreatFeed() {
-        val request = PeriodicWorkRequestBuilder<ThreatFeedWorker>(24, TimeUnit.HOURS).build()
+        val request =
+            PeriodicWorkRequestBuilder<ThreatFeedWorker>(24, TimeUnit.HOURS)
+                .setConstraints(NETWORK_CONSTRAINTS)
+                .build()
         WorkManager
             .getInstance(this)
             .enqueueUniquePeriodicWork(
@@ -95,5 +101,8 @@ class SecureBoxApp : Application() {
 
     companion object {
         const val CHANNEL_SECURITY_ALERTS: String = "security_alerts"
+
+        private val NETWORK_CONSTRAINTS: Constraints =
+            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
     }
 }

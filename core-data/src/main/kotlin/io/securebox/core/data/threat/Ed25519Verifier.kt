@@ -29,8 +29,6 @@ internal object Ed25519Verifier {
             engine.verify(signature)
         }.getOrDefault(false)
 
-    fun ByteArray.toHex(): String = joinToString(separator = "") { byte -> (byte.toInt() and 0xFF).toString(16).padStart(2, '0') }
-
     private fun String.hexToBytes(): ByteArray =
         runCatching { chunked(2).map { it.toInt(16).toByte() }.toByteArray() }.getOrDefault(ByteArray(0))
 }

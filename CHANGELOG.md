@@ -7,13 +7,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Planned
 
-- v0.2.0: per-app bandwidth, anomaly detector, local VPN firewall, open-port monitor.
-- v0.3.0: on-device malware scanner, permission and tracker auditor, sideload checker.
-- v0.4.0: RASP, dangerous-settings checker, scheduled and boot-time scans.
-- v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
-- v1.0.0: localization review, accessibility pass, real-device sign-off.
+- v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
-## [0.5.0] - 2026-11-07
+## [0.5.1] - 2026-11-07
 
 ### Added
 
@@ -29,6 +25,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Stale APKs are deleted from `cacheDir/updates` before a new download.
 - French review closed: VPN wording, GitHub quota, gender-neutral completion title, stale roadmap copy.
+- Firewall now captures IPv6 as well as IPv4, closing a bypass for blocked apps.
+- Update installer uses the runtime package name for its FileProvider authority, fixing debug builds.
+- Feed downloads are capped at 2 MB and empty/zero-version feeds are rejected; tunnel rebuilds are serialized.
+- Daily update and feed workers require network connectivity.
+- Explicit `dataExtractionRules`/`fullBackupContent` no-backup rules.
+- Monochrome launcher icon, French `many` plurals, plural notifications, banner densities, unused colours removed.
+- Dashboard scores the firewall only when the tunnel is actually running.
+- CI release workflow ships x86_64, verifies the signed feed and optionally signs checksums; `.gitattributes` keeps feed bytes LF.
+- BUILDING, SECURITY and TESTING docs updated for NDK/CMake, supported versions and version-independent QA.
 
 ### Known limits
 

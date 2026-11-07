@@ -4,10 +4,11 @@
 
 | Version | Supported |
 |---|---|
-| 0.1.x | ✅ |
-| < 0.1 | ❌ |
+| 0.5.x | ✅ |
+| 0.4.x | ✅ (fixes only) |
+| < 0.4 | ❌ |
 
-Only the latest published release receives security fixes. Update through the in-app updater or from the Releases page.
+Only the latest published release receives security fixes. Update through the in-app updater or from the Releases page. Release manifests are signed with Ed25519 (`SHA256SUMS.sig`); the threat feed uses a separate Ed25519 key documented in `docs/THREAT_FEED.md`.
 
 ## Reporting a vulnerability
 

@@ -1,0 +1,17 @@
+# Keep repository bytes stable across Windows and Linux checkouts.
+# The threat feed signature is over exact bytes, so line-ending conversion would invalidate it.
+* text=auto
+
+.gitattributes text eol=lf
+*.kt text eol=lf
+*.kts text eol=lf
+*.java text eol=lf
+*.xml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.mjs text eol=lf
+*.pem text eol=lf
+*.sig text eol=lf
+*.ps1 text eol=lf
+*.cmd text eol=crlf

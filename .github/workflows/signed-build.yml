@@ -98,9 +98,26 @@ jobs:
           cp app/build/outputs/apk/release/app-universal-release.apk artifacts/securebox-universal-release.apk
           cp app/build/outputs/apk/release/app-arm64-v8a-release.apk artifacts/securebox-arm64-v8a-release.apk
           cp app/build/outputs/apk/release/app-armeabi-v7a-release.apk artifacts/securebox-armeabi-v7a-release.apk
+          cp app/build/outputs/apk/release/app-x86_64-release.apk artifacts/securebox-x86_64-release.apk
           cd artifacts
-          sha256sum securebox-universal-release.apk securebox-arm64-v8a-release.apk securebox-armeabi-v7a-release.apk > SHA256SUMS
+          sha256sum securebox-universal-release.apk securebox-arm64-v8a-release.apk securebox-armeabi-v7a-release.apk securebox-x86_64-release.apk > SHA256SUMS
           cat SHA256SUMS
+
+      - name: Verify the signed threat feed
+        run: node tools/verify-release.mjs --file threat-intel/latest.json --sig threat-intel/latest.json.sig --key docs/threat-feed-public.pem
+
+      - name: Sign checksums (optional)
+        env:
+          RELEASE_SUMS_KEY: ${{ secrets.RELEASE_SUMS_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$RELEASE_SUMS_KEY" ]; then
+            echo "RELEASE_SUMS_KEY is not set; leaving SHA256SUMS unsigned."
+            exit 0
+          fi
+          printf '%s\n' "$RELEASE_SUMS_KEY" > "$RUNNER_TEMP/release-sums.pem"
+          node tools/sign-release.mjs --file artifacts/SHA256SUMS --key "$RUNNER_TEMP/release-sums.pem"
+          node tools/verify-release.mjs --file artifacts/SHA256SUMS --sig artifacts/SHA256SUMS.sig
 
       - name: Verify signatures
         run: |

@@ -19,6 +19,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +41,7 @@ class SecureBoxVpnService : VpnService() {
     private var tunnel: ParcelFileDescriptor? = null
     private var pump: Thread? = null
     private var lastBlocked: Set<String>? = null
+    private var stateJob: Job? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -63,15 +65,18 @@ class SecureBoxVpnService : VpnService() {
 
         startInForeground()
 
-        scope.launch {
-            firewallRepository.state.collectLatest { state ->
-                if (!state.enabled) {
-                    stopSelf()
-                    return@collectLatest
+        // A second onStartCommand must not stack collectors that race to rebuild the tunnel.
+        stateJob?.cancel()
+        stateJob =
+            scope.launch {
+                firewallRepository.state.collectLatest { state ->
+                    if (!state.enabled) {
+                        stopSelf()
+                        return@collectLatest
+                    }
+                    establish(state.effectiveBlockedPackages)
                 }
-                establish(state.effectiveBlockedPackages)
             }
-        }
         return START_STICKY
     }
 
@@ -82,6 +87,7 @@ class SecureBoxVpnService : VpnService() {
     }
 
     override fun onDestroy() {
+        stateJob?.cancel()
         closeTunnel()
         isRunning = false
         firewallRepository.setServiceRunning(false)
@@ -90,44 +96,50 @@ class SecureBoxVpnService : VpnService() {
     }
 
     private fun establish(blocked: Set<String>) {
-        if (blocked.isEmpty()) {
-            // A VPN with no allowed applications would capture the whole device; never do that.
-            stopSelf()
-            return
+        synchronized(this) {
+            if (blocked.isEmpty()) {
+                // A VPN with no allowed applications would capture the whole device; never do that.
+                stopSelf()
+                return
+            }
+            if (blocked == lastBlocked && tunnel != null) return
+
+            closeTunnel()
+
+            val builder =
+                Builder()
+                    .setSession(getString(R.string.vpn_session_name))
+                    .addAddress("10.111.0.1", 32)
+                    .addAddress("fd00:111::1", 128)
+                    .addRoute("0.0.0.0", 0)
+                    // Without an IPv6 route a blocked app could bypass the firewall over IPv6.
+                    .addRoute("::", 0)
+                    .addDnsServer("10.111.0.2")
+                    .addDnsServer("fd00:111::2")
+                    .setBlocking(true)
+
+            var added = 0
+            for (packageName in blocked) {
+                val result = runCatching { builder.addAllowedApplication(packageName) }
+                if (result.isSuccess) added++
+            }
+
+            // If every package was uninstalled, establishing would route all traffic and block it.
+            if (added == 0) {
+                stopSelf()
+                return
+            }
+
+            val descriptor = runCatching { builder.establish() }.getOrNull()
+            if (descriptor == null) {
+                stopSelf()
+                return
+            }
+
+            tunnel = descriptor
+            lastBlocked = blocked
+            startPump(descriptor)
         }
-        if (blocked == lastBlocked && tunnel != null) return
-
-        closeTunnel()
-
-        val builder =
-            Builder()
-                .setSession(getString(R.string.vpn_session_name))
-                .addAddress("10.111.0.1", 32)
-                .addRoute("0.0.0.0", 0)
-                .addDnsServer("10.111.0.2")
-                .setBlocking(true)
-
-        var added = 0
-        for (packageName in blocked) {
-            val result = runCatching { builder.addAllowedApplication(packageName) }
-            if (result.isSuccess) added++
-        }
-
-        // If every package was uninstalled, establishing would route all traffic and block it.
-        if (added == 0) {
-            stopSelf()
-            return
-        }
-
-        val descriptor = runCatching { builder.establish() }.getOrNull()
-        if (descriptor == null) {
-            stopSelf()
-            return
-        }
-
-        tunnel = descriptor
-        lastBlocked = blocked
-        startPump(descriptor)
     }
 
     private fun startPump(descriptor: ParcelFileDescriptor) {

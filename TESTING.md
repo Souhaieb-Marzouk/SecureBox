@@ -1,4 +1,4 @@
-﻿# Testing SecureBox
+# Testing SecureBox
 
 This document covers automated tests, how to run them, and the manual checklist that must pass on real hardware before a release is announced.
 
@@ -106,7 +106,8 @@ system VPN dialog, or per-app routing. Run these after the phone/TV shell checks
 
 ### Recording results
 
-Copy `docs/device-qa/v0.4.1-results.md`, fill in every row for a phone and a TV box, and paste the
+Copy the latest `docs/device-qa/*-results.md` template to a file named for the build under test,
+fill in every row for a phone and a TV box, and paste the
 `tools/device-qa.ps1` output for each. Link the file from SB-059 in `docs/backlog.html`. SB-059 stays
 blocked until both devices pass.
 

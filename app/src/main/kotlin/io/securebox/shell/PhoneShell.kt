@@ -42,7 +42,9 @@ fun PhoneShell(
     val currentRoute = backStackEntry?.destination?.route
 
     fun selected(route: String): Boolean =
-        currentRoute == route || (route == Routes.SETTINGS && currentRoute == Routes.HARDENING)
+        currentRoute == route ||
+            (route == Routes.SETTINGS &&
+                (currentRoute == Routes.HARDENING || currentRoute == Routes.THREAT_INTEL))
 
     val content: @Composable () -> Unit = {
         Column(modifier = Modifier.fillMaxSize()) {

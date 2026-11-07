@@ -1,6 +1,7 @@
 package io.securebox.feature.network
 
 import android.content.Context
+import android.net.VpnService
 import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -120,6 +121,10 @@ class NetworkViewModel
 
         fun setFirewallEnabled(enabled: Boolean) {
             viewModelScope.launch {
+                if (enabled && VpnService.prepare(context) != null) {
+                    _state.update { it.copy(error = NetworkError.VPN_UNAVAILABLE) }
+                    return@launch
+                }
                 runCatching { firewallRepository.setEnabled(enabled) }
                     .onFailure { _state.update { current -> current.copy(error = NetworkError.SERVICE_FAILED) } }
                 firewallRepository.refreshStatus()
@@ -146,7 +151,12 @@ class NetworkViewModel
         fun blockUnknownApps() {
             viewModelScope.launch {
                 firewallRepository.setPreset(FirewallPreset.BLOCK_UNKNOWN_APPS)
-                firewallRepository.setEnabled(true)
+                if (VpnService.prepare(context) == null) {
+                    firewallRepository.setEnabled(true)
+                } else {
+                    _state.update { it.copy(error = NetworkError.VPN_UNAVAILABLE) }
+                }
+                firewallRepository.refreshStatus()
             }
         }
 

@@ -25,7 +25,7 @@
     <string name="settings_section_protection">Protection</string>
     <string name="settings_firewall_title">Pare-feu local</string>
     <string name="settings_firewall_body">Bloque l\'accès internet d\'une application sur cet appareil.</string>
-    <string name="settings_firewall_status">Bientôt</string>
+    <string name="settings_firewall_status">Configurer dans Réseau</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
     <string name="settings_threat_intel_body">Un flux signé peut ajouter des règles de détection, des traqueurs et des domaines sans mise à jour de l\'application. Les mises à jour sont facultatives et vérifiées localement.</string>
     <string name="settings_threat_intel_toggle">Activer Threat Intelligence</string>
