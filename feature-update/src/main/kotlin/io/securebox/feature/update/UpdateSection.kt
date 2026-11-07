@@ -112,6 +112,7 @@ fun UpdateSection(
             AvailableDialog(release = phase.release, onDismiss = viewModel::dismiss, onDownload = viewModel::downloadAndInstall)
 
         is UpdatePhase.Downloading -> DownloadingDialog(phase)
+        is UpdatePhase.Verifying -> VerifyingDialog()
         is UpdatePhase.Failed -> FailureDialog(phase, onDismiss = viewModel::dismiss, onRetry = viewModel::retry)
         is UpdatePhase.NeedsInstallPermission ->
             InstallPermissionDialog(
@@ -233,6 +234,21 @@ private fun DownloadingDialog(phase: UpdatePhase.Downloading) {
                     text = stringResource(R.string.update_downloading_detail, downloaded, total),
                     style = MaterialTheme.typography.bodyMedium,
                 )
+            }
+        },
+        confirmButton = {},
+    )
+}
+
+@Composable
+private fun VerifyingDialog() {
+    AlertDialog(
+        onDismissRequest = {},
+        title = { Text(text = stringResource(R.string.update_verifying_title)) },
+        text = {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                Text(text = stringResource(R.string.update_verifying_body))
             }
         },
         confirmButton = {},

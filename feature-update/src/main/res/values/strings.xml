@@ -18,6 +18,8 @@
 
     <string name="update_downloading_title">Downloading update</string>
     <string name="update_downloading_detail">%1$s of %2$s</string>
+    <string name="update_verifying_title">Checking the download</string>
+    <string name="update_verifying_body">Comparing the SHA-256 checksum before installing.</string>
 
     <string name="update_failed_title">Update could not be completed</string>
     <string name="update_retry">Try again</string>

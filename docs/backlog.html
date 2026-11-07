@@ -68,6 +68,7 @@
   article.card.p0{--dot:var(--red)} article.card.p1{--dot:var(--amber)}
   article.card.p2{--dot:var(--teal)} article.card.p3{--dot:var(--dim)}
   article.card.done{--dot:var(--teal);opacity:.82}
+  article.card.blocked{--dot:var(--amber)}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
   .id{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.04em}
   .pill{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 8px;border-radius:99px;text-transform:uppercase}
@@ -78,6 +79,7 @@
   .pill.feature{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(111,182,255,.35)}
   .pill.issue{background:#2A1A1A;color:#FFB4B4;border:1px solid rgba(255,107,107,.3)}
   .pill.done{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(0,191,165,.4)}
+  .pill.blocked{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,179,0,.45)}
   article h3{margin:2px 0 6px;font-size:16.5px;line-height:1.3;letter-spacing:-.005em}
   article p.desc{margin:0 0 10px;color:var(--muted);font-size:14.5px}
   article p.accept{margin:0 0 10px;font-size:13.5px;color:var(--text);background:rgba(0,191,165,.07);
@@ -133,6 +135,7 @@
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
+      <span><b id="blockedCount">0</b> blocked</span>
     </div>
     <div class="bar" aria-hidden="true"><div id="progress"></div></div>
   </header>
@@ -183,28 +186,6 @@
 
 /* DATA_START */
 const ITEMS = [
-  {
-    "id": "SB-001",
-    "p": "P0",
-    "type": "issue",
-    "area": "QA / Release",
-    "milestone": "v0.1.0",
-    "status": "open",
-    "title": "v0.1.0 has not been installed on a physical phone",
-    "desc": "The release is built, signed and published, but onboarding, permission flows, locale switching and the update dialog have only been verified in code and unit tests.",
-    "doneWhen": "TESTING.md rows 1-10 and 17-19 pass on a real phone, with results recorded in the release notes."
-  },
-  {
-    "id": "SB-002",
-    "p": "P0",
-    "type": "issue",
-    "area": "QA / TV",
-    "milestone": "v0.1.0",
-    "status": "open",
-    "title": "v0.1.0 has not been installed on a physical Android TV box",
-    "desc": "Leanback visibility, D-pad focus order, 10-foot typography and overscan have not been exercised on real hardware.",
-    "doneWhen": "TESTING.md rows 2 and 13-16 pass on a real TV box; the Leanback banner renders in the launcher."
-  },
   {
     "id": "SB-010",
     "p": "P1",
@@ -475,10 +456,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Tooling",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "In-session builds fail in Documents\\GitHub\\SecureBox",
-    "desc": "The DSH sandbox blocks child processes such as aapt2 from writing outside the session workspace, so Gradle cannot build in the project folder from the agent session. The user's own terminal is unaffected.",
-    "doneWhen": "Either the session workspace is the project folder, or builds are redirected to a writable build root."
+    "desc": "The DSH sandbox blocks child processes such as aapt2 from writing outside the session workspace, so Gradle cannot build in the project folder from the agent session. The user's own terminal is unaffected. Resolved: tools/sandbox-build.ps1 plus tools/sandbox-build-root.gradle redirect Gradle outputs outside the checkout, documented in BUILDING.md.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-040",
@@ -640,10 +621,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Release",
     "milestone": "v0.1.0",
-    "status": "open",
+    "status": "done",
     "title": "v0.1.0 release title uses a hyphen instead of an em dash",
-    "desc": "The published title is 'v0.1.0 - Foundation & Update System'; the specification requires 'v0.1.0 — Foundation & Update System'.",
-    "doneWhen": "The GitHub release title matches RELEASE_TITLE.txt exactly."
+    "desc": "The published title is 'v0.1.0 - Foundation & Update System'; the specification requires 'v0.1.0 — Foundation & Update System'. Resolved: the published v0.1.0 release title now uses the em dash from RELEASE_TITLE.txt.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-055",
@@ -651,10 +632,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Tooling",
     "milestone": "v0.1.0",
-    "status": "open",
+    "status": "done",
     "title": "Stale SecureBox-dist copy in the old workspace",
-    "desc": "C:\\Users\\Mercenary\\Documents\\deepseek-harness\\Random\\SecureBox-dist still holds a flat v0.1.0 copy; the canonical staging area is Documents\\GitHub\\SecureBox-dist.",
-    "doneWhen": "The stale folder is deleted or clearly marked as archived."
+    "desc": "C:\\Users\\Mercenary\\Documents\\deepseek-harness\\Random\\SecureBox-dist still holds a flat v0.1.0 copy; the canonical staging area is Documents\\GitHub\\SecureBox-dist. Resolved: the stale flat copy under the old workspace was deleted.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-056",
@@ -662,10 +643,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Updates",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "UpdatePhase.Verifying is dead code",
-    "desc": "The state exists in the ViewModel but is never emitted; hashing happens inside the repository while Downloading stays visible.",
-    "doneWhen": "Either the phase is emitted before hashing or it is removed."
+    "desc": "The state exists in the ViewModel but is never emitted; hashing happens inside the repository while Downloading stays visible. Resolved: the updater now emits UpdatePhase.Verifying while the SHA-256 is compared and the UI shows a checking dialog.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-057",
@@ -673,10 +654,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Build",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Unused dependencies and catalog entries",
-    "desc": "compose-material-icons-extended, work-runtime-ktx and lifecycle-process are declared but unused; they add maintenance noise.",
-    "doneWhen": "The version catalog and module dependencies contain only what is referenced."
+    "desc": "compose-material-icons-extended, work-runtime-ktx and lifecycle-process are declared but unused; they add maintenance noise. Resolved: removed mockk, coroutines-test, material-icons-extended, lifecycle-process, espresso and the unused app test dependencies.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-D01",
@@ -794,10 +775,10 @@ const ITEMS = [
     "type": "issue",
     "area": "QA / Network",
     "milestone": "v0.2.0",
-    "status": "open",
-    "title": "v0.2.0 network features are not verified on a device",
-    "desc": "Bandwidth, anomaly notifications, the VPN firewall and the port monitor compile and pass unit tests but have not run on a physical phone or TV box yet.",
-    "doneWhen": "A v0.2.0 checklist covers blocking a test app, restoring it, an anomaly notification with actions, and the port list, on both devices."
+    "status": "blocked",
+    "title": "Device verification for v0.2.0 (phone + TV) is outstanding",
+    "desc": "No physical device is reachable over adb from the development environment, so onboarding, the firewall, bandwidth, anomaly notifications and the port list have not been exercised on hardware. SB-001/SB-002 were folded into this item; a one-command helper is ready.",
+    "doneWhen": "tools/device-qa.ps1 runs on a phone and a TV box, the onboarding and network checklists in TESTING.md pass, and results are recorded."
   },
   {
     "id": "SB-060",
@@ -816,10 +797,10 @@ const ITEMS = [
     "type": "issue",
     "area": "Release / Play",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "QUERY_ALL_PACKAGES needs a Play policy declaration",
-    "desc": "v0.2.0 adds QUERY_ALL_PACKAGES to attribute traffic and ports to every app. Google Play restricts this permission to core security/utility use cases and requires a declaration.",
-    "doneWhen": "The Play Console declaration is written and the rationale is documented in PRIVACY.md."
+    "desc": "v0.2.0 adds QUERY_ALL_PACKAGES to attribute traffic and ports to every app. Google Play restricts this permission to core security/utility use cases and requires a declaration. Resolved: docs/PLAY_COMPLIANCE.md now contains the QUERY_ALL_PACKAGES declaration, VPN disclosure and data-safety answers; PRIVACY.md explains the rationale.",
+    "doneAt": "2026-11-07"
   }
 ];
 /* DATA_END */
@@ -827,6 +808,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "Backlog cleanup: closed SB-036 (sandbox build tools), SB-054 (release title), SB-055 (stale dist), SB-056 (Verifying state implemented), SB-057 (unused dependencies) and SB-061 (Play declaration). Removed SB-001/SB-002 and folded them into SB-059, now marked Blocked: no adb device is attached. Added tools/device-qa.ps1 to complete it." },
   { d: "2026-11-07", t: "v0.2.0 implemented: per-app bandwidth (live + 24h/7d/30d), hourly upload anomaly detector with notification actions, local-only VPN firewall with per-app blocking and presets, open-port monitor, and the full Network UI. Security score now reflects update status; Threat Intelligence toggle disabled until v0.5.0; keystore password encrypted with DPAPI. 8 P1 items closed, 4 new items added (native packet pump, v0.2.0 device QA, firewall edge cases, Play declaration)." },
   { d: "2026-11-07", t: "Backlog created. v0.1.0 published manually. Automated release publishing removed from CI (75f2bed). Added P0 device-QA issues, all remaining milestones, and a Done section for fixes shipped while building v0.1.0." },
   { d: "2026-11-06", t: "Milestone 1 completed: onboarding, dual shells, verified self-update system, signed APKs." }
@@ -846,10 +828,13 @@ const el = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 function isDone(i) { return i.status === "done"; }
+function isBlocked(i) { return i.status === "blocked"; }
 
 function matches(item) {
   if (state.kind === "done") {
     if (!isDone(item)) return false;
+  } else if (state.kind === "blocked") {
+    if (!isBlocked(item)) return false;
   } else if (state.kind === "feature" || state.kind === "issue") {
     if (item.type !== state.kind || isDone(item)) return false;
   } else if (PRIORITIES.includes(state.kind)) {
@@ -866,15 +851,17 @@ function matches(item) {
 
 function counts() {
   const open = ITEMS.filter((i) => !isDone(i));
+  const actionable = open.filter((i) => !isBlocked(i));
   return {
     open: open.length,
+    blocked: ITEMS.filter(isBlocked).length,
     done: ITEMS.length - open.length,
-    p0: open.filter((i) => i.p === "P0").length,
-    p1: open.filter((i) => i.p === "P1").length,
-    p2: open.filter((i) => i.p === "P2").length,
-    p3: open.filter((i) => i.p === "P3").length,
-    feature: open.filter((i) => i.type === "feature").length,
-    issue: open.filter((i) => i.type === "issue").length,
+    p0: actionable.filter((i) => i.p === "P0").length,
+    p1: actionable.filter((i) => i.p === "P1").length,
+    p2: actionable.filter((i) => i.p === "P2").length,
+    p3: actionable.filter((i) => i.p === "P3").length,
+    feature: actionable.filter((i) => i.type === "feature").length,
+    issue: actionable.filter((i) => i.type === "issue").length,
   };
 }
 
@@ -892,22 +879,25 @@ function renderChips() {
     chip("P3", "P3", c.p3) +
     chip("Features", "feature", c.feature) +
     chip("Issues", "issue", c.issue) +
+    chip("Blocked", "blocked", c.blocked) +
     chip("Done", "done", c.done);
 }
 
 function card(item) {
   const done = isDone(item);
+  const blocked = isBlocked(item);
   const accept = item.doneWhen
     ? `<p class="accept"><b>Done when:</b> ${esc(item.doneWhen)}</p>`
     : "";
   const donePill = done ? `<span class="pill done">Done${item.doneAt ? " · " + esc(item.doneAt) : ""}</span>` : "";
+  const blockedPill = blocked ? `<span class="pill blocked">Blocked · needs hardware</span>` : "";
   const priorityPill = `<span class="pill ${item.p.toLowerCase()}">${esc(item.p)}</span>`;
-  return `<article class="card ${item.p.toLowerCase()}${done ? " done" : ""}">
+  return `<article class="card ${item.p.toLowerCase()}${done ? " done" : ""}${blocked ? " blocked" : ""}">
     <div class="row">
       <span class="id">${esc(item.id)}</span>
       ${priorityPill}
       <span class="pill ${esc(item.type)}">${esc(item.type)}</span>
-      ${donePill}
+      ${donePill}${blockedPill}
     </div>
     <h3>${esc(item.title)}</h3>
     <p class="desc">${esc(item.desc)}</p>
@@ -922,7 +912,7 @@ function card(item) {
 function group(title, key, items, hint) {
   if (!items.length) return "";
   return `<section class="group">
-    <h2><span class="dot" style="background:${key === "done" ? "var(--teal)" : key === "P0" ? "var(--red)" : key === "P1" ? "var(--amber)" : key === "P2" ? "var(--teal)" : "var(--dim)"}"></span>
+    <h2><span class="dot" style="background:${key === "done" ? "var(--teal)" : key === "blocked" ? "var(--amber)" : key === "P0" ? "var(--red)" : key === "P1" ? "var(--amber)" : key === "P2" ? "var(--teal)" : "var(--dim)"}"></span>
       ${esc(title)} <span class="n">${items.length}</span></h2>
     <p class="hint">${esc(hint)}</p>
     <div class="grid">${items.map(card).join("")}</div>
@@ -935,6 +925,8 @@ function render() {
 
   if (state.kind === "done") {
     html = group("Done", "done", visible, "Fixed or shipped. Kept for one release for traceability, then removed.");
+  } else if (state.kind === "blocked") {
+    html = group("Blocked", "blocked", visible, "Cannot be completed without hardware or an external console action. These are not forgotten.");
   } else {
     PRIORITIES.forEach((p) => {
       const items = visible.filter((i) => i.p === p && !isDone(i));
@@ -953,6 +945,7 @@ function renderMeta() {
   el("openCount").textContent = c.open;
   el("doneCount").textContent = c.done;
   el("blockerCount").textContent = c.p0;
+  el("blockedCount").textContent = c.blocked;
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";

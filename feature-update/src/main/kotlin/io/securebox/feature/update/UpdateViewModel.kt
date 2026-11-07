@@ -123,18 +123,25 @@ class UpdateViewModel
                 val primaryAbi = Build.SUPPORTED_ABIS.firstOrNull()
                 when (
                     val result =
-                        updateRepository.downloadApk(release, primaryAbi) { progress ->
-                            _state.update {
-                                it.copy(
-                                    phase =
-                                        UpdatePhase.Downloading(
-                                            fraction = progress.fraction,
-                                            downloadedBytes = progress.bytesDownloaded,
-                                            totalBytes = progress.totalBytes,
-                                        ),
-                                )
-                            }
-                        }
+                        updateRepository.downloadApk(
+                            release = release,
+                            primaryAbi = primaryAbi,
+                            onProgress = { progress ->
+                                _state.update {
+                                    it.copy(
+                                        phase =
+                                            UpdatePhase.Downloading(
+                                                fraction = progress.fraction,
+                                                downloadedBytes = progress.bytesDownloaded,
+                                                totalBytes = progress.totalBytes,
+                                            ),
+                                    )
+                                }
+                            },
+                            onVerifying = {
+                                _state.update { it.copy(phase = UpdatePhase.Verifying) }
+                            },
+                        )
                 ) {
                     is DownloadResult.Verified -> install(result.file, result.sha256)
                     is DownloadResult.ChecksumMismatch -> fail(UpdateFailure.CHECKSUM_MISMATCH)

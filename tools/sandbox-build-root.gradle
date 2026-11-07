@@ -1,0 +1,19 @@
+// Redirects Gradle/AGP build outputs outside the repository.
+//
+// Some sandboxed environments (CI containers, agent sandboxes on Windows) allow the JVM to write
+// inside the checkout but block native tools such as aapt2. Pointing every module's build directory
+// at a writable location keeps the sources in place while the build succeeds.
+//
+// Usage:
+//   gradlew -I tools/sandbox-build-root.gradle assembleDebug
+//   SECUREBOX_BUILD_ROOT=/tmp/sb-build gradlew -I tools/sandbox-build-root.gradle assembleDebug
+
+def buildRootPath = System.getenv('SECUREBOX_BUILD_ROOT')
+if (!buildRootPath) {
+    buildRootPath = new File(System.getProperty('java.io.tmpdir'), 'securebox-build').absolutePath
+}
+def buildRoot = new File(buildRootPath)
+
+gradle.beforeProject { project ->
+    project.layout.buildDirectory.set(new File(buildRoot, project.name))
+}

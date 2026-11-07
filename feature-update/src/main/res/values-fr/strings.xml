@@ -18,6 +18,8 @@
 
     <string name="update_downloading_title">Téléchargement de la mise à jour</string>
     <string name="update_downloading_detail">%1$s sur %2$s</string>
+    <string name="update_verifying_title">Vérification du téléchargement</string>
+    <string name="update_verifying_body">Comparaison de l\'empreinte SHA-256 avant l\'installation.</string>
 
     <string name="update_failed_title">La mise à jour n\'a pas pu aboutir</string>
     <string name="update_retry">Réessayer</string>

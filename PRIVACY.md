@@ -42,6 +42,17 @@ There are no other network connections. The VPN module (v0.2.0) is **local-only*
 
 SecureBox **never** requests SMS, call-log or contacts permissions. It can *audit* other apps that hold them, but it does not read your messages or calls.
 
+### Package visibility (`QUERY_ALL_PACKAGES`)
+
+SecureBox lists the applications installed on the device so it can attribute network traffic and
+listening sockets to the correct app, and offer per-app internet blocking. This list is processed
+only on the device, is never uploaded, and is not used for advertising, analytics or profiling. It
+is the same information Android's own Settings → Apps screen shows you. Without this permission the
+bandwidth and firewall features could not name the apps they are measuring or blocking.
+
+The Play Store declaration text and the full permissions rationale are in
+[`docs/PLAY_COMPLIANCE.md`](docs/PLAY_COMPLIANCE.md).
+
 ## Children
 
 SecureBox does not knowingly collect data from anyone, including children.

@@ -115,6 +115,21 @@ sha256sum *.apk
 `verifyNoHardcodedStrings` is a custom Gradle task: every user-visible string must live in
 `res/values/strings.xml` and `res/values-fr/strings.xml`.
 
+## Sandboxed or restricted builds
+
+Some sandboxes (CI containers, agent environments on Windows) let the JVM write inside the checkout
+but block native tools such as `aapt2`. Redirect every module's build directory to a writable
+location without touching the repository:
+
+```powershell
+.\tools\sandbox-build.ps1 assembleDebug
+.\tools\sandbox-build.ps1 verifyNoHardcodedStrings test lintDebug
+```
+
+The script creates a fresh temporary build root and passes `tools/sandbox-build-root.gradle` through
+`-I`. Set `SECUREBOX_BUILD_ROOT` yourself if you prefer a fixed path. On a normal developer machine
+this is not needed.
+
 ## Reproducibility
 
 SecureBox aims for reproducible *inputs*, not bit-identical outputs (Android's build pipeline is not

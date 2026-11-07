@@ -73,6 +73,7 @@ class GithubUpdateRepository
             release: ReleaseInfo,
             primaryAbi: String?,
             onProgress: (DownloadProgress) -> Unit,
+            onVerifying: () -> Unit,
         ): DownloadResult =
             withContext(Dispatchers.IO) {
                 val asset =
@@ -98,6 +99,7 @@ class GithubUpdateRepository
                     return@withContext DownloadResult.Failed(failure)
                 }
 
+                onVerifying()
                 val actualHash = Sha256.of(target)
                 if (!Sha256.matches(expectedHash, actualHash)) {
                     target.delete()

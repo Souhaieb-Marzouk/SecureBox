@@ -21,6 +21,7 @@ public interface UpdateRepository {
         release: ReleaseInfo,
         primaryAbi: String?,
         onProgress: (DownloadProgress) -> Unit,
+        onVerifying: () -> Unit = {},
     ): DownloadResult
 
     public suspend fun lastCheckedAtMillis(): Long?
