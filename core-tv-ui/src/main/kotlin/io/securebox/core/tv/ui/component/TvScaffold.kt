@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import io.securebox.core.tv.ui.theme.TvDimens
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -49,6 +50,12 @@ fun TvScaffold(
     val firstItemFocus = remember { FocusRequester() }
     LaunchedEffect(Unit) { runCatching { firstItemFocus.requestFocus() } }
 
+    // Manual override can put the TV shell on a phone. A 280dp sidebar would swallow the screen and
+    // trap the user, so narrow windows collapse it to an icon rail and shrink the content padding.
+    val compact = LocalConfiguration.current.screenWidthDp < 600
+    val sidebarWidth = if (compact) 96.dp else TvDimens.SidebarWidth
+    val screenPadding = if (compact) 12.dp else TvDimens.ScreenPadding
+
     Row(
         modifier =
             Modifier
@@ -58,10 +65,10 @@ fun TvScaffold(
         Column(
             modifier =
                 Modifier
-                    .width(TvDimens.SidebarWidth)
+                    .width(sidebarWidth)
                     .fillMaxHeight()
                     .background(MaterialTheme.colorScheme.surface)
-                    .padding(horizontal = 20.dp, vertical = 32.dp),
+                    .padding(horizontal = if (compact) 6.dp else 20.dp, vertical = 32.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -73,8 +80,10 @@ fun TvScaffold(
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(32.dp),
                 )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(text = appName, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
+                if (!compact) {
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(text = appName, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
+                }
             }
 
             Spacer(modifier = Modifier.padding(top = 28.dp))
@@ -90,6 +99,7 @@ fun TvScaffold(
                         selected = entry.route == selectedRoute,
                         onClick = { onNavigate(entry.route) },
                         modifier = if (index == 0) Modifier.focusRequester(firstItemFocus) else Modifier,
+                        showLabel = !compact,
                     )
                     Spacer(modifier = Modifier.padding(top = 4.dp))
                 }
@@ -100,7 +110,7 @@ fun TvScaffold(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(TvDimens.ScreenPadding)
+                    .padding(screenPadding)
                     .background(MaterialTheme.colorScheme.background, RoundedCornerShape(24.dp)),
         ) {
             content()

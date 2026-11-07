@@ -18,6 +18,7 @@ import io.securebox.shell.TvShell
 fun SecureBoxRoot(
     state: MainUiState,
     expandedLayout: Boolean = false,
+    onUsePhoneLayout: () -> Unit = {},
 ) {
     val darkTheme =
         when (state.settings.themeMode) {
@@ -37,7 +38,10 @@ fun SecureBoxRoot(
 
         state.settings.deviceMode == DeviceMode.TV -> {
             TvSecureBoxTheme(darkTheme = darkTheme) {
-                TvShell(showIntegrityWarning = showIntegrityWarning)
+                TvShell(
+                    showIntegrityWarning = showIntegrityWarning,
+                    onUsePhoneLayout = onUsePhoneLayout,
+                )
             }
         }
 

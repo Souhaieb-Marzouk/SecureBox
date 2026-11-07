@@ -13,6 +13,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.4.1] - 2026-11-07
+
+### Fixed
+
+- SB-061: choosing "Android TV box" on a phone produced a 280dp sidebar that hid the content and blocked access to the setting needed to switch back. The TV sidebar now collapses to a 96dp icon rail on narrow windows, and a "Use phone layout" escape button appears when the TV shell runs on non-TV hardware.
+
+### Changed
+
+- Version 0.4.1 (code 6). Do not publish 0.4.0.
+
 ## [0.4.0] - 2026-11-07
 
 ### Added

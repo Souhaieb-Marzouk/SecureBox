@@ -1,4 +1,4 @@
-# Testing SecureBox
+﻿# Testing SecureBox
 
 This document covers automated tests, how to run them, and the manual checklist that must pass on real hardware before a release is announced.
 
@@ -36,7 +36,7 @@ The Compose test in `feature-onboarding` renders the real `OnboardingScreen` and
 ```
 
 - `HardcodedText` is configured as a **lint error**.
-- `verifyNoHardcodedStrings` scans Compose sources for raw `text = "…"` / `title = "…"` literals and fails the build.
+- `verifyNoHardcodedStrings` scans Compose sources for raw `text = "â€¦"` / `title = "â€¦"` literals and fails the build.
 
 ### CI matrix
 
@@ -49,7 +49,7 @@ Instrumented tests run on a dedicated emulator matrix once Milestone 2 introduce
 
 ## Manual test checklist
 
-Record the result for both a **physical phone** and a **physical Android TV box**. A release is not announced until every row is ✅ on both devices.
+Record the result for both a **physical phone** and a **physical Android TV box**. A release is not announced until every row is âœ… on both devices.
 
 ### Installation
 
@@ -63,8 +63,8 @@ Record the result for both a **physical phone** and a **physical Android TV box*
 
 | # | Step | Expected |
 |---|---|---|
-| 4 | Fresh install, open the app | Language step appears with English and Français |
-| 5 | Choose Français | UI switches immediately, no restart |
+| 4 | Fresh install, open the app | Language step appears with English and FranÃ§ais |
+| 5 | Choose FranÃ§ais | UI switches immediately, no restart |
 | 6 | Continue | Device step shows the detected form factor |
 | 7 | Answer "No" to flip the mode | Layout preference is stored; you can verify it in Settings |
 | 8 | Grant usage access | Returning to the app shows "Allowed" without a manual refresh |
@@ -106,7 +106,7 @@ system VPN dialog, or per-app routing. Run these after the phone/TV shell checks
 
 ### Recording results
 
-Copy `docs/device-qa/v0.4.0-results.md`, fill in every row for a phone and a TV box, and paste the
+Copy `docs/device-qa/v0.4.1-results.md`, fill in every row for a phone and a TV box, and paste the
 `tools/device-qa.ps1` output for each. Link the file from SB-059 in `docs/backlog.html`. SB-059 stays
 blocked until both devices pass.
 
@@ -114,7 +114,7 @@ blocked until both devices pass.
 
 | # | Step | Expected |
 |---|---|---|
-| 20 | Settings → Check for updates (no newer release) | "You are on the latest version." |
+| 20 | Settings â†’ Check for updates (no newer release) | "You are on the latest version." |
 | 21 | Publish a newer test release, check again | Dialog shows version, size and Markdown notes |
 | 22 | Download the update | Progress runs; file lands in `cacheDir/updates` |
 | 23 | Corrupt the checksum (test build), retry | Alert: checksum mismatch, file deleted, nothing installed |
@@ -138,3 +138,4 @@ blocked until both devices pass.
 | 31 | Switch to French and visit every screen | No English leftovers, no truncated labels |
 | 32 | Set the system language to French on a fresh install | Onboarding still defaults to English (explicit choice), switch works |
 | 33 | Enable TalkBack and walk the dashboard | Score, cards and buttons are announced with meaningful labels |
+

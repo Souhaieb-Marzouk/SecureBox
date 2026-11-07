@@ -21,4 +21,5 @@
     <string name="scan_notification_body">%1$d applications sont à risque élevé avec %2$d constats. Ouvrez SecureBox pour les examiner. Rien n\'a quitté votre appareil.</string>
     <string name="update_notification_title">SecureBox %1$s est disponible</string>
     <string name="update_notification_body">Ouvrez Réglages → Mises à jour pour télécharger et vérifier la nouvelle version.</string>
+    <string name="tv_use_phone_layout">Utiliser la disposition téléphone</string>
 </resources>

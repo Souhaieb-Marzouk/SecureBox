@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.4.0` — Hardening & Platform Polish |
+| **Current release** | `v0.4.1` — TV Layout Escape Fix |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |

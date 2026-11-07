@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.securebox.core.data.security.PackageSignatureVerifier
 import io.securebox.core.data.security.SignatureCheck
 import io.securebox.core.domain.model.AppSettings
+import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.permission.PlatformPermissions
 import io.securebox.core.domain.repository.SettingsRepository
 import javax.inject.Inject
@@ -50,6 +51,13 @@ class MainViewModel
                 // certificate mismatch means the APK was re-signed by someone else.
                 val ok = check.reason != SignatureCheck.Reason.MISMATCH
                 _state.update { it.copy(signatureOk = ok) }
+            }
+        }
+
+        /** Escape hatch for a manual TV-mode override on a phone. */
+        fun usePhoneLayout() {
+            viewModelScope.launch {
+                settingsRepository.setDeviceMode(DeviceMode.PHONE, confirmedByUser = true)
             }
         }
 

@@ -99,6 +99,7 @@ fun TvNavItem(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showLabel: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val focused by interactionSource.collectIsFocusedAsState()
@@ -124,23 +125,25 @@ fun TvNavItem(
             },
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
+            modifier = Modifier.padding(horizontal = if (showLabel) 20.dp else 0.dp, vertical = if (showLabel) 18.dp else 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = if (showLabel) Arrangement.spacedBy(16.dp) else Arrangement.Center,
         ) {
             Icon(
                 imageVector = icon,
-                contentDescription = null,
+                contentDescription = if (showLabel) null else label,
                 tint =
                     if (selected || focused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(28.dp),
             )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleMedium,
-                color =
-                    if (selected || focused) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            if (showLabel) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleMedium,
+                    color =
+                        if (selected || focused) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 SecureBoxRoot(
                     state = state,
                     expandedLayout = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact,
+                    onUsePhoneLayout = viewModel::usePhoneLayout,
                 )
             }
         }
