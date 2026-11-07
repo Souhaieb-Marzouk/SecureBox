@@ -19,5 +19,5 @@
 
     <string name="update_notification_title">SecureBox %1$s is available</string>
     <string name="update_notification_body">Open Settings → App updates to download and verify the new version.</string>
-    <string name="tv_use_phone_layout">Use phone layout</string>
+    <string name="tv_use_phone_layout">Phone layout</string>
 </resources>

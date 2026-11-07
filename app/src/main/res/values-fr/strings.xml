@@ -19,5 +19,5 @@
 
     <string name="update_notification_title">SecureBox %1$s est disponible</string>
     <string name="update_notification_body">Ouvrez Réglages → Mises à jour pour télécharger et vérifier la nouvelle version.</string>
-    <string name="tv_use_phone_layout">Utiliser la disposition téléphone</string>
+    <string name="tv_use_phone_layout">Mode téléphone</string>
 </resources>
