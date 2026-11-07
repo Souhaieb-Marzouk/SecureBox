@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import io.securebox.feature.apps.AppsRoute
 import io.securebox.feature.dashboard.DashboardRoute
 import io.securebox.feature.network.NetworkRoute
+import io.securebox.feature.settings.HelpScreen
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
 import io.securebox.feature.threatintel.ThreatIntelRoute
@@ -31,6 +32,8 @@ fun SecureBoxNavHost(
                 onOpenNetwork = { navController.navigateToTopLevel(Routes.NETWORK) },
                 onOpenThreats = { navController.navigateToTopLevel(Routes.THREATS) },
                 onOpenSettings = { navController.navigateToTopLevel(Routes.SETTINGS) },
+                onOpenApps = { navController.navigateToTopLevel(Routes.APPS) },
+                onOpenHelp = { navController.navigate(Routes.HELP) },
             )
         }
         composable(Routes.NETWORK) { NetworkRoute() }
@@ -45,7 +48,11 @@ fun SecureBoxNavHost(
             SettingsRoute(
                 onOpenPrivacy = { navController.navigate(Routes.PRIVACY) },
                 onOpenThreatIntel = { navController.navigate(Routes.THREAT_INTEL) },
+                onOpenHelp = { navController.navigate(Routes.HELP) },
             )
+        }
+        composable(Routes.HELP) {
+            HelpScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.THREAT_INTEL) {
             ThreatIntelRoute(onBack = { navController.popBackStack() })

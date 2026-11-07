@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dashboard_title">Your security score</string>
-    <string name="dashboard_subtitle">A simple number that shows how well this device is protected.</string>
+    <string name="dashboard_title">Your security at a glance</string>
+    <string name="dashboard_subtitle">One score and four simple actions — no security knowledge needed.</string>
     <string name="dashboard_score_description">Security score %1$d out of 100</string>
+    <string name="dashboard_score_label">SECURITY SCORE</string>
     <string name="dashboard_device_mode">Layout: %1$s</string>
     <string name="dashboard_device_tv">Android TV</string>
     <string name="dashboard_device_phone">Phone</string>
-    <string name="dashboard_improve_title">Improve your score</string>
+
+    <string name="dashboard_hero_protected">You\'re protected</string>
+    <string name="dashboard_hero_attention">A few things need attention</string>
+    <string name="dashboard_hero_body_protected">SecureBox is watching this device. Here is your score and what you can do next.</string>
+    <string name="dashboard_hero_body_attention">Your score can be higher. Fix the items below — each one takes less than a minute.</string>
+
+    <string name="dashboard_quick_actions">What do you want to do?</string>
+    <string name="dashboard_quick_scan">Scan apps</string>
+    <string name="dashboard_quick_scan_body">Find risky apps and settings.</string>
+    <string name="dashboard_quick_block">Block internet</string>
+    <string name="dashboard_quick_block_body">Stop one app going online.</string>
+    <string name="dashboard_quick_apps">Review apps</string>
+    <string name="dashboard_quick_apps_body">See what each app can access.</string>
+    <string name="dashboard_quick_help">How to use</string>
+    <string name="dashboard_quick_help_body">Open the simple guide.</string>
+
+    <string name="dashboard_needs_attention">Needs attention</string>
+    <string name="dashboard_all_clear">All clear</string>
     <string name="dashboard_all_good">Everything looks good. Nice work.</string>
     <string name="dashboard_factor_firewall">Turn on the local firewall.</string>
+    <string name="dashboard_factor_firewall_body">Blocks apps you don\'t trust from using the internet.</string>
     <string name="dashboard_factor_updates">Update to the latest version.</string>
+    <string name="dashboard_factor_updates_body">New protections and fixes.</string>
     <string name="dashboard_factor_usage">Allow usage access to see per-app data.</string>
+    <string name="dashboard_factor_usage_body">Lets SecureBox show how much data each app uses.</string>
     <string name="dashboard_factor_notifications">Allow notifications so we can warn you.</string>
-    <string name="dashboard_quick_actions">Quick actions</string>
-    <string name="dashboard_action_scan_title">Run a security check</string>
-    <string name="dashboard_action_scan_body">Look for dangerous apps and risky settings.</string>
-    <string name="dashboard_action_firewall_title">Control internet access</string>
-    <string name="dashboard_action_firewall_body">See which apps are online and block the ones you don\'t trust.</string>
-    <string name="dashboard_action_update_title">Check for updates</string>
-    <string name="dashboard_action_update_body">Make sure you have the newest protections.</string>
+    <string name="dashboard_factor_notifications_body">Lets SecureBox warn you about risks.</string>
+
+    <string name="dashboard_help_title">New to SecureBox?</string>
+    <string name="dashboard_help_body">Open the 30-second guide. It explains every screen without technical words.</string>
+    <string name="dashboard_help_action">Open the guide</string>
 </resources>

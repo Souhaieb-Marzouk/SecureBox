@@ -15,10 +15,10 @@ unlocked, three consecutive cold starts via `adb shell am start -W`:
 
 | Artifact | Size |
 |---|---|
-| Universal (all ABIs) | 2.34 MB |
-| arm64-v8a | 2.25 MB |
-| armeabi-v7a | 2.25 MB |
-| x86_64 | 2.25 MB |
+| Universal (all ABIs) | 2.76 MB |
+| arm64-v8a | 2.67 MB |
+| armeabi-v7a | 2.67 MB |
+| x86_64 | 2.67 MB |
 
 **Budget: universal under 40 MB.** The app is far below it; the native pump adds ~120 KB.
 

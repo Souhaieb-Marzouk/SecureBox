@@ -65,7 +65,8 @@ fun TvShell(
         selectedRoute =
             if (currentRoute == Routes.PRIVACY ||
                 currentRoute == Routes.HARDENING ||
-                currentRoute == Routes.THREAT_INTEL
+                currentRoute == Routes.THREAT_INTEL ||
+                currentRoute == Routes.HELP
             ) {
                 Routes.SETTINGS
             } else {

@@ -69,4 +69,36 @@
     <string name="privacy_export_title">Your logs stay yours</string>
     <string name="privacy_export_body">SecureBox keeps optional diagnostic logs on the device. They are shared only if you export them yourself.</string>
     <string name="privacy_back">Back</string>
+    <string name="help_back">Back</string>
+    <string name="help_title">How to use SecureBox</string>
+    <string name="help_subtitle">No security knowledge needed. Four simple steps and a plain-language glossary.</string>
+    <string name="help_intro_title">SecureBox in 30 seconds</string>
+    <string name="help_intro_body">It checks the apps on this device, shows what they can access, and can stop any app from using the internet. Everything stays on your device.</string>
+    <string name="help_steps_title">Four simple steps</string>
+    <string name="help_step_scan_title">Run a check</string>
+    <string name="help_step_scan_body">Open the Threats tab and press Check now. You get a score and a short list of things to fix.</string>
+    <string name="help_step_apps_title">Review your apps</string>
+    <string name="help_step_apps_body">Open Apps. Each app has a score from 0 to 100. Tap an app to see what it can access and open the exact system setting to change it.</string>
+    <string name="help_step_block_title">Block an app online</string>
+    <string name="help_step_block_body">Open Network, find the app and turn on Block. Its internet is stopped locally; nothing is sent to a server.</string>
+    <string name="help_step_update_title">Keep SecureBox updated</string>
+    <string name="help_step_update_body">Open Settings, then Check for updates. Updates install only after you confirm them.</string>
+    <string name="help_words_title">What the words mean</string>
+    <string name="help_word_score">Security score</string>
+    <string name="help_word_score_body">A 0–100 summary of this device. Higher is better. 100 does not mean “unhackable”; it means SecureBox found no obvious risk signals.</string>
+    <string name="help_word_firewall">Local firewall</string>
+    <string name="help_word_firewall_body">A filter that runs on this device and stops chosen apps from reaching the internet. It never forwards your traffic.</string>
+    <string name="help_word_permission">Permission</string>
+    <string name="help_word_permission_body">A key that lets an app use the camera, microphone, location, contacts or another part of the device. Android controls these keys.</string>
+    <string name="help_word_sideloaded">Sideloaded app</string>
+    <string name="help_word_sideloaded_body">An app installed from a file or a store other than the Play Store. It is not automatically bad, but it was not reviewed by Google.</string>
+    <string name="help_word_tracker">Tracker</string>
+    <string name="help_word_tracker_body">Code inside an app that reports what you do to an advertising or analytics company. SecureBox lists known trackers but cannot remove them.</string>
+    <string name="help_risky_title">If something looks risky</string>
+    <string name="help_risky_body">Don\'t panic. Open the app\'s details, read the risk signals, and turn off the permission it does not need in Android settings. If you do not need the app, uninstall it. SecureBox never deletes apps for you.</string>
+    <string name="help_safe_title">You cannot break anything</string>
+    <string name="help_safe_body">Every action asks first. Turning off the firewall only stops blocking; it does not uninstall apps or erase your data.</string>
+
+    <string name="settings_help_title">How to use SecureBox</string>
+    <string name="settings_help_body">A 30-second guide to every screen, with no technical words.</string>
 </resources>

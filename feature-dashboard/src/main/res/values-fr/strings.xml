@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="dashboard_title">Votre score de sécurité</string>
-    <string name="dashboard_subtitle">Un chiffre simple qui montre à quel point cet appareil est protégé.</string>
+    <string name="dashboard_title">Votre sécurité en un coup d\'œil</string>
+    <string name="dashboard_subtitle">Un score et quatre actions simples — aucune connaissance en sécurité nécessaire.</string>
     <string name="dashboard_score_description">Score de sécurité %1$d sur 100</string>
+    <string name="dashboard_score_label">SCORE DE SÉCURITÉ</string>
     <string name="dashboard_device_mode">Affichage : %1$s</string>
     <string name="dashboard_device_tv">Android TV</string>
     <string name="dashboard_device_phone">Téléphone</string>
-    <string name="dashboard_improve_title">Améliorez votre score</string>
+
+    <string name="dashboard_hero_protected">Vous êtes protégé</string>
+    <string name="dashboard_hero_attention">Quelques points à corriger</string>
+    <string name="dashboard_hero_body_protected">SecureBox surveille cet appareil. Voici votre score et ce que vous pouvez faire ensuite.</string>
+    <string name="dashboard_hero_body_attention">Votre score peut être meilleur. Corrigez les points ci-dessous — chacun prend moins d\'une minute.</string>
+
+    <string name="dashboard_quick_actions">Que voulez-vous faire ?</string>
+    <string name="dashboard_quick_scan">Analyser</string>
+    <string name="dashboard_quick_scan_body">Trouver les applications à risque.</string>
+    <string name="dashboard_quick_block">Bloquer internet</string>
+    <string name="dashboard_quick_block_body">Empêcher une application d\'aller en ligne.</string>
+    <string name="dashboard_quick_apps">Voir les applications</string>
+    <string name="dashboard_quick_apps_body">Découvrir ce à quoi elles ont accès.</string>
+    <string name="dashboard_quick_help">Comment faire</string>
+    <string name="dashboard_quick_help_body">Ouvrir le guide simple.</string>
+
+    <string name="dashboard_needs_attention">À corriger</string>
+    <string name="dashboard_all_clear">Tout est clair</string>
     <string name="dashboard_all_good">Tout semble correct. Beau travail.</string>
     <string name="dashboard_factor_firewall">Activez le pare-feu local.</string>
-    <string name="dashboard_factor_updates">Mettez à jour vers la dernière version.</string>
+    <string name="dashboard_factor_firewall_body">Bloque internet pour les applications que vous ne faites pas confiance.</string>
+    <string name="dashboard_factor_updates">Passez à la dernière version.</string>
+    <string name="dashboard_factor_updates_body">Nouvelles protections et corrections.</string>
     <string name="dashboard_factor_usage">Autorisez l\'accès à l\'usage pour voir les données par application.</string>
+    <string name="dashboard_factor_usage_body">Permet à SecureBox d\'afficher la quantité de données utilisée par chaque application.</string>
     <string name="dashboard_factor_notifications">Autorisez les notifications pour être averti.</string>
-    <string name="dashboard_quick_actions">Actions rapides</string>
-    <string name="dashboard_action_scan_title">Lancer une vérification</string>
-    <string name="dashboard_action_scan_body">Recherchez les applications dangereuses et les réglages risqués.</string>
-    <string name="dashboard_action_firewall_title">Contrôler l\'accès internet</string>
-    <string name="dashboard_action_firewall_body">Voyez quelles applications sont en ligne et bloquez celles en lesquelles vous n\'avez pas confiance.</string>
-    <string name="dashboard_action_update_title">Rechercher des mises à jour</string>
-    <string name="dashboard_action_update_body">Assurez-vous de disposer des toutes dernières protections.</string>
+    <string name="dashboard_factor_notifications_body">Permet à SecureBox de vous prévenir des risques.</string>
+
+    <string name="dashboard_help_title">Nouveau sur SecureBox ?</string>
+    <string name="dashboard_help_body">Ouvrez le guide de 30 secondes. Il explique chaque écran sans mots techniques.</string>
+    <string name="dashboard_help_action">Ouvrir le guide</string>
 </resources>

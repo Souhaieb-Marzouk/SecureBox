@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.5.2</b></span>
+      <span>Baseline <b>v0.6.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-069",
+    "p": "P1",
+    "type": "issue",
+    "area": "Usability",
+    "milestone": "v0.6.0",
+    "status": "done",
+    "title": "Plain-language How to use SecureBox guide and simpler dashboard",
+    "desc": "Dashboard now leads with four actions: Scan apps, Block internet, Review apps, How to use. The new Help screen explains four steps and defines score, firewall, permission, sideloaded app and tracker in plain language, plus \"if something looks risky\" and \"you cannot break anything\" reassurance. Linked from the dashboard and a prominent Settings card; D-pad focusable on TV.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-068",
+    "p": "P1",
+    "type": "issue",
+    "area": "Design",
+    "milestone": "v0.6.0",
+    "status": "done",
+    "title": "Complete Aurora redesign for phone and Android TV",
+    "desc": "New Aurora backdrop, glass cards, gradient accents, heavier type scale, gradient score ring, floating phone navigation and a translucent TV sidebar. Onboarding, dashboard and shells were rebuilt; every other screen inherits the new theme, cards and headings. TV typography now scales all styles including bodySmall.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-067",
+    "p": "P1",
+    "type": "issue",
+    "area": "Brand",
+    "milestone": "v0.6.0",
+    "status": "done",
+    "title": "New 2.5D SecureBox mark, launcher icon, TV banner and store icon",
+    "desc": "The old flat shield was replaced by a 2.5D teal-to-violet shield with a glass face and embossed check. Generated reproducibly from tools/generate-brand-assets.py: adaptive launcher foregrounds at five densities, a gradient adaptive background, TV banners at four densities and a 512 px store icon. Documented in docs/BRANDING.md.",
+    "doneAt": "2026-11-07"
+  },
   {
     "id": "SB-066",
     "p": "P1",
@@ -863,6 +896,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.6.0: Aurora redesign with a new 2.5D shield mark, adaptive launcher icon, TV banner, glass cards, gradient score ring, floating phone navigation, cinematic TV sidebar, a four-action dashboard and a plain-language How to use guide." },
   { d: "2026-11-07", t: "v0.5.2: Apps tab now explains scores and provides system-settings actions; Live bandwidth lists every app via NetworkStatsManager (including Ethernet); Open ports/Upload anomalies explain themselves; rooted/test-key TV boxes are advisory instead of tampered; installed version/build read from PackageManager." },
   { d: "2026-11-07", t: "v0.5.1 audit release: fixed the IPv6 firewall bypass, feed byte stability and CI asset/signature gaps, FileProvider debug installs, feed size/validation, worker constraints, backup rules, plurals/icons and dashboard firewall scoring. Full gates pass; 44 unit tests." },
   { d: "2026-11-07", t: "v0.5.0: signed threat feed (Ed25519) with status screen and daily updates, signed release manifests, markdown links/code fences, update cache cleanup, x86_64 split, paid-tier placeholder, French review closed, 400 ms cold start. 11 P3 items closed; SB-041 (DNS enforcement), SB-046 (TalkBack/font pass) and SB-048 (TV + v1.0.0 publish) are explicitly blocked." },
@@ -1011,7 +1045,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.5.2";
+  el("footVersion").textContent = "v0.6.0";
 }
 
 function renderLog() {

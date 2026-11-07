@@ -69,4 +69,36 @@
     <string name="privacy_export_title">Vos journaux restent les vôtres</string>
     <string name="privacy_export_body">SecureBox conserve des journaux de diagnostic facultatifs sur l\'appareil. Ils ne sont partagés que si vous les exportez vous-même.</string>
     <string name="privacy_back">Retour</string>
+    <string name="help_back">Retour</string>
+    <string name="help_title">Comment utiliser SecureBox</string>
+    <string name="help_subtitle">Aucune connaissance en sécurité nécessaire. Quatre étapes simples et un glossaire en langage clair.</string>
+    <string name="help_intro_title">SecureBox en 30 secondes</string>
+    <string name="help_intro_body">SecureBox vérifie les applications de cet appareil, montre à quoi elles ont accès et peut empêcher n\'importe quelle application d\'utiliser internet. Tout reste sur votre appareil.</string>
+    <string name="help_steps_title">Quatre étapes simples</string>
+    <string name="help_step_scan_title">Lancer une vérification</string>
+    <string name="help_step_scan_body">Ouvrez l\'onglet Menaces et appuyez sur Vérifier. Vous obtenez un score et une courte liste de points à corriger.</string>
+    <string name="help_step_apps_title">Examiner vos applications</string>
+    <string name="help_step_apps_body">Ouvrez Applications. Chaque application a un score de 0 à 100. Touchez-la pour voir à quoi elle a accès et ouvrir le réglage système exact.</string>
+    <string name="help_step_block_title">Bloquer une application en ligne</string>
+    <string name="help_step_block_body">Ouvrez Réseau, trouvez l\'application et activez Bloquer. Son accès internet est coupé localement ; rien n\'est envoyé à un serveur.</string>
+    <string name="help_step_update_title">Garder SecureBox à jour</string>
+    <string name="help_step_update_body">Ouvrez Réglages, puis Vérifier les mises à jour. Une mise à jour ne s\'installe qu\'après votre confirmation.</string>
+    <string name="help_words_title">Ce que veulent dire les mots</string>
+    <string name="help_word_score">Score de sécurité</string>
+    <string name="help_word_score_body">Un résumé de 0 à 100 de cet appareil. Plus c\'est élevé, mieux c\'est. 100 ne veut pas dire « inviolable » : SecureBox n\'a trouvé aucun signal de risque évident.</string>
+    <string name="help_word_firewall">Pare-feu local</string>
+    <string name="help_word_firewall_body">Un filtre qui tourne sur cet appareil et empêche les applications choisies d\'atteindre internet. Il ne transmet jamais votre trafic.</string>
+    <string name="help_word_permission">Autorisation</string>
+    <string name="help_word_permission_body">Une clé qui permet à une application d\'utiliser la caméra, le micro, la position, les contacts ou une autre partie de l\'appareil. Android contrôle ces clés.</string>
+    <string name="help_word_sideloaded">Application installée manuellement</string>
+    <string name="help_word_sideloaded_body">Une application installée depuis un fichier ou un autre magasin que le Play Store. Elle n\'est pas forcément mauvaise, mais elle n\'a pas été vérifiée par Google.</string>
+    <string name="help_word_tracker">Pisteur</string>
+    <string name="help_word_tracker_body">Du code dans une application qui transmet ce que vous faites à une société de publicité ou d\'analyse. SecureBox liste les pisteurs connus mais ne peut pas les retirer.</string>
+    <string name="help_risky_title">Si quelque chose semble risqué</string>
+    <string name="help_risky_body">Pas de panique. Ouvrez les détails de l\'application, lisez les signaux de risque et désactivez l\'autorisation inutile dans les réglages Android. Si vous n\'avez pas besoin de l\'application, désinstallez-la. SecureBox ne supprime jamais d\'application à votre place.</string>
+    <string name="help_safe_title">Vous ne pouvez rien casser</string>
+    <string name="help_safe_body">Chaque action demande confirmation. Désactiver le pare-feu arrête seulement le blocage ; cela ne désinstalle pas d\'application et n\'efface pas vos données.</string>
+
+    <string name="settings_help_title">Comment utiliser SecureBox</string>
+    <string name="settings_help_body">Un guide de 30 secondes pour chaque écran, sans mots techniques.</string>
 </resources>

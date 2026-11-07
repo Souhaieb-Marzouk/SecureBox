@@ -36,6 +36,7 @@ import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ThemeMode
 import io.securebox.core.domain.security.IntegrityIssue
+import io.securebox.core.ui.component.BrandMark
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -48,6 +49,7 @@ private const val LICENSE_URL = "$GITHUB_URL/blob/main/LICENSE"
 fun SettingsRoute(
     onOpenPrivacy: () -> Unit,
     onOpenThreatIntel: () -> Unit,
+    onOpenHelp: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -61,6 +63,7 @@ fun SettingsRoute(
         onRefreshIntegrity = viewModel::refreshIntegrity,
         onOpenPrivacy = onOpenPrivacy,
         onOpenThreatIntel = onOpenThreatIntel,
+        onOpenHelp = onOpenHelp,
     )
 }
 
@@ -75,6 +78,7 @@ fun SettingsScreen(
     onRefreshIntegrity: () -> Unit,
     onOpenPrivacy: () -> Unit,
     onOpenThreatIntel: () -> Unit,
+    onOpenHelp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -92,6 +96,37 @@ fun SettingsScreen(
                 title = stringResource(R.string.settings_title),
                 subtitle = stringResource(R.string.settings_subtitle),
             )
+        }
+
+        item {
+            SecureCard(modifier = Modifier.clickable(onClick = onOpenHelp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                ) {
+                    BrandMark(size = 44.dp)
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(3.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_help_title),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            text = stringResource(R.string.settings_help_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Icon(
+                        imageVector = SecureBoxIcons.ChevronRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
         }
 
         item {

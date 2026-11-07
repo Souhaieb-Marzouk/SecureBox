@@ -47,6 +47,8 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
+import io.securebox.core.ui.component.AuroraBackground
+import io.securebox.core.ui.component.BrandMark
 import io.securebox.core.ui.component.ScoreGauge
 import io.securebox.core.ui.component.ScoreGradeLabels
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -69,17 +71,19 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    OnboardingScreen(
-        state = state,
-        onSelectLanguage = viewModel::selectLanguage,
-        onContinueLanguage = viewModel::continueFromLanguage,
-        onConfirmDevice = viewModel::confirmDeviceMode,
-        onBack = viewModel::goBack,
-        onNotificationResult = viewModel::onNotificationPermissionResult,
-        onVpnResult = viewModel::onVpnPrepared,
-        onContinuePermissions = viewModel::continueFromPermissions,
-        onFinish = viewModel::finish,
-    )
+    AuroraBackground {
+        OnboardingScreen(
+            state = state,
+            onSelectLanguage = viewModel::selectLanguage,
+            onContinueLanguage = viewModel::continueFromLanguage,
+            onConfirmDevice = viewModel::confirmDeviceMode,
+            onBack = viewModel::goBack,
+            onNotificationResult = viewModel::onNotificationPermissionResult,
+            onVpnResult = viewModel::onVpnPrepared,
+            onContinuePermissions = viewModel::continueFromPermissions,
+            onFinish = viewModel::finish,
+        )
+    }
 }
 
 @Composable
@@ -95,12 +99,7 @@ fun OnboardingScreen(
     onFinish: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(
             modifier =
                 Modifier
@@ -155,12 +154,7 @@ fun OnboardingScreen(
 @Composable
 private fun Brand() {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Icon(
-            imageVector = SecureBoxIcons.Shield,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(36.dp),
-        )
+        BrandMark(size = 44.dp)
         Text(
             text = stringResource(R.string.onboarding_brand_name),
             style = MaterialTheme.typography.headlineMedium,

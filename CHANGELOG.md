@@ -9,6 +9,27 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.6.0] - 2026-11-07
+
+### Added
+
+- Aurora design system: deep-ink gradient backdrop, glass cards, gradient accents, refreshed type scale and gradient score ring.
+- New 2.5D shield mark, adaptive launcher icon, Android TV banner and 512 px store icon.
+- Floating glass bottom navigation on phones and a cinematic sidebar on Android TV.
+- Redesigned dashboard with a score hero and four plain-language actions.
+- “How to use SecureBox” guide with four steps and a plain-language glossary, linked from the dashboard and Settings.
+- TV-aware dashboard sizing for 10-foot readability.
+
+### Changed
+
+- Phone and TV shells now share the Aurora backdrop and brand mark.
+- Onboarding uses the new mark and backdrop.
+- Screen headings gained a gradient accent bar.
+
+### Fixed
+
+- Carried forward the v0.5.2 Apps, Network Live and TV integrity fixes.
+
 ## [0.5.2] - 2026-11-07
 
 ### Added

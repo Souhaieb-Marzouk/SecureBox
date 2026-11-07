@@ -6,39 +6,49 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 private val DarkScheme =
     darkColorScheme(
-        primary = SecureBoxColors.Teal400,
-        onPrimary = SecureBoxColors.Teal900,
-        primaryContainer = SecureBoxColors.Navy700,
-        onPrimaryContainer = SecureBoxColors.Teal300,
-        secondary = SecureBoxColors.Teal300,
-        onSecondary = SecureBoxColors.Teal900,
-        tertiary = SecureBoxColors.Amber400,
-        onTertiary = SecureBoxColors.Amber900,
-        error = SecureBoxColors.Red400,
-        onError = SecureBoxColors.Red900,
-        background = SecureBoxColors.Navy950,
+        primary = SecureBoxColors.AuroraTeal,
+        onPrimary = SecureBoxColors.Ink950,
+        primaryContainer = SecureBoxColors.DeepTeal,
+        onPrimaryContainer = Color(0xFF9FFFF0),
+        secondary = SecureBoxColors.AuroraViolet,
+        onSecondary = SecureBoxColors.Ink950,
+        secondaryContainer = Color(0xFF241B4D),
+        onSecondaryContainer = Color(0xFFDCD6FF),
+        tertiary = SecureBoxColors.AuroraAmber,
+        onTertiary = SecureBoxColors.Ink950,
+        error = SecureBoxColors.AuroraCoral,
+        onError = SecureBoxColors.Ink950,
+        errorContainer = Color(0xFF3A1212),
+        onErrorContainer = Color(0xFFFFD7DB),
+        background = SecureBoxColors.Ink950,
         onBackground = SecureBoxColors.TextPrimary,
-        surface = SecureBoxColors.Navy900,
+        surface = SecureBoxColors.Ink900,
         onSurface = SecureBoxColors.TextPrimary,
-        surfaceVariant = SecureBoxColors.Navy800,
+        surfaceVariant = SecureBoxColors.Ink800,
         onSurfaceVariant = SecureBoxColors.TextSecondary,
-        outline = SecureBoxColors.Navy600,
-        outlineVariant = SecureBoxColors.Navy700,
+        outline = SecureBoxColors.Ink600,
+        outlineVariant = SecureBoxColors.Ink700,
+        scrim = Color(0xCC05070F),
+        inverseSurface = SecureBoxColors.TextPrimary,
+        inverseOnSurface = SecureBoxColors.Ink950,
+        inversePrimary = SecureBoxColors.LightTeal,
+        surfaceTint = SecureBoxColors.AuroraTeal,
     )
 
 private val LightScheme =
     lightColorScheme(
         primary = SecureBoxColors.LightTeal,
         onPrimary = Color.White,
-        primaryContainer = Color(0xFFCDEFE9),
+        primaryContainer = Color(0xFFC9F7EF),
         onPrimaryContainer = Color(0xFF00201C),
-        secondary = Color(0xFF00695C),
+        secondary = SecureBoxColors.LightViolet,
         onSecondary = Color.White,
+        secondaryContainer = Color(0xFFE7E2FF),
+        onSecondaryContainer = Color(0xFF1A0E5A),
         tertiary = SecureBoxColors.LightAmber,
         onTertiary = Color.White,
         error = SecureBoxColors.LightRed,
@@ -47,10 +57,11 @@ private val LightScheme =
         onBackground = SecureBoxColors.LightText,
         surface = SecureBoxColors.LightSurface,
         onSurface = SecureBoxColors.LightText,
-        surfaceVariant = Color(0xFFE4EBF1),
+        surfaceVariant = SecureBoxColors.LightSurfaceVariant,
         onSurfaceVariant = SecureBoxColors.LightTextSecondary,
         outline = Color(0xFF7A8B9B),
         outlineVariant = Color(0xFFC3CFD9),
+        surfaceTint = SecureBoxColors.LightTeal,
     )
 
 @Composable
@@ -59,11 +70,9 @@ fun SecureBoxTheme(
     typography: Typography = SecureBoxTypography,
     content: @Composable () -> Unit,
 ) {
-    CompositionLocalProvider {
-        MaterialTheme(
-            colorScheme = if (darkTheme) DarkScheme else LightScheme,
-            typography = typography,
-            content = content,
-        )
-    }
+    MaterialTheme(
+        colorScheme = if (darkTheme) DarkScheme else LightScheme,
+        typography = typography,
+        content = content,
+    )
 }
