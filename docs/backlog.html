@@ -194,7 +194,7 @@ const ITEMS = [
     "milestone": "v0.4.1",
     "status": "done",
     "title": "Switching to TV mode on a phone traps the user in an unusable layout",
-    "desc": "Found during device QA: selecting Android TV box on OPPO CPH2173 gave the TV sidebar its full 280dp width, hid every tab and made the Settings control needed to switch back unreachable. Fixed in v0.4.1: compact 96dp icon rail under 600dp, 12dp content padding, and a \"Use phone layout\" escape button shown whenever the TV shell runs on non-TV hardware.",
+    "desc": "Found during device QA: selecting Android TV box on OPPO CPH2173 gave the TV sidebar its full 280dp width, hid every tab and made the Settings control needed to switch back unreachable. Fixed in v0.4.1: compact 96dp icon rail under 600dp, 12dp content padding, and a \"Use phone layout\" escape button shown whenever the TV shell runs on non-TV hardware. Confirmed on 0.4.1 on OPPO CPH2173: compact icon rail and \"Use phone layout\" work.",
     "doneAt": "2026-11-07"
   },
   {
@@ -788,7 +788,7 @@ const ITEMS = [
     "milestone": "v0.2.0",
     "status": "blocked",
     "title": "Device verification for v0.2.0 (phone + TV) is outstanding",
-    "desc": "No physical device is reachable over adb from the development environment, so onboarding, the firewall, bandwidth, anomaly notifications and the port list have not been exercised on hardware. SB-001/SB-002 were folded into this item; a one-command helper is ready. Phone smoke passed on 2026-11-07 (OPPO CPH2173, Android 14): adb install, versionName 0.4.0, MainActivity resumed, no crashes, permission surface clean (docs/device-qa/v0.4.0-results.md). Manual onboarding/network rows and the TV box remain. Manual phone checklist passed on 0.4.0; the pass found SB-062, fixed in 0.4.1. N6, the re-signed-APK check and the TV box remain.",
+    "desc": "No physical device is reachable over adb from the development environment, so onboarding, the firewall, bandwidth, anomaly notifications and the port list have not been exercised on hardware. SB-001/SB-002 were folded into this item; a one-command helper is ready. Phone smoke passed on 2026-11-07 (OPPO CPH2173, Android 14): adb install, versionName 0.4.0, MainActivity resumed, no crashes, permission surface clean (docs/device-qa/v0.4.0-results.md). Manual onboarding/network rows and the TV box remain. Manual phone checklist passed on 0.4.0; the pass found SB-062, fixed in 0.4.1. N6, the re-signed-APK check and the TV box remain. N2/N3/N5 and the SB-062 escape were confirmed on 0.4.1; only N6, the re-sign check and the TV box remain.",
     "doneWhen": "tools/device-qa.ps1 runs on a phone and a TV box, the onboarding and network checklists in TESTING.md pass, and results are recorded."
   },
   {
@@ -819,6 +819,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.4.1 confirmed on phone: N2 (VPN key + Protecting N apps), N3 (Wi-Fi and mobile data) and N5 (usage-access revoke/grant) pass, and SB-062 is verified (compact rail + Use phone layout). Remaining in SB-059: N6, re-sign check and the physical TV box." },
   { d: "2026-11-07", t: "v0.4.1 hotfix: SB-062 closed. Switching to TV mode on a phone now collapses the sidebar to an icon rail and shows a Use phone layout escape. Do not publish 0.4.0. Phone manual checklist recorded; N6, re-sign check and the physical TV box remain in SB-059." },
   { d: "2026-11-07", t: "v0.4.0 shipped: RASP with update lock, device hardening checklist, adaptive navigation rail, TV initial focus, pull-to-refresh, bottom-sheet app details, instrumented Compose tests with phone/TV emulator CI, and the native packet pump. All P2 items are now closed; SB-059 (physical device QA) remains blocked and the 14 P3 items are next." },
   { d: "2026-11-07", t: "v0.3.0 shipped: on-device app scanner (signature rules, trackers, permission combos, components), risk scores and reasons, sideload detection, weekly + boot scans, daily update check, notifications, permission refresh on resume, Play compliance doc and firewall edge-case doc. Closed SB-020..SB-024, SB-027, SB-031..SB-033, SB-035 and SB-060. Remaining P2: RASP, dangerous-settings checker, phone UX polish, WindowSizeClass, instrumented CI matrix and the native packet pump." },
