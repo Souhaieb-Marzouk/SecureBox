@@ -13,6 +13,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.2.0] - 2026-11-07
+
+### Added
+
+- Per-app bandwidth monitor: live rates from TrafficStats plus 24 h / 7 d / 30 d history from NetworkStatsManager, sorted by consumption with a per-row block switch.
+- Upload anomaly detector: 7-day hourly baseline, 3× multiplier or 100 MB/h hard threshold, hourly WorkManager check, and notifications with Block and Uninstall actions.
+- Local-only VPN firewall: per-app blocking, Allow all / Block unknown apps presets, persistent local-only notification, and detection of a conflicting VPN.
+- Open port and inbound listener monitor with UID attribution and internet-facing flags.
+- Complete Network screen for both phone and TV shells, with app icons, range filters and firewall controls.
+- Six unit tests for the anomaly rules.
+
+### Changed
+
+- Security Score now reflects the real update status instead of assuming the app is current.
+- Threat Intelligence is clearly marked as arriving in v0.5.0; its toggle is disabled until the signed feed exists.
+
+### Security
+
+- The VPN never forwards packets; blocked apps' traffic is discarded on-device.
+- The keystore password is now DPAPI-encrypted and `signing.properties` was removed; `tools/build-release.ps1` injects it only into the build process.
+- `QUERY_ALL_PACKAGES` added for per-app attribution; Play declaration tracked in the backlog.
+
 ## [0.1.0] - 2026-11-06
 
 ### Added

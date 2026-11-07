@@ -2,9 +2,50 @@
 <resources>
     <string name="network_title">Network &amp; bandwidth</string>
     <string name="network_subtitle">See which apps use your internet — and stop the ones that shouldn\'t.</string>
-    <string name="network_roadmap_banner">Per-app traffic analysis, the local firewall and the anomaly detector arrive in v0.2.0.</string>
-    <string name="network_planned_title">Planned for v0.2.0</string>
-    <string name="network_planned_one">Per-app download and upload totals, live and over 7 days.</string>
-    <string name="network_planned_two">A one-tap firewall that blocks an app\'s internet access.</string>
-    <string name="network_planned_three">Alerts when an app suddenly uploads far more than usual.</string>
+
+    <string name="network_usage_needed_title">Usage access is off</string>
+    <string name="network_usage_needed_body">SecureBox needs usage access to read per-app traffic. The data stays on this device and is never uploaded.</string>
+    <string name="network_open_settings">Open settings</string>
+
+    <string name="network_firewall_title">Local firewall</string>
+    <string name="network_firewall_on">Active — %1$d apps blocked</string>
+    <string name="network_firewall_waiting">On — choose apps to block</string>
+    <string name="network_firewall_off">Off</string>
+    <string name="network_firewall_local_only">Runs entirely on this device. No traffic is sent to SecureBox.</string>
+    <string name="network_firewall_other_vpn">Another VPN is active. Android allows one VPN at a time, so the firewall cannot start until it is turned off.</string>
+    <string name="network_preset_allow_all">Allow all apps</string>
+    <string name="network_preset_block_unknown">Block unknown apps</string>
+    <string name="network_preset_block_unknown_hint">Blocks everything installed outside the Play Store, including sideloaded TV apps.</string>
+    <string name="network_block_unknown_action">Block unknown apps now</string>
+
+    <string name="network_bandwidth_title">Bandwidth by app</string>
+    <string name="network_range_live">Live</string>
+    <string name="network_range_day">24 h</string>
+    <string name="network_range_week">7 days</string>
+    <string name="network_range_month">30 days</string>
+    <string name="network_live_hint">Refreshes every 2 seconds. The totals shown are since the last boot.</string>
+    <string name="network_history_hint">Totals for the selected period, read from Android\'s own statistics.</string>
+    <string name="network_no_usage">No traffic recorded yet. Use the internet for a moment and come back.</string>
+
+    <string name="network_ports_title">Open ports</string>
+    <string name="network_ports_unavailable">Android restricts /proc/net on this version, so listening ports cannot be listed. This is a platform limit, not a clean result.</string>
+    <string name="network_ports_empty">No app is listening on a port.</string>
+    <string name="network_ports_exposed">Internet-facing</string>
+    <string name="network_ports_local">Local only</string>
+    <string name="network_port_label">%1$s %2$d</string>
+
+    <string name="network_anomaly_title">Upload anomalies</string>
+    <string name="network_anomaly_never">No check has run yet. SecureBox checks hourly when the app is installed.</string>
+    <string name="network_anomaly_last">Last check: %1$s</string>
+    <string name="network_anomaly_none">No unusual uploads detected.</string>
+    <string name="network_anomaly_spike">%1$s uploaded %2$s in an hour (usually %3$s per hour).</string>
+    <string name="network_anomaly_hard">%1$s uploaded %2$s in an hour.</string>
+
+    <string name="network_error_vpn">SecureBox could not get VPN permission. The firewall needs it to block apps locally.</string>
+    <string name="network_error_service">The firewall service could not start. Try again.</string>
+    <string name="network_dismiss">Dismiss</string>
+    <string name="network_refresh">Refresh</string>
+
+    <string name="network_row_live_stats">↓ %1$s/s · %2$s total</string>
+    <string name="network_row_history_stats">↓ %1$s · ↑ %2$s</string>
 </resources>

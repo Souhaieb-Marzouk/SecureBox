@@ -10,6 +10,10 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+    <!-- Required to attribute traffic and ports to every installed app. -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <!-- TV boxes have no touchscreen; both device families are supported by one APK. -->
     <uses-feature
@@ -43,6 +47,15 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Handles the "Block internet" action on anomaly notifications. -->
+        <receiver
+            android:name=".work.AnomalyActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="io.securebox.action.BLOCK_APP" />
+            </intent-filter>
+        </receiver>
 
         <!-- Scoped to cacheDir/updates only: the installer receives nothing else. -->
         <provider

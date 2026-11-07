@@ -8,6 +8,7 @@ import io.securebox.BuildConfig
 import io.securebox.core.data.security.PackageSignatureVerifier
 import io.securebox.core.domain.model.AppVersion
 import io.securebox.core.domain.model.CalculateSecurityScoreUseCase
+import io.securebox.core.domain.network.DetectAnomaliesUseCase
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -17,6 +18,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCalculateSecurityScore(): CalculateSecurityScoreUseCase = CalculateSecurityScoreUseCase()
+
+    @Provides
+    @Singleton
+    fun provideDetectAnomalies(): DetectAnomaliesUseCase = DetectAnomaliesUseCase()
 
     @Provides
     @Singleton

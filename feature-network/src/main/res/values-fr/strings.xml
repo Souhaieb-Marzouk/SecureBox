@@ -2,9 +2,50 @@
 <resources>
     <string name="network_title">Réseau et bande passante</string>
     <string name="network_subtitle">Voyez quelles applications utilisent votre internet — et arrêtez celles qui ne devraient pas.</string>
-    <string name="network_roadmap_banner">L\'analyse du trafic par application, le pare-feu local et le détecteur d\'anomalies arrivent en v0.2.0.</string>
-    <string name="network_planned_title">Prévu pour la v0.2.0</string>
-    <string name="network_planned_one">Totaux de téléchargement et d\'envoi par application, en direct et sur 7 jours.</string>
-    <string name="network_planned_two">Un pare-feu en un geste qui bloque l\'accès internet d\'une application.</string>
-    <string name="network_planned_three">Des alertes lorsqu\'une application envoie soudainement beaucoup plus que d\'habitude.</string>
+
+    <string name="network_usage_needed_title">L\'accès à l\'usage est désactivé</string>
+    <string name="network_usage_needed_body">SecureBox a besoin de l\'accès à l\'usage pour lire le trafic de chaque application. Les données restent sur cet appareil et ne sont jamais envoyées.</string>
+    <string name="network_open_settings">Ouvrir les réglages</string>
+
+    <string name="network_firewall_title">Pare-feu local</string>
+    <string name="network_firewall_on">Actif — %1$d applications bloquées</string>
+    <string name="network_firewall_waiting">Actif — choisissez des applications à bloquer</string>
+    <string name="network_firewall_off">Désactivé</string>
+    <string name="network_firewall_local_only">Fonctionne entièrement sur cet appareil. Aucun trafic n\'est envoyé à SecureBox.</string>
+    <string name="network_firewall_other_vpn">Un autre VPN est actif. Android n\'autorise qu\'un seul VPN à la fois : le pare-feu ne peut pas démarrer tant qu\'il n\'est pas désactivé.</string>
+    <string name="network_preset_allow_all">Autoriser toutes les applications</string>
+    <string name="network_preset_block_unknown">Bloquer les applications inconnues</string>
+    <string name="network_preset_block_unknown_hint">Bloque tout ce qui est installé hors du Play Store, y compris les applications TV installées manuellement.</string>
+    <string name="network_block_unknown_action">Bloquer les applications inconnues</string>
+
+    <string name="network_bandwidth_title">Bande passante par application</string>
+    <string name="network_range_live">En direct</string>
+    <string name="network_range_day">24 h</string>
+    <string name="network_range_week">7 jours</string>
+    <string name="network_range_month">30 jours</string>
+    <string name="network_live_hint">Actualisé toutes les 2 secondes. Les totaux affichés datent du dernier démarrage.</string>
+    <string name="network_history_hint">Totaux pour la période sélectionnée, lus depuis les statistiques d\'Android.</string>
+    <string name="network_no_usage">Aucun trafic enregistré pour le moment. Utilisez internet un instant puis revenez.</string>
+
+    <string name="network_ports_title">Ports ouverts</string>
+    <string name="network_ports_unavailable">Android limite l\'accès à /proc/net sur cette version : les ports en écoute ne peuvent pas être listés. C\'est une limite de la plateforme, pas un résultat rassurant.</string>
+    <string name="network_ports_empty">Aucune application n\'écoute sur un port.</string>
+    <string name="network_ports_exposed">Exposé à internet</string>
+    <string name="network_ports_local">Local uniquement</string>
+    <string name="network_port_label">%1$s %2$d</string>
+
+    <string name="network_anomaly_title">Anomalies d\'envoi</string>
+    <string name="network_anomaly_never">Aucune vérification n\'a encore eu lieu. SecureBox vérifie toutes les heures.</string>
+    <string name="network_anomaly_last">Dernière vérification : %1$s</string>
+    <string name="network_anomaly_none">Aucun envoi inhabituel détecté.</string>
+    <string name="network_anomaly_spike">%1$s a envoyé %2$s en une heure (habituellement %3$s par heure).</string>
+    <string name="network_anomaly_hard">%1$s a envoyé %2$s en une heure.</string>
+
+    <string name="network_error_vpn">SecureBox n\'a pas pu obtenir l\'autorisation VPN. Le pare-feu en a besoin pour bloquer les applications localement.</string>
+    <string name="network_error_service">Le service du pare-feu n\'a pas pu démarrer. Réessayez.</string>
+    <string name="network_dismiss">Fermer</string>
+    <string name="network_refresh">Actualiser</string>
+
+    <string name="network_row_live_stats">↓ %1$s/s · %2$s au total</string>
+    <string name="network_row_history_stats">↓ %1$s · ↑ %2$s</string>
 </resources>

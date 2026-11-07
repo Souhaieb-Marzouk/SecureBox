@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.1.0` — Foundation & Update System |
+| **Current release** | `v0.2.0` — Network Intelligence & Local Firewall |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
@@ -24,14 +24,18 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Every number is explained.** Each screen has a one-sentence "what this does", and every technical term has an inline "What is this?" chip.
 - **One codebase, two shells.** A touch-first bottom-navigation shell for phones and a D-pad-first 10-foot shell for TV boxes, selected automatically and overridable at any time.
 
-## What works today (v0.1.0)
+## What works today (v0.2.0)
 
 - **First-run onboarding**: language selection (EN/FR), automatic TV/phone detection with manual override, and plain-language permission explainers.
 - **Two UI shells**: `PhoneShell` (bottom navigation) and `TvShell` (sidebar + large focus rings), sharing one navigation graph.
+- **Per-app bandwidth**: live rates plus 24 h / 7 d / 30 d history, sorted by consumption, with a block switch on every row.
+- **Upload anomaly detector**: 7-day hourly baseline, 3× / 100 MB per hour thresholds, hourly checks and actionable notifications.
+- **Local-only firewall**: block any app's internet with a `VpnService`, Allow all / Block unknown apps presets, persistent local-only notification and conflicting-VPN detection.
+- **Open port monitor**: listening TCP/UDP sockets attributed to apps, with internet-facing flags and an honest "unavailable" state when Android restricts `/proc/net`.
 - **Self-update system**: GitHub Releases API, 12-hour cache, semantic version comparison, SHA-256 verification against the published `SHA256SUMS`, FileProvider hand-off to the system installer, and graceful handling of GitHub rate limits.
-- **Security score**: a transparent 0–100 score with weighted, documented factors.
+- **Security score**: a transparent 0–100 score with weighted, documented factors, now aware of available updates.
 - **APK self-integrity check**: the app verifies its own signing certificate at startup.
-- **Settings**: language, device mode (with re-detection), theme, Threat Intelligence toggle ("Free Trial"), update check, privacy policy, about.
+- **Settings**: language, device mode (with re-detection), theme, Threat Intelligence (explicitly not active before v0.5.0), update check, privacy policy, about.
 - **Docs & policies**: `PRIVACY.md`, `SECURITY.md`, `BUILDING.md`, `TESTING.md`.
 - **CI/CD**: GitHub Actions builds, tests, lints, signs and hashes APKs on tag push and uploads them as workflow artifacts; the GitHub Release itself is published manually.
 
@@ -94,7 +98,7 @@ core-ui/              Design system: theme, typography, custom icons, shared com
 core-tv-ui/           TV-only components: focus rings, sidebar scaffold, 10-foot type scale
 feature-onboarding/   Three-step first-run wizard
 feature-dashboard/    Security score and quick actions
-feature-network/      Network & firewall (v0.2.0 placeholder)
+feature-network/      Network: bandwidth, anomaly alerts, VPN firewall, port monitor
 feature-apps/         App & permission auditing (v0.3.0 placeholder)
 feature-threats/      Scanning (v0.3.0+ placeholder)
 feature-settings/     Settings and privacy policy

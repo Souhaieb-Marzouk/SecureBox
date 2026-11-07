@@ -11,4 +11,9 @@
     <string name="integrity_warning">Cette copie de SecureBox a été modifiée après sa signature. Installez la version officielle depuis GitHub pour rétablir la protection complète.</string>
     <string name="notification_channel_alerts">Alertes de sécurité</string>
     <string name="notification_channel_alerts_description">Avertissements sur une activité inhabituelle des applications et les mises à jour disponibles.</string>
+
+    <string name="anomaly_notification_title">Envoi inhabituel : %1$s</string>
+    <string name="anomaly_notification_body">%1$s a envoyé %2$s en une heure — bien plus que d\'habitude. Action recommandée : bloquer son accès internet.</string>
+    <string name="anomaly_action_block">Bloquer internet</string>
+    <string name="anomaly_action_uninstall">Désinstaller</string>
 </resources>

@@ -11,4 +11,9 @@
     <string name="integrity_warning">This copy of SecureBox was modified after it was signed. Install the official build from GitHub to restore full protection.</string>
     <string name="notification_channel_alerts">Security alerts</string>
     <string name="notification_channel_alerts_description">Warnings about unusual app activity and available updates.</string>
+
+    <string name="anomaly_notification_title">Unusual upload: %1$s</string>
+    <string name="anomaly_notification_body">%1$s sent %2$s in the last hour — far more than usual. Recommended action: block its internet access.</string>
+    <string name="anomaly_action_block">Block internet</string>
+    <string name="anomaly_action_uninstall">Uninstall</string>
 </resources>

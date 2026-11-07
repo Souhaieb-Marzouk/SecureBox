@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import io.securebox.feature.apps.AppsScreen
 import io.securebox.feature.dashboard.DashboardRoute
-import io.securebox.feature.network.NetworkScreen
+import io.securebox.feature.network.NetworkRoute
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
 import io.securebox.feature.threats.ThreatsScreen
@@ -31,7 +31,7 @@ fun SecureBoxNavHost(
                 onOpenSettings = { navController.navigateToTopLevel(Routes.SETTINGS) },
             )
         }
-        composable(Routes.NETWORK) { NetworkScreen() }
+        composable(Routes.NETWORK) { NetworkRoute() }
         composable(Routes.APPS) { AppsScreen() }
         composable(Routes.THREATS) { ThreatsScreen() }
         composable(Routes.SETTINGS) {

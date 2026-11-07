@@ -27,8 +27,9 @@
     <string name="settings_firewall_body">Blocks an app\'s internet access on this device. Arrives in v0.2.0.</string>
     <string name="settings_firewall_status">Coming soon</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
-    <string name="settings_threat_intel_body">Pulls a signed list of known bad apps and domains. Free during the trial.</string>
+    <string name="settings_threat_intel_body">Signed threat feeds arrive in v0.5.0. SecureBox does not download any threat data yet.</string>
     <string name="settings_threat_intel_toggle">Enable Threat Intelligence</string>
+    <string name="settings_threat_intel_coming">Not active yet — planned for v0.5.0.</string>
 
     <string name="settings_section_updates">Updates</string>
     <string name="settings_privacy_row_title">Privacy policy</string>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vpn_session_name">SecureBox firewall</string>
+    <string name="vpn_notification_title">SecureBox firewall is on</string>
+    <string name="vpn_notification_text">SecureBox inspects traffic locally on your device. Nothing is sent to us.</string>
+    <string name="vpn_notification_stop">Turn off</string>
+    <string name="vpn_channel_name">Firewall status</string>
+    <string name="vpn_channel_description">Shows when the local firewall is running.</string>
+</resources>

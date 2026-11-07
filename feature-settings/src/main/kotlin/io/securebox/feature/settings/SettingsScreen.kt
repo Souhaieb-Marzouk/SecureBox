@@ -36,7 +36,6 @@ import io.securebox.core.domain.model.ThemeMode
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.icon.SecureBoxIcons
-import io.securebox.feature.threatintel.TrialBadge
 import io.securebox.feature.update.UpdateSection
 
 private const val GITHUB_URL = "https://github.com/Souhaieb-Marzouk/SecureBox"
@@ -188,10 +187,7 @@ fun SettingsScreen(
 
         item {
             SecureCard {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(text = stringResource(R.string.settings_threat_intel_title), style = MaterialTheme.typography.titleMedium)
-                    TrialBadge()
-                }
+                Text(text = stringResource(R.string.settings_threat_intel_title), style = MaterialTheme.typography.titleMedium)
                 Text(
                     text = stringResource(R.string.settings_threat_intel_body),
                     style = MaterialTheme.typography.bodyMedium,
@@ -206,11 +202,15 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f),
                     )
-                    Switch(
-                        checked = state.settings.threatIntelEnabled,
-                        onCheckedChange = onThreatIntelEnabled,
-                    )
+                    // Intentionally disabled: the signed feed does not exist before v0.5.0, and a
+                    // working-looking switch would imply protection that is not there.
+                    Switch(checked = false, onCheckedChange = null, enabled = false)
                 }
+                Text(
+                    text = stringResource(R.string.settings_threat_intel_coming),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary,
+                )
             }
         }
 

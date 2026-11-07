@@ -129,7 +129,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.1.0</b></span>
+      <span>Baseline <b>v0.2.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -183,272 +183,651 @@
 
 /* DATA_START */
 const ITEMS = [
-  { "id": "SB-001", "p": "P0", "type": "issue", "area": "QA / Release", "milestone": "v0.1.0", "status": "open",
+  {
+    "id": "SB-001",
+    "p": "P0",
+    "type": "issue",
+    "area": "QA / Release",
+    "milestone": "v0.1.0",
+    "status": "open",
     "title": "v0.1.0 has not been installed on a physical phone",
     "desc": "The release is built, signed and published, but onboarding, permission flows, locale switching and the update dialog have only been verified in code and unit tests.",
-    "doneWhen": "TESTING.md rows 1-10 and 17-19 pass on a real phone, with results recorded in the release notes." },
-
-  { "id": "SB-002", "p": "P0", "type": "issue", "area": "QA / TV", "milestone": "v0.1.0", "status": "open",
+    "doneWhen": "TESTING.md rows 1-10 and 17-19 pass on a real phone, with results recorded in the release notes."
+  },
+  {
+    "id": "SB-002",
+    "p": "P0",
+    "type": "issue",
+    "area": "QA / TV",
+    "milestone": "v0.1.0",
+    "status": "open",
     "title": "v0.1.0 has not been installed on a physical Android TV box",
     "desc": "Leanback visibility, D-pad focus order, 10-foot typography and overscan have not been exercised on real hardware.",
-    "doneWhen": "TESTING.md rows 2 and 13-16 pass on a real TV box; the Leanback banner renders in the launcher." },
-
-  { "id": "SB-010", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "TESTING.md rows 2 and 13-16 pass on a real TV box; the Leanback banner renders in the launcher."
+  },
+  {
+    "id": "SB-010",
+    "p": "P1",
+    "type": "feature",
+    "area": "Network",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Per-app bandwidth monitor",
-    "desc": "Live TrafficStats per UID plus historical NetworkStatsManager queries with 24h / 7d / 30d ranges, a sortable top-consumer list and a per-row Block Internet toggle.",
-    "doneWhen": "A test app's download and upload totals match TrafficStats, history survives a reboot, and the list sorts by total." },
-
-  { "id": "SB-011", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "desc": "Live TrafficStats per UID plus historical NetworkStatsManager queries with 24h / 7d / 30d ranges, a sortable top-consumer list and a per-row Block Internet toggle. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-011",
+    "p": "P1",
+    "type": "feature",
+    "area": "Network",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Bandwidth anomaly detector",
-    "desc": "Learn a 7-day per-app baseline, alert when an app exceeds 3x its baseline (configurable) or uploads more than 100 MB in an hour, with Block and Uninstall quick actions.",
-    "doneWhen": "A synthetic spike produces exactly one alert with working actions; normal usage produces none." },
-
-  { "id": "SB-012", "p": "P1", "type": "feature", "area": "Firewall", "milestone": "v0.2.0", "status": "open",
+    "desc": "Learn a 7-day per-app baseline, alert when an app exceeds 3x its baseline (configurable) or uploads more than 100 MB in an hour, with Block and Uninstall quick actions. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-012",
+    "p": "P1",
+    "type": "feature",
+    "area": "Firewall",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Per-app firewall over a local VPN",
-    "desc": "VpnService plus the native packet engine (NDK), Allow All / Block Unknown presets, per-app overrides, a persistent honest local-only notification and detection of another active VPN.",
-    "doneWhen": "A blocked app loses connectivity, unblocking restores it, another VPN is detected, and no packet leaves the device." },
-
-  { "id": "SB-013", "p": "P1", "type": "feature", "area": "Network", "milestone": "v0.2.0", "status": "open",
+    "desc": "VpnService plus the native packet engine (NDK), Allow All / Block Unknown presets, per-app overrides, a persistent honest local-only notification and detection of another active VPN. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-013",
+    "p": "P1",
+    "type": "feature",
+    "area": "Network",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Open port and inbound listener monitor",
-    "desc": "Enumerate listening sockets owned by apps where permitted, and alert on unexpected internet-facing listeners that may indicate a backdoor or RAT.",
-    "doneWhen": "A local test server is reported with its owning app and port; a clean device reports nothing." },
-
-  { "id": "SB-014", "p": "P1", "type": "feature", "area": "UI / Network", "milestone": "v0.2.0", "status": "open",
+    "desc": "Enumerate listening sockets owned by apps where permitted, and alert on unexpected internet-facing listeners that may indicate a backdoor or RAT. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-014",
+    "p": "P1",
+    "type": "feature",
+    "area": "UI / Network",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Network screens for phone and TV",
-    "desc": "Replace the roadmap placeholder with charts, sortable list, block toggle and firewall settings in both shells, including D-pad focus states.",
-    "doneWhen": "Every network feature is reachable and usable in PhoneShell and TvShell without a touchscreen." },
-
-  { "id": "SB-015", "p": "P1", "type": "issue", "area": "Settings / Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "desc": "Replace the roadmap placeholder with charts, sortable list, block toggle and firewall settings in both shells, including D-pad focus states. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-015",
+    "p": "P1",
+    "type": "issue",
+    "area": "Settings / Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "done",
     "title": "Threat Intelligence toggle is cosmetic",
-    "desc": "Settings offers an enabled-by-default toggle with a body text describing a signed feed, but v0.1.0 has no feed client. Users may believe protection is active when nothing is downloaded.",
-    "doneWhen": "Either the toggle is disabled/labelled 'available in v0.5' or the feed client ships and the toggle controls it." },
-
-  { "id": "SB-016", "p": "P1", "type": "issue", "area": "Release / Security", "milestone": "v0.1.0", "status": "open",
+    "desc": "Settings offers an enabled-by-default toggle with a body text describing a signed feed, but v0.1.0 has no feed client. Users may believe protection is active when nothing is downloaded. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-016",
+    "p": "P1",
+    "type": "issue",
+    "area": "Release / Security",
+    "milestone": "v0.1.0",
+    "status": "done",
     "title": "Signing keystore password stored in plaintext",
-    "desc": "signing.properties and _securebox_keys/credentials.txt contain the store password in clear text on disk. The keystore is the trust anchor for all future updates.",
-    "doneWhen": "The password lives in an encrypted store (or an environment-only secret) and the plaintext file is removed; the keystore is backed up offline." },
-
-  { "id": "SB-017", "p": "P1", "type": "issue", "area": "Dashboard", "milestone": "v0.2.0", "status": "open",
+    "desc": "signing.properties and _securebox_keys/credentials.txt contain the store password in clear text on disk. The keystore is the trust anchor for all future updates. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-017",
+    "p": "P1",
+    "type": "issue",
+    "area": "Dashboard",
+    "milestone": "v0.2.0",
+    "status": "done",
     "title": "Security Score assumes the app is up to date",
-    "desc": "DashboardViewModel passes appIsUpToDate = true unconditionally, so the 30-point update factor is always awarded even when a newer release exists.",
-    "doneWhen": "The score reflects the last update check result and drops when an update is available." },
-
-  { "id": "SB-020", "p": "P2", "type": "feature", "area": "Threats", "milestone": "v0.3.0", "status": "open",
+    "desc": "DashboardViewModel passes appIsUpToDate = true unconditionally, so the 30-point update factor is always awarded even when a newer release exists. Shipped in v0.2.0.",
+    "doneAt": "2026-11-07"
+  },
+  {
+    "id": "SB-020",
+    "p": "P2",
+    "type": "feature",
+    "area": "Threats",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "On-device malware scanner",
     "desc": "Signature rules (YARA-style, bundled encrypted) plus heuristic checks for suspicious permission combos, known malicious SDKs and obfuscated code. Scans installed and sideloaded packages locally.",
-    "doneWhen": "The EICAR-style test sample is detected, a clean app is not, and nothing is uploaded." },
-
-  { "id": "SB-021", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "The EICAR-style test sample is detected, a clean app is not, and nothing is uploaded."
+  },
+  {
+    "id": "SB-021",
+    "p": "P2",
+    "type": "feature",
+    "area": "Apps",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Permission and tracker auditor",
     "desc": "Human-readable permission summaries, detected tracking SDKs, red/amber/green risk ratings, and phone-specific checks for SMS, call log, contacts, notification listeners, overlays, accessibility and device admin.",
-    "doneWhen": "An app holding SMS + overlay + accessibility is flagged red with each reason in plain language." },
-
-  { "id": "SB-022", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "An app holding SMS + overlay + accessibility is flagged red with each reason in plain language."
+  },
+  {
+    "id": "SB-022",
+    "p": "P2",
+    "type": "feature",
+    "area": "Apps",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Sideload and source checker",
     "desc": "Badge every app as Play Store, System or Sideloaded, and show the installing package and timestamp where Android exposes them.",
-    "doneWhen": "A sideloaded APK is badged correctly with its installer details on phone and TV." },
-
-  { "id": "SB-023", "p": "P2", "type": "feature", "area": "Apps", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "A sideloaded APK is badged correctly with its installer details on phone and TV."
+  },
+  {
+    "id": "SB-023",
+    "p": "P2",
+    "type": "feature",
+    "area": "Apps",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Suspicious component and behaviour detector",
     "desc": "Flag accessibility services, device admin, hidden launcher icons, exported activities receiving external intents and foreground services masquerading as system apps.",
-    "doneWhen": "Each detector has a positive and a negative fixture in unit tests and a plain-language explanation in the UI." },
-
-  { "id": "SB-024", "p": "P2", "type": "feature", "area": "Threats", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "Each detector has a positive and a negative fixture in unit tests and a plain-language explanation in the UI."
+  },
+  {
+    "id": "SB-024",
+    "p": "P2",
+    "type": "feature",
+    "area": "Threats",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Scheduled and boot-time scans",
     "desc": "WorkManager weekly quick scan plus a BOOT_COMPLETED receiver that runs a post-boot package scan, respecting the user's opt-out.",
-    "doneWhen": "A reboot triggers exactly one scan, the weekly job survives Doze, and disabling it stops both." },
-
-  { "id": "SB-025", "p": "P2", "type": "feature", "area": "Defense", "milestone": "v0.4.0", "status": "open",
+    "doneWhen": "A reboot triggers exactly one scan, the weekly job survives Doze, and disabling it stops both."
+  },
+  {
+    "id": "SB-025",
+    "p": "P2",
+    "type": "feature",
+    "area": "Defense",
+    "milestone": "v0.4.0",
+    "status": "open",
     "title": "RASP and anti-tampering",
     "desc": "Detect debugger attachment, emulator or rooted environment, force-stop and APK signature mismatch; lock sensitive features and alert the user when tampering is suspected.",
-    "doneWhen": "Each check has a unit test and a visible degradation path; false positives are documented." },
-
-  { "id": "SB-026", "p": "P2", "type": "feature", "area": "Defense", "milestone": "v0.4.0", "status": "open",
+    "doneWhen": "Each check has a unit test and a visible degradation path; false positives are documented."
+  },
+  {
+    "id": "SB-026",
+    "p": "P2",
+    "type": "feature",
+    "area": "Defense",
+    "milestone": "v0.4.0",
+    "status": "open",
     "title": "Dangerous settings checker",
     "desc": "One-tap audit of unknown sources, USB debugging, developer options, device admins, installed CA certificates and accessibility services, with Fix or step-by-step instructions.",
-    "doneWhen": "Every finding either deep-links to the correct settings screen or shows precise instructions." },
-
-  { "id": "SB-027", "p": "P2", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "Every finding either deep-links to the correct settings screen or shows precise instructions."
+  },
+  {
+    "id": "SB-027",
+    "p": "P2",
+    "type": "feature",
+    "area": "Updates",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Automatic update check with WorkManager",
     "desc": "The updater only checks on app start and manually. Add a periodic worker honouring the 12h cache and the user's interval setting, degrading silently when offline.",
-    "doneWhen": "A device left closed for a day still checks once, and failures never surface as dialogs." },
-
-  { "id": "SB-028", "p": "P2", "type": "feature", "area": "UI / Phone", "milestone": "v0.4.0", "status": "open",
+    "doneWhen": "A device left closed for a day still checks once, and failures never surface as dialogs."
+  },
+  {
+    "id": "SB-028",
+    "p": "P2",
+    "type": "feature",
+    "area": "UI / Phone",
+    "milestone": "v0.4.0",
+    "status": "open",
     "title": "Phone UX polish",
     "desc": "Pull-to-refresh on lists, bottom sheets for app details, and optional swipe between the five tabs, as described in the phone shell specification.",
-    "doneWhen": "All three interactions work with one hand and do not break TV navigation." },
-
-  { "id": "SB-029", "p": "P2", "type": "feature", "area": "UI", "milestone": "v0.4.0", "status": "open",
+    "doneWhen": "All three interactions work with one hand and do not break TV navigation."
+  },
+  {
+    "id": "SB-029",
+    "p": "P2",
+    "type": "feature",
+    "area": "UI",
+    "milestone": "v0.4.0",
+    "status": "open",
     "title": "WindowSizeClass adaptive layouts",
     "desc": "Tablets and foldables currently get the phone layout. Use WindowSizeClass to switch navigation and content density.",
-    "doneWhen": "A tablet in landscape uses a navigation rail and a two-pane detail layout." },
-
-  { "id": "SB-030", "p": "P2", "type": "feature", "area": "UI / TV", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "A tablet in landscape uses a navigation rail and a two-pane detail layout."
+  },
+  {
+    "id": "SB-030",
+    "p": "P2",
+    "type": "feature",
+    "area": "UI / TV",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "TV initial focus and focus restoration",
     "desc": "The TV shell does not request focus on a known element at startup, and returning to a tab may lose the previously focused card.",
-    "doneWhen": "Opening the app focuses the first action card, and switching tabs restores the last focused item." },
-
-  { "id": "SB-031", "p": "P2", "type": "feature", "area": "Alerts", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "Opening the app focuses the first action card, and switching tabs restores the last focused item."
+  },
+  {
+    "id": "SB-031",
+    "p": "P2",
+    "type": "feature",
+    "area": "Alerts",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Post real security notifications",
     "desc": "The security-alerts channel is created but no notification is ever posted. Wire anomaly, firewall and update alerts with actions and a TV-friendly summary.",
-    "doneWhen": "An anomaly produces a notification with Block and Uninstall actions on a phone." },
-
-  { "id": "SB-032", "p": "P2", "type": "feature", "area": "Settings", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "An anomaly produces a notification with Block and Uninstall actions on a phone."
+  },
+  {
+    "id": "SB-032",
+    "p": "P2",
+    "type": "feature",
+    "area": "Settings",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Re-check permissions on resume app-wide",
     "desc": "Permission state is only refreshed during onboarding. Revoking usage access in system settings leaves Settings and the score stale until restart.",
-    "doneWhen": "Revoking a permission and returning to the app updates the score and the affected rows immediately." },
-
-  { "id": "SB-033", "p": "P2", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "Revoking a permission and returning to the app updates the score and the affected rows immediately."
+  },
+  {
+    "id": "SB-033",
+    "p": "P2",
+    "type": "feature",
+    "area": "Updates",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Post-install confirmation and version refresh",
     "desc": "After the system installer finishes, the app has no way to confirm success or refresh the displayed version; users must relaunch.",
-    "doneWhen": "After an update the About section shows the new version without a manual restart, or an explicit prompt explains the restart." },
-
-  { "id": "SB-034", "p": "P2", "type": "feature", "area": "Testing", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "After an update the About section shows the new version without a manual restart, or an explicit prompt explains the restart."
+  },
+  {
+    "id": "SB-034",
+    "p": "P2",
+    "type": "feature",
+    "area": "Testing",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Instrumented UI tests and a CI emulator matrix",
     "desc": "Only the onboarding screen has a Compose test. Add update-dialog, settings and TV-navigation tests, and run them on a phone AVD and a Leanback API 33+ AVD in CI.",
-    "doneWhen": "CI runs connected tests on both emulators for every pull request." },
-
-  { "id": "SB-035", "p": "P2", "type": "feature", "area": "Release", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "CI runs connected tests on both emulators for every pull request."
+  },
+  {
+    "id": "SB-035",
+    "p": "P2",
+    "type": "feature",
+    "area": "Release",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Play Store compliance review",
     "desc": "Validate package visibility declarations, VPN service disclosure, data safety form, target SDK policy and the self-update installer flow against current Play rules.",
-    "doneWhen": "A written compliance checklist is complete and the app passes Play pre-launch report." },
-
-  { "id": "SB-036", "p": "P2", "type": "issue", "area": "Tooling", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "A written compliance checklist is complete and the app passes Play pre-launch report."
+  },
+  {
+    "id": "SB-036",
+    "p": "P2",
+    "type": "issue",
+    "area": "Tooling",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "In-session builds fail in Documents\\GitHub\\SecureBox",
     "desc": "The DSH sandbox blocks child processes such as aapt2 from writing outside the session workspace, so Gradle cannot build in the project folder from the agent session. The user's own terminal is unaffected.",
-    "doneWhen": "Either the session workspace is the project folder, or builds are redirected to a writable build root." },
-
-  { "id": "SB-040", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "Either the session workspace is the project folder, or builds are redirected to a writable build root."
+  },
+  {
+    "id": "SB-040",
+    "p": "P3",
+    "type": "feature",
+    "area": "Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "Signed threat feed client with Ed25519 verification",
     "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally.",
-    "doneWhen": "A tampered payload is rejected and reported, and a valid payload updates the ruleset atomically." },
-
-  { "id": "SB-041", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "A tampered payload is rejected and reported, and a valid payload updates the ruleset atomically."
+  },
+  {
+    "id": "SB-041",
+    "p": "P3",
+    "type": "feature",
+    "area": "Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "Enhanced detection hooks",
     "desc": "The feed must update the scanner ruleset, the tracker SDK list and the DNS blocklist used by the firewall, without a code change.",
-    "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh." },
-
-  { "id": "SB-042", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh."
+  },
+  {
+    "id": "SB-042",
+    "p": "P3",
+    "type": "feature",
+    "area": "Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "Threat Intelligence status card",
     "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier.",
-    "doneWhen": "The card reflects real feed state and the manual update works offline-safe." },
-
-  { "id": "SB-043", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "The card reflects real feed state and the manual update works offline-safe."
+  },
+  {
+    "id": "SB-043",
+    "p": "P3",
+    "type": "feature",
+    "area": "Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "24-hour feed auto-update",
     "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline.",
-    "doneWhen": "The job runs once per day, honours opt-out, and never blocks the UI." },
-
-  { "id": "SB-044", "p": "P3", "type": "feature", "area": "Threat Intel", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "The job runs once per day, honours opt-out, and never blocks the UI."
+  },
+  {
+    "id": "SB-044",
+    "p": "P3",
+    "type": "feature",
+    "area": "Threat Intel",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "Starter feed and signing-key workflow",
     "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app.",
-    "doneWhen": "CI can sign a feed, the app verifies it, and the private key never enters the repository." },
-
-  { "id": "SB-045", "p": "P3", "type": "feature", "area": "i18n", "milestone": "v1.0.0", "status": "open",
+    "doneWhen": "CI can sign a feed, the app verifies it, and the private key never enters the repository."
+  },
+  {
+    "id": "SB-045",
+    "p": "P3",
+    "type": "feature",
+    "area": "i18n",
+    "milestone": "v1.0.0",
+    "status": "open",
     "title": "Full French review",
     "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'.",
-    "doneWhen": "TRANSLATION_TODO.md is empty and no English leaks remain in a full walkthrough." },
-
-  { "id": "SB-046", "p": "P3", "type": "feature", "area": "Accessibility", "milestone": "v1.0.0", "status": "open",
+    "doneWhen": "TRANSLATION_TODO.md is empty and no English leaks remain in a full walkthrough."
+  },
+  {
+    "id": "SB-046",
+    "p": "P3",
+    "type": "feature",
+    "area": "Accessibility",
+    "milestone": "v1.0.0",
+    "status": "open",
     "title": "Accessibility pass",
     "desc": "TalkBack labels for the score, cards and dialogs, D-pad traversal order, focus visibility on TV, contrast verification and large-font layout checks.",
-    "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale." },
-
-  { "id": "SB-047", "p": "P3", "type": "feature", "area": "Performance", "milestone": "v1.0.0", "status": "open",
+    "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale."
+  },
+  {
+    "id": "SB-047",
+    "p": "P3",
+    "type": "feature",
+    "area": "Performance",
+    "milestone": "v1.0.0",
+    "status": "open",
     "title": "Performance tuning",
     "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions.",
-    "doneWhen": "Cold start is under one second on a mid-range phone and the universal APK stays under 40 MB." },
-
-  { "id": "SB-048", "p": "P3", "type": "feature", "area": "Release", "milestone": "v1.0.0", "status": "open",
+    "doneWhen": "Cold start is under one second on a mid-range phone and the universal APK stays under 40 MB."
+  },
+  {
+    "id": "SB-048",
+    "p": "P3",
+    "type": "feature",
+    "area": "Release",
+    "milestone": "v1.0.0",
+    "status": "open",
     "title": "End-to-end QA and v1.0.0 release",
     "desc": "Complete the full TESTING.md checklist on a real phone and TV box, fix everything found, and publish v1.0.0 with hashes and notes.",
-    "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published." },
-
-  { "id": "SB-049", "p": "P3", "type": "feature", "area": "Updates", "milestone": "v0.3.0", "status": "open",
+    "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published."
+  },
+  {
+    "id": "SB-049",
+    "p": "P3",
+    "type": "feature",
+    "area": "Updates",
+    "milestone": "v0.3.0",
+    "status": "open",
     "title": "Markdown renderer improvements",
     "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text.",
-    "doneWhen": "Links are clickable and code fences render without breaking the dialog." },
-
-  { "id": "SB-050", "p": "P3", "type": "feature", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "Links are clickable and code fences render without breaking the dialog."
+  },
+  {
+    "id": "SB-050",
+    "p": "P3",
+    "type": "feature",
+    "area": "Updates",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Clean up cached update packages",
     "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions.",
-    "doneWhen": "The updater keeps at most the current verified file and deletes the rest on start." },
-
-  { "id": "SB-051", "p": "P3", "type": "feature", "area": "Supply chain", "milestone": "v1.0.0", "status": "open",
+    "doneWhen": "The updater keeps at most the current verified file and deletes the rest on start."
+  },
+  {
+    "id": "SB-051",
+    "p": "P3",
+    "type": "feature",
+    "area": "Supply chain",
+    "milestone": "v1.0.0",
+    "status": "open",
     "title": "Sign SHA256SUMS with a detached Ed25519 signature",
     "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub.",
-    "doneWhen": "SHA256SUMS.sig is published and a documented verification command validates it." },
-
-  { "id": "SB-052", "p": "P3", "type": "feature", "area": "Build", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "SHA256SUMS.sig is published and a documented verification command validates it."
+  },
+  {
+    "id": "SB-052",
+    "p": "P3",
+    "type": "feature",
+    "area": "Build",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "x86_64 ABI split for emulators",
     "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK.",
-    "doneWhen": "A securebox-x86_64-release.apk is produced and documented." },
-
-  { "id": "SB-053", "p": "P3", "type": "feature", "area": "Settings", "milestone": "v0.5.0", "status": "open",
+    "doneWhen": "A securebox-x86_64-release.apk is produced and documented."
+  },
+  {
+    "id": "SB-053",
+    "p": "P3",
+    "type": "feature",
+    "area": "Settings",
+    "milestone": "v0.5.0",
+    "status": "open",
     "title": "Paid-tier 'Upgrade available' placeholder",
     "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now.",
-    "doneWhen": "A disabled link with local copy appears only when a paid tier is flagged." },
-
-  { "id": "SB-054", "p": "P3", "type": "issue", "area": "Release", "milestone": "v0.1.0", "status": "open",
+    "doneWhen": "A disabled link with local copy appears only when a paid tier is flagged."
+  },
+  {
+    "id": "SB-054",
+    "p": "P3",
+    "type": "issue",
+    "area": "Release",
+    "milestone": "v0.1.0",
+    "status": "open",
     "title": "v0.1.0 release title uses a hyphen instead of an em dash",
     "desc": "The published title is 'v0.1.0 - Foundation & Update System'; the specification requires 'v0.1.0 — Foundation & Update System'.",
-    "doneWhen": "The GitHub release title matches RELEASE_TITLE.txt exactly." },
-
-  { "id": "SB-055", "p": "P3", "type": "issue", "area": "Tooling", "milestone": "v0.1.0", "status": "open",
+    "doneWhen": "The GitHub release title matches RELEASE_TITLE.txt exactly."
+  },
+  {
+    "id": "SB-055",
+    "p": "P3",
+    "type": "issue",
+    "area": "Tooling",
+    "milestone": "v0.1.0",
+    "status": "open",
     "title": "Stale SecureBox-dist copy in the old workspace",
     "desc": "C:\\Users\\Mercenary\\Documents\\deepseek-harness\\Random\\SecureBox-dist still holds a flat v0.1.0 copy; the canonical staging area is Documents\\GitHub\\SecureBox-dist.",
-    "doneWhen": "The stale folder is deleted or clearly marked as archived." },
-
-  { "id": "SB-056", "p": "P3", "type": "issue", "area": "Updates", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "The stale folder is deleted or clearly marked as archived."
+  },
+  {
+    "id": "SB-056",
+    "p": "P3",
+    "type": "issue",
+    "area": "Updates",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "UpdatePhase.Verifying is dead code",
     "desc": "The state exists in the ViewModel but is never emitted; hashing happens inside the repository while Downloading stays visible.",
-    "doneWhen": "Either the phase is emitted before hashing or it is removed." },
-
-  { "id": "SB-057", "p": "P3", "type": "issue", "area": "Build", "milestone": "v0.2.0", "status": "open",
+    "doneWhen": "Either the phase is emitted before hashing or it is removed."
+  },
+  {
+    "id": "SB-057",
+    "p": "P3",
+    "type": "issue",
+    "area": "Build",
+    "milestone": "v0.2.0",
+    "status": "open",
     "title": "Unused dependencies and catalog entries",
     "desc": "compose-material-icons-extended, work-runtime-ktx and lifecycle-process are declared but unused; they add maintenance noise.",
-    "doneWhen": "The version catalog and module dependencies contain only what is referenced." },
-
-  { "id": "SB-D01", "p": "P1", "type": "issue", "area": "CI", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "doneWhen": "The version catalog and module dependencies contain only what is referenced."
+  },
+  {
+    "id": "SB-D01",
+    "p": "P1",
+    "type": "issue",
+    "area": "CI",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "CI failed at setup-android",
-    "desc": "android-actions/setup-android@v3 tried to install the retired 'tools' package. Fixed by calling the runner's bundled sdkmanager directly (commit efec0ca)." },
-
-  { "id": "SB-D02", "p": "P1", "type": "issue", "area": "Build / Signing", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "android-actions/setup-android@v3 tried to install the retired 'tools' package. Fixed by calling the runner's bundled sdkmanager directly (commit efec0ca)."
+  },
+  {
+    "id": "SB-D02",
+    "p": "P1",
+    "type": "issue",
+    "area": "Build / Signing",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Release APKs failed to sign (keyPassword missing)",
-    "desc": "Kotlin DSL name shadowing made the signing config assign its own properties. Fixed by renaming the local values." },
-
-  { "id": "SB-D03", "p": "P1", "type": "issue", "area": "Lint / TV", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "Kotlin DSL name shadowing made the signing config assign its own properties. Fixed by renaming the local values."
+  },
+  {
+    "id": "SB-D03",
+    "p": "P1",
+    "type": "issue",
+    "area": "Lint / TV",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Lint error MissingTvBanner",
-    "desc": "Added app/src/main/res/drawable-*/tv_banner.png and android:banner on the application." },
-
-  { "id": "SB-D04", "p": "P1", "type": "issue", "area": "Lint", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "Added app/src/main/res/drawable-*/tv_banner.png and android:banner on the application."
+  },
+  {
+    "id": "SB-D04",
+    "p": "P1",
+    "type": "issue",
+    "area": "Lint",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Lint error NewApi for windowLightNavigationBar",
-    "desc": "The attribute requires API 27; removed it for minSdk 26." },
-
-  { "id": "SB-D05", "p": "P2", "type": "issue", "area": "Integrity", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "The attribute requires API 27; removed it for minSdk 26."
+  },
+  {
+    "id": "SB-D05",
+    "p": "P2",
+    "type": "issue",
+    "area": "Integrity",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Debug builds showed a false tampering warning",
-    "desc": "The release certificate hash was baked into every build type. It is now set only for release builds." },
-
-  { "id": "SB-D06", "p": "P2", "type": "issue", "area": "Updates", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "The release certificate hash was baked into every build type. It is now set only for release builds."
+  },
+  {
+    "id": "SB-D06",
+    "p": "P2",
+    "type": "issue",
+    "area": "Updates",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Background update failures popped error dialogs",
-    "desc": "Silent startup checks now swallow network and rate-limit failures; only an explicit check surfaces them." },
-
-  { "id": "SB-D07", "p": "P1", "type": "issue", "area": "CI / Release", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-07",
+    "desc": "Silent startup checks now swallow network and rate-limit failures; only an explicit check surfaces them."
+  },
+  {
+    "id": "SB-D07",
+    "p": "P1",
+    "type": "issue",
+    "area": "CI / Release",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-07",
     "title": "Release workflow failed while publishing a duplicate release",
-    "desc": "Publishing moved to a manual step; the workflow now builds, signs, checksums and uploads artifacts only (commit 75f2bed)." },
-
-  { "id": "SB-D08", "p": "P2", "type": "issue", "area": "Docs", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-07",
+    "desc": "Publishing moved to a manual step; the workflow now builds, signs, checksums and uploads artifacts only (commit 75f2bed)."
+  },
+  {
+    "id": "SB-D08",
+    "p": "P2",
+    "type": "issue",
+    "area": "Docs",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-07",
     "title": "Release notes overstated device verification",
-    "desc": "Reworded to state that physical phone and TV sign-off is still pending." },
-
-  { "id": "SB-D09", "p": "P2", "type": "issue", "area": "CI", "milestone": "v0.1.0", "status": "done", "doneAt": "2026-11-06",
+    "desc": "Reworded to state that physical phone and TV sign-off is still pending."
+  },
+  {
+    "id": "SB-D09",
+    "p": "P2",
+    "type": "issue",
+    "area": "CI",
+    "milestone": "v0.1.0",
+    "status": "done",
+    "doneAt": "2026-11-06",
     "title": "Gradle wrapper was not executable on Linux",
-    "desc": "Set the executable bit on gradlew in the Git index." }
+    "desc": "Set the executable bit on gradlew in the Git index."
+  },
+  {
+    "id": "SB-058",
+    "p": "P2",
+    "type": "feature",
+    "area": "Firewall",
+    "milestone": "v0.2.x",
+    "status": "open",
+    "title": "Native NDK packet pump for the firewall",
+    "desc": "The v0.2.0 firewall reads and discards packets in Kotlin. The specification calls for a C/C++ packet engine over JNI; add a native pump for lower overhead and as the base for DNS/domain filtering.",
+    "doneWhen": "A JNI library reads the TUN descriptor, the Kotlin loop is removed, and CPU use is lower than the Kotlin pump on the same device."
+  },
+  {
+    "id": "SB-059",
+    "p": "P1",
+    "type": "issue",
+    "area": "QA / Network",
+    "milestone": "v0.2.0",
+    "status": "open",
+    "title": "v0.2.0 network features are not verified on a device",
+    "desc": "Bandwidth, anomaly notifications, the VPN firewall and the port monitor compile and pass unit tests but have not run on a physical phone or TV box yet.",
+    "doneWhen": "A v0.2.0 checklist covers blocking a test app, restoring it, an anomaly notification with actions, and the port list, on both devices."
+  },
+  {
+    "id": "SB-060",
+    "p": "P2",
+    "type": "feature",
+    "area": "Firewall",
+    "milestone": "v0.2.x",
+    "status": "open",
+    "title": "Firewall edge cases: Private DNS, always-on VPN, work profiles",
+    "desc": "Verify and document how the firewall behaves with Private DNS, an always-on VPN, a work profile and secondary users. Detection messages must stay accurate.",
+    "doneWhen": "Each scenario has a documented behaviour and, where possible, an automated or manual test."
+  },
+  {
+    "id": "SB-061",
+    "p": "P2",
+    "type": "issue",
+    "area": "Release / Play",
+    "milestone": "v0.3.0",
+    "status": "open",
+    "title": "QUERY_ALL_PACKAGES needs a Play policy declaration",
+    "desc": "v0.2.0 adds QUERY_ALL_PACKAGES to attribute traffic and ports to every app. Google Play restricts this permission to core security/utility use cases and requires a declaration.",
+    "doneWhen": "The Play Console declaration is written and the rationale is documented in PRIVACY.md."
+  }
 ];
 /* DATA_END */
 
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.2.0 implemented: per-app bandwidth (live + 24h/7d/30d), hourly upload anomaly detector with notification actions, local-only VPN firewall with per-app blocking and presets, open-port monitor, and the full Network UI. Security score now reflects update status; Threat Intelligence toggle disabled until v0.5.0; keystore password encrypted with DPAPI. 8 P1 items closed, 4 new items added (native packet pump, v0.2.0 device QA, firewall edge cases, Play declaration)." },
   { d: "2026-11-07", t: "Backlog created. v0.1.0 published manually. Automated release publishing removed from CI (75f2bed). Added P0 device-QA issues, all remaining milestones, and a Done section for fixes shipped while building v0.1.0." },
   { d: "2026-11-06", t: "Milestone 1 completed: onboarding, dual shells, verified self-update system, signed APKs." }
 ];
@@ -577,7 +956,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.1.0";
+  el("footVersion").textContent = "v0.2.0";
 }
 
 function renderLog() {

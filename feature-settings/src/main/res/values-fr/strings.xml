@@ -27,8 +27,9 @@
     <string name="settings_firewall_body">Bloque l\'accès internet d\'une application sur cet appareil. Arrive en v0.2.0.</string>
     <string name="settings_firewall_status">Bientôt</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
-    <string name="settings_threat_intel_body">Récupère une liste signée d\'applications et de domaines malveillants connus. Gratuit pendant l\'essai.</string>
+    <string name="settings_threat_intel_body">Les flux de menaces signés arrivent en v0.5.0. SecureBox ne télécharge encore aucune donnée de menace.</string>
     <string name="settings_threat_intel_toggle">Activer Threat Intelligence</string>
+    <string name="settings_threat_intel_coming">Pas encore actif — prévu pour la v0.5.0.</string>
 
     <string name="settings_section_updates">Mises à jour</string>
     <string name="settings_privacy_row_title">Politique de confidentialité</string>

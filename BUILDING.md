@@ -56,17 +56,24 @@ keytool -genkeypair -v \
   -dname "CN=SecureBox, OU=Release, O=SecureBox, C=TN"
 ```
 
-2. Create `signing.properties` in the repository root (git-ignored):
+2. Provide the signing credentials through **environment variables** — never a plaintext file:
 
-```properties
-storeFile=/absolute/path/to/securebox-release.jks
-storePassword=…
-keyAlias=securebox
-keyPassword=…
+```powershell
+$env:SECUREBOX_KEYSTORE_PATH = "C:\path\to\securebox-release.jks"
+$env:SECUREBOX_KEYSTORE_PASSWORD = "..."
+$env:SECUREBOX_KEY_ALIAS = "securebox"
+$env:SECUREBOX_KEY_PASSWORD = "..."
 ```
 
-Alternatively set the environment variables `SECUREBOX_KEYSTORE_PATH`,
-`SECUREBOX_KEYSTORE_PASSWORD`, `SECUREBOX_KEY_ALIAS`, `SECUREBOX_KEY_PASSWORD`.
+On Windows the password can instead be stored encrypted with DPAPI in
+`..\_securebox_keys\credentials.enc` (outside the repository). The bundled helper decrypts it in
+memory, exports it to Gradle, and clears it afterwards:
+
+```powershell
+.\tools\build-release.ps1
+```
+
+`signing.properties` is no longer supported: it stored the keystore password in clear text.
 
 3. Build:
 

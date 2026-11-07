@@ -4,13 +4,19 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
+import io.securebox.work.AnomalyCheckWorker
+import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class SecureBoxApp : Application() {
     override fun onCreate() {
         super.onCreate()
         createAlertChannel()
+        scheduleAnomalyChecks()
     }
 
     /**
@@ -29,6 +35,20 @@ class SecureBoxApp : Application() {
                 setShowBadge(true)
             }
         getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+    }
+
+    /** Hourly upload-anomaly check. WorkManager persists across reboots and Doze. */
+    private fun scheduleAnomalyChecks() {
+        val request =
+            PeriodicWorkRequestBuilder<AnomalyCheckWorker>(1, TimeUnit.HOURS)
+                .build()
+        WorkManager
+            .getInstance(this)
+            .enqueueUniquePeriodicWork(
+                AnomalyCheckWorker.UNIQUE_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
     }
 
     companion object {

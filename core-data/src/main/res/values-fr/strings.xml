@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vpn_session_name">Pare-feu SecureBox</string>
+    <string name="vpn_notification_title">Le pare-feu SecureBox est actif</string>
+    <string name="vpn_notification_text">SecureBox inspecte le trafic localement sur votre appareil. Rien ne nous est envoyé.</string>
+    <string name="vpn_notification_stop">Désactiver</string>
+    <string name="vpn_channel_name">État du pare-feu</string>
+    <string name="vpn_channel_description">Indique quand le pare-feu local est actif.</string>
+</resources>
