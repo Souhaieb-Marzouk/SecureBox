@@ -16,6 +16,14 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# adb's server writes adb.log into %TEMP%. Some locked-down environments deny that write and the
+# server fails with "cannot open ...\adb.log: Permission denied". Point TEMP at a writable folder
+# inside the repo so the helper works from any shell.
+$adbTemp = Join-Path (Split-Path $PSScriptRoot -Parent) 'build\adb-temp'
+New-Item -ItemType Directory -Force -Path $adbTemp | Out-Null
+$env:TEMP = $adbTemp
+$env:TMP = $adbTemp
+
 if (-not (Get-Command $Adb -ErrorAction SilentlyContinue)) {
     if ($env:ANDROID_HOME) {
         $candidate = Join-Path $env:ANDROID_HOME 'platform-tools\adb.exe'
