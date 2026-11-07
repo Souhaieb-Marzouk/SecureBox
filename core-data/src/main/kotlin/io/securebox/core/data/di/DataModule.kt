@@ -15,6 +15,7 @@ import io.securebox.core.data.network.AndroidPortRepository
 import io.securebox.core.data.network.AndroidTrafficRepository
 import io.securebox.core.data.network.FirewallRepositoryImpl
 import io.securebox.core.data.permission.AndroidPlatformPermissions
+import io.securebox.core.data.security.AndroidSecurityRepository
 import io.securebox.core.data.settings.SettingsRepositoryImpl
 import io.securebox.core.data.settings.secureBoxDataStore
 import io.securebox.core.domain.device.DeviceModeDetector
@@ -24,6 +25,9 @@ import io.securebox.core.domain.network.PortRepository
 import io.securebox.core.domain.network.TrafficRepository
 import io.securebox.core.domain.permission.PlatformPermissions
 import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.security.PermissionAuditor
+import io.securebox.core.domain.security.RiskScorer
+import io.securebox.core.domain.security.SecurityRepository
 import javax.inject.Singleton
 
 @Module
@@ -34,6 +38,14 @@ object DataStoreModule {
     fun provideDataStore(
         @ApplicationContext context: Context,
     ): DataStore<Preferences> = context.secureBoxDataStore
+
+    @Provides
+    @Singleton
+    fun provideRiskScorer(): RiskScorer = RiskScorer()
+
+    @Provides
+    @Singleton
+    fun providePermissionAuditor(): PermissionAuditor = PermissionAuditor()
 }
 
 @Module
@@ -66,4 +78,8 @@ abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindAnomalyRepository(impl: AnomalyRepositoryImpl): AnomalyRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSecurityRepository(impl: AndroidSecurityRepository): SecurityRepository
 }

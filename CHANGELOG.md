@@ -13,6 +13,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.3.0] - 2026-11-07
+
+### Added
+
+- On-device app security scan: signature rules, tracker SDKs, dangerous permission combinations, exported components, accessibility services, device admins and hidden launchers.
+- Per-app risk score (0–100) with plain-language findings, All / Risky / Sideloaded filters and a detail dialog.
+- Sideload detection with installer information.
+- Weekly automatic scan and post-boot scan, both controlled by a user preference.
+- Daily background update check with a notification when a new version is available.
+- `docs/scanner-rules.json` (readable source) and an AES-256-GCM encrypted `scanner_rules.enc` asset.
+- 15 unit tests for rule matching, permission heuristics and risk scoring (41 total).
+- `docs/FIREWALL_EDGE_CASES.md`.
+
+### Changed
+
+- Permission state is refreshed every time the app returns to the foreground.
+- Apps and Threats tabs now show real data instead of roadmap placeholders.
+
+### Fixed
+
+- Stale permission state after changing system settings.
+- Update availability now reaches users without opening Settings.
+
 ## [0.2.1] - 2026-11-07
 
 ### Added

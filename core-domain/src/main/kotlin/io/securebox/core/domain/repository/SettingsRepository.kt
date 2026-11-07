@@ -30,6 +30,8 @@ public interface SettingsRepository {
 
     public suspend fun setThreatIntelAutoUpdate(enabled: Boolean)
 
+    public suspend fun setScheduledScansEnabled(enabled: Boolean)
+
     public suspend fun recordPermissionSnapshot(
         usageAccessGranted: Boolean,
         notificationsGranted: Boolean,

@@ -52,6 +52,7 @@ public data class AppSettings(
     val firewallPreset: FirewallPreset = FirewallPreset.ALLOW_ALL,
     val threatIntelEnabled: Boolean = true,
     val threatIntelAutoUpdate: Boolean = true,
+    val scheduledScansEnabled: Boolean = true,
     val updateCheckIntervalHours: Long = DEFAULT_UPDATE_INTERVAL_HOURS,
     val usageAccessGranted: Boolean = false,
     val notificationsGranted: Boolean = false,

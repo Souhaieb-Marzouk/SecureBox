@@ -9,6 +9,8 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import io.securebox.work.AnomalyCheckWorker
+import io.securebox.work.ScanWorker
+import io.securebox.work.UpdateCheckWorker
 import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
@@ -17,6 +19,8 @@ class SecureBoxApp : Application() {
         super.onCreate()
         createAlertChannel()
         scheduleAnomalyChecks()
+        scheduleWeeklyScan()
+        scheduleUpdateChecks()
     }
 
     /**
@@ -46,6 +50,30 @@ class SecureBoxApp : Application() {
             .getInstance(this)
             .enqueueUniquePeriodicWork(
                 AnomalyCheckWorker.UNIQUE_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+    }
+
+    /** Weekly deep scan. The worker re-checks the user's preference before doing anything. */
+    private fun scheduleWeeklyScan() {
+        val request = PeriodicWorkRequestBuilder<ScanWorker>(7, TimeUnit.DAYS).build()
+        WorkManager
+            .getInstance(this)
+            .enqueueUniquePeriodicWork(
+                ScanWorker.UNIQUE_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+    }
+
+    /** Daily update check; silent when offline or already current. */
+    private fun scheduleUpdateChecks() {
+        val request = PeriodicWorkRequestBuilder<UpdateCheckWorker>(24, TimeUnit.HOURS).build()
+        WorkManager
+            .getInstance(this)
+            .enqueueUniquePeriodicWork(
+                UpdateCheckWorker.UNIQUE_WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 request,
             )

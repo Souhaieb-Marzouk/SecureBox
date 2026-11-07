@@ -7,8 +7,12 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import io.securebox.core.domain.model.AppVersion
 import io.securebox.core.domain.network.AnomalyRepository
 import io.securebox.core.domain.network.FirewallRepository
+import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.repository.UpdateRepository
+import io.securebox.core.domain.security.SecurityRepository
 
 /** Hilt bridge for components (workers, receivers) that cannot use constructor injection. */
 @EntryPoint
@@ -17,6 +21,14 @@ interface NetworkEntryPoint {
     fun anomalyRepository(): AnomalyRepository
 
     fun firewallRepository(): FirewallRepository
+
+    fun securityRepository(): SecurityRepository
+
+    fun settingsRepository(): SettingsRepository
+
+    fun updateRepository(): UpdateRepository
+
+    fun appVersion(): AppVersion
 }
 
 class AnomalyCheckWorker(

@@ -16,4 +16,9 @@
     <string name="anomaly_notification_body">%1$s a envoyé %2$s en une heure — bien plus que d\'habitude. Action recommandée : bloquer son accès internet.</string>
     <string name="anomaly_action_block">Bloquer internet</string>
     <string name="anomaly_action_uninstall">Désinstaller</string>
+
+    <string name="scan_notification_title">L\'analyse a trouvé %1$d applications à risque</string>
+    <string name="scan_notification_body">%1$d applications sont à risque élevé avec %2$d constats. Ouvrez SecureBox pour les examiner. Rien n\'a quitté votre appareil.</string>
+    <string name="update_notification_title">SecureBox %1$s est disponible</string>
+    <string name="update_notification_body">Ouvrez Réglages → Mises à jour pour télécharger et vérifier la nouvelle version.</string>
 </resources>

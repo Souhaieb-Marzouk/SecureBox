@@ -14,6 +14,7 @@
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- TV boxes have no touchscreen; both device families are supported by one APK. -->
     <uses-feature
@@ -54,6 +55,16 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="io.securebox.action.BLOCK_APP" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Post-boot scan, only when the user kept scheduled scans enabled. -->
+        <receiver
+            android:name=".work.BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

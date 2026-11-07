@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="threats_title">Threats &amp; scans</string>
-    <string name="threats_subtitle">Check this device for known malware and risky settings.</string>
-    <string name="threats_roadmap_banner">On-device scanning arrives in v0.3.0, and the free Threat Intelligence trial in v0.5.0.</string>
-    <string name="threats_planned_title">Planned for v0.3.0 to v0.5.0</string>
-    <string name="threats_planned_one">Signature and behaviour scanning that never leaves the device.</string>
-    <string name="threats_planned_two">Weekly automatic scans and a scan right after boot.</string>
-    <string name="threats_planned_three">A dangerous-settings check with one-tap fixes.</string>
-    <string name="threats_privacy_note">Nothing is uploaded. SecureBox has no telemetry and no crash reporting servers.</string>
+    <string name="threats_subtitle">Scan every installed app for risky permissions, trackers and suspicious code — all on this device.</string>
+    <string name="threats_scan_title">On-device scan</string>
+    <string name="threats_scan_now">Scan now</string>
+    <string name="threats_scanning_short">Scanning…</string>
+    <string name="threats_scanning">Scanning installed apps…</string>
+    <string name="threats_scan_progress">%1$d of %2$d apps</string>
+    <string name="threats_no_scan">No scan has run yet.</string>
+    <string name="threats_last_scan">Last scan: %1$s · %2$d apps</string>
+    <string name="threats_summary">%1$d high-risk apps · %2$d findings · ruleset v%3$d</string>
+    <string name="threats_on_device">Everything runs on this device. App names, permissions and scan results are never uploaded.</string>
+    <string name="threats_results_title">Risky apps</string>
+    <string name="threats_no_results">No risky apps found. Nice.</string>
+    <string name="threats_run_first">Run a scan to see which apps deserve attention.</string>
+    <string name="threats_findings_count">%1$d findings</string>
+    <string name="threats_scheduled_title">Weekly automatic scan</string>
+    <string name="threats_scheduled_body">Runs in the background and after boot when enabled. Never uploads anything.</string>
+    <string name="threats_rules_version">Signature ruleset v%1$d</string>
+    <string name="threats_rules_unavailable">Signature rules unavailable — permission and component checks still work.</string>
+
+    <string name="threats_level_safe">Safe</string>
+    <string name="threats_level_low">Low</string>
+    <string name="threats_level_medium">Medium</string>
+    <string name="threats_level_high">High</string>
+    <string name="threats_level_critical">Critical</string>
+    <string name="threats_score_badge">%1$d · %2$s</string>
 </resources>

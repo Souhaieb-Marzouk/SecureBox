@@ -38,6 +38,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Usage access, notifications and VPN consent can change in system settings while the app
+        // is in the background; refresh so the score and screens stay accurate.
+        viewModel.refreshRuntimeState()
+    }
 }
 
 @Composable

@@ -16,4 +16,9 @@
     <string name="anomaly_notification_body">%1$s sent %2$s in the last hour — far more than usual. Recommended action: block its internet access.</string>
     <string name="anomaly_action_block">Block internet</string>
     <string name="anomaly_action_uninstall">Uninstall</string>
+
+    <string name="scan_notification_title">Scan found %1$d risky apps</string>
+    <string name="scan_notification_body">%1$d apps are high risk with %2$d findings. Open SecureBox to review them. Nothing left your device.</string>
+    <string name="update_notification_title">SecureBox %1$s is available</string>
+    <string name="update_notification_body">Open Settings → App updates to download and verify the new version.</string>
 </resources>

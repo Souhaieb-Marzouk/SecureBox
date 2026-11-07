@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "SB-R001",
+      "name": "Dynamic code loading",
+      "severity": "MEDIUM",
+      "patterns": ["Ldalvik/system/DexClassLoader;", "Ldalvik/system/PathClassLoader;", "Ldalvik/system/InMemoryDexClassLoader;"],
+      "allRequired": false
+    },
+    {
+      "id": "SB-R002",
+      "name": "Shell command execution",
+      "severity": "HIGH",
+      "patterns": ["Ljava/lang/Runtime;->exec", "/system/bin/su", "/system/xbin/su"],
+      "allRequired": false
+    },
+    {
+      "id": "SB-R003",
+      "name": "Reflection into hidden APIs",
+      "severity": "LOW",
+      "patterns": ["Landroid/app/ActivityManager;->getRunningAppProcesses", "Landroid/os/ServiceManager;"],
+      "allRequired": false
+    },
+    {
+      "id": "SB-R004",
+      "name": "Accessibility automation",
+      "severity": "MEDIUM",
+      "patterns": ["Landroid/accessibilityservice/AccessibilityService;", "performGlobalAction"],
+      "allRequired": false
+    },
+    {
+      "id": "SB-R005",
+      "name": "Screen overlay window",
+      "severity": "MEDIUM",
+      "patterns": ["Landroid/view/WindowManager$LayoutParams;->TYPE_APPLICATION_OVERLAY"],
+      "allRequired": false
+    },
+    {
+      "id": "SB-R006",
+      "name": "Installs other packages",
+      "severity": "MEDIUM",
+      "patterns": ["Landroid/content/pm/PackageInstaller;", "ACTION_INSTALL_PACKAGE"],
+      "allRequired": false
+    }
+  ],
+  "trackerPrefixes": [
+    "com.google.firebase.analytics",
+    "com.google.android.gms.analytics",
+    "com.facebook.appevents",
+    "com.facebook.ads",
+    "com.adjust.sdk",
+    "com.appsflyer",
+    "com.mixpanel.android",
+    "com.amplitude.api",
+    "io.branch.referral",
+    "com.onesignal",
+    "com.crashlytics",
+    "com.flurry"
+  ],
+  "suspiciousPackages": []
+}

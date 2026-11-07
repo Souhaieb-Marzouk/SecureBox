@@ -76,6 +76,10 @@ class SettingsRepositoryImpl
             dataStore.edit { it[Keys.THREAT_INTEL_AUTO_UPDATE] = enabled }
         }
 
+        override suspend fun setScheduledScansEnabled(enabled: Boolean) {
+            dataStore.edit { it[Keys.SCHEDULED_SCANS] = enabled }
+        }
+
         override suspend fun recordPermissionSnapshot(
             usageAccessGranted: Boolean,
             notificationsGranted: Boolean,
@@ -99,6 +103,7 @@ class SettingsRepositoryImpl
                 firewallPreset = enumOrDefault(this[Keys.FIREWALL_PRESET], FirewallPreset.ALLOW_ALL),
                 threatIntelEnabled = this[Keys.THREAT_INTEL_ENABLED] ?: true,
                 threatIntelAutoUpdate = this[Keys.THREAT_INTEL_AUTO_UPDATE] ?: true,
+                scheduledScansEnabled = this[Keys.SCHEDULED_SCANS] ?: true,
                 updateCheckIntervalHours = this[Keys.UPDATE_INTERVAL] ?: AppSettings.DEFAULT_UPDATE_INTERVAL_HOURS,
                 usageAccessGranted = this[Keys.USAGE_ACCESS] ?: false,
                 notificationsGranted = this[Keys.NOTIFICATIONS] ?: false,
@@ -120,6 +125,7 @@ class SettingsRepositoryImpl
             val FIREWALL_PRESET = stringPreferencesKey("firewall_preset")
             val THREAT_INTEL_ENABLED = booleanPreferencesKey("threat_intel_enabled")
             val THREAT_INTEL_AUTO_UPDATE = booleanPreferencesKey("threat_intel_auto_update")
+            val SCHEDULED_SCANS = booleanPreferencesKey("scheduled_scans_enabled")
             val UPDATE_INTERVAL = longPreferencesKey("update_check_interval_hours")
             val USAGE_ACCESS = booleanPreferencesKey("usage_access_granted")
             val NOTIFICATIONS = booleanPreferencesKey("notifications_granted")

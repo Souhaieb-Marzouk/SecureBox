@@ -6,12 +6,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import io.securebox.feature.apps.AppsScreen
+import io.securebox.feature.apps.AppsRoute
 import io.securebox.feature.dashboard.DashboardRoute
 import io.securebox.feature.network.NetworkRoute
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
-import io.securebox.feature.threats.ThreatsScreen
+import io.securebox.feature.threats.ThreatsRoute
 
 /** One navigation graph, used unchanged by both the phone and TV shells. */
 @Composable
@@ -32,8 +32,8 @@ fun SecureBoxNavHost(
             )
         }
         composable(Routes.NETWORK) { NetworkRoute() }
-        composable(Routes.APPS) { AppsScreen() }
-        composable(Routes.THREATS) { ThreatsScreen() }
+        composable(Routes.APPS) { AppsRoute() }
+        composable(Routes.THREATS) { ThreatsRoute() }
         composable(Routes.SETTINGS) {
             SettingsRoute(onOpenPrivacy = { navController.navigate(Routes.PRIVACY) })
         }

@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="threats_title">Menaces et analyses</string>
-    <string name="threats_subtitle">Vérifiez cet appareil pour détecter les malwares connus et les réglages risqués.</string>
-    <string name="threats_roadmap_banner">L\'analyse sur l\'appareil arrive en v0.3.0 et l\'essai gratuit Threat Intelligence en v0.5.0.</string>
-    <string name="threats_planned_title">Prévu de la v0.3.0 à la v0.5.0</string>
-    <string name="threats_planned_one">Analyse par signatures et comportements qui ne quitte jamais l\'appareil.</string>
-    <string name="threats_planned_two">Analyses automatiques hebdomadaires et une analyse juste après le démarrage.</string>
-    <string name="threats_planned_three">Une vérification des réglages dangereux avec des corrections en un geste.</string>
-    <string name="threats_privacy_note">Rien n\'est envoyé. SecureBox n\'a ni télémétrie ni serveur de remontée de crashs.</string>
+    <string name="threats_subtitle">Analysez chaque application installée pour détecter les autorisations risquées, les traqueurs et le code suspect — sur cet appareil.</string>
+    <string name="threats_scan_title">Analyse sur l\'appareil</string>
+    <string name="threats_scan_now">Analyser</string>
+    <string name="threats_scanning_short">Analyse…</string>
+    <string name="threats_scanning">Analyse des applications installées…</string>
+    <string name="threats_scan_progress">%1$d applications sur %2$d</string>
+    <string name="threats_no_scan">Aucune analyse n\'a encore eu lieu.</string>
+    <string name="threats_last_scan">Dernière analyse : %1$s · %2$d applications</string>
+    <string name="threats_summary">%1$d applications à risque · %2$d constats · règles v%3$d</string>
+    <string name="threats_on_device">Tout s\'exécute sur cet appareil. Les noms d\'applications, les autorisations et les résultats ne sont jamais envoyés.</string>
+    <string name="threats_results_title">Applications à risque</string>
+    <string name="threats_no_results">Aucune application à risque détectée. Parfait.</string>
+    <string name="threats_run_first">Lancez une analyse pour voir quelles applications méritent votre attention.</string>
+    <string name="threats_findings_count">%1$d constats</string>
+    <string name="threats_scheduled_title">Analyse automatique hebdomadaire</string>
+    <string name="threats_scheduled_body">S\'exécute en arrière-plan et après le démarrage lorsqu\'elle est activée. N\'envoie jamais rien.</string>
+    <string name="threats_rules_version">Jeu de règles de signatures v%1$d</string>
+    <string name="threats_rules_unavailable">Règles de signatures indisponibles — les contrôles d\'autorisations et de composants fonctionnent toujours.</string>
+
+    <string name="threats_level_safe">Sûre</string>
+    <string name="threats_level_low">Faible</string>
+    <string name="threats_level_medium">Moyen</string>
+    <string name="threats_level_high">Élevé</string>
+    <string name="threats_level_critical">Critique</string>
+    <string name="threats_score_badge">%1$d · %2$s</string>
 </resources>

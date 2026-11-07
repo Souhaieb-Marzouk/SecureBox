@@ -11,6 +11,13 @@ android {
 
     defaultConfig {
         minSdk = 26
+        // AES-256 key for the bundled scanner ruleset. This is obfuscation, not a secret: anyone
+        // holding the APK can extract it. Real protection comes from signing the feed in v0.5.0.
+        buildConfigField("String", "SCANNER_RULES_KEY", "\"7717e8f658f94b2b0df202757a2510b3aefd187d22ab19b4724c4fb677468b7c\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     compileOptions {

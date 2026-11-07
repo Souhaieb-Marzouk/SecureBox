@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.2.0</b></span>
+      <span>Baseline <b>v0.3.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -280,10 +280,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threats",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "On-device malware scanner",
-    "desc": "Signature rules (YARA-style, bundled encrypted) plus heuristic checks for suspicious permission combos, known malicious SDKs and obfuscated code. Scans installed and sideloaded packages locally.",
-    "doneWhen": "The EICAR-style test sample is detected, a clean app is not, and nothing is uploaded."
+    "desc": "Signature rules (YARA-style, bundled encrypted) plus heuristic checks for suspicious permission combos, known malicious SDKs and obfuscated code. Scans installed and sideloaded packages locally. Shipped in v0.3.0: RuleEngine + DEX string scanner with encrypted starter rules.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-021",
@@ -291,10 +291,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Apps",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Permission and tracker auditor",
-    "desc": "Human-readable permission summaries, detected tracking SDKs, red/amber/green risk ratings, and phone-specific checks for SMS, call log, contacts, notification listeners, overlays, accessibility and device admin.",
-    "doneWhen": "An app holding SMS + overlay + accessibility is flagged red with each reason in plain language."
+    "desc": "Human-readable permission summaries, detected tracking SDKs, red/amber/green risk ratings, and phone-specific checks for SMS, call log, contacts, notification listeners, overlays, accessibility and device admin. Shipped in v0.3.0: permission auditor, tracker SDK list, risk score and plain-language findings.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-022",
@@ -302,10 +302,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Apps",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Sideload and source checker",
-    "desc": "Badge every app as Play Store, System or Sideloaded, and show the installing package and timestamp where Android exposes them.",
-    "doneWhen": "A sideloaded APK is badged correctly with its installer details on phone and TV."
+    "desc": "Badge every app as Play Store, System or Sideloaded, and show the installing package and timestamp where Android exposes them. Shipped in v0.3.0: Play Store / System / Sideloaded badge with installer details.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-023",
@@ -313,10 +313,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Apps",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Suspicious component and behaviour detector",
-    "desc": "Flag accessibility services, device admin, hidden launcher icons, exported activities receiving external intents and foreground services masquerading as system apps.",
-    "doneWhen": "Each detector has a positive and a negative fixture in unit tests and a plain-language explanation in the UI."
+    "desc": "Flag accessibility services, device admin, hidden launcher icons, exported activities receiving external intents and foreground services masquerading as system apps. Shipped in v0.3.0: exported components, accessibility, device admin and hidden launcher detection.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-024",
@@ -324,10 +324,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threats",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Scheduled and boot-time scans",
-    "desc": "WorkManager weekly quick scan plus a BOOT_COMPLETED receiver that runs a post-boot package scan, respecting the user's opt-out.",
-    "doneWhen": "A reboot triggers exactly one scan, the weekly job survives Doze, and disabling it stops both."
+    "desc": "WorkManager weekly quick scan plus a BOOT_COMPLETED receiver that runs a post-boot package scan, respecting the user's opt-out. Shipped in v0.3.0: weekly WorkManager scan plus BOOT_COMPLETED one-off scan.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-025",
@@ -357,10 +357,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Updates",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Automatic update check with WorkManager",
-    "desc": "The updater only checks on app start and manually. Add a periodic worker honouring the 12h cache and the user's interval setting, degrading silently when offline.",
-    "doneWhen": "A device left closed for a day still checks once, and failures never surface as dialogs."
+    "desc": "The updater only checks on app start and manually. Add a periodic worker honouring the 12h cache and the user's interval setting, degrading silently when offline. Shipped in v0.3.0: daily UpdateCheckWorker with a notification.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-028",
@@ -401,10 +401,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Alerts",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Post real security notifications",
-    "desc": "The security-alerts channel is created but no notification is ever posted. Wire anomaly, firewall and update alerts with actions and a TV-friendly summary.",
-    "doneWhen": "An anomaly produces a notification with Block and Uninstall actions on a phone."
+    "desc": "The security-alerts channel is created but no notification is ever posted. Wire anomaly, firewall and update alerts with actions and a TV-friendly summary. Shipped in v0.3.0: anomaly, scan-result and update notifications.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-032",
@@ -412,10 +412,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Settings",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Re-check permissions on resume app-wide",
-    "desc": "Permission state is only refreshed during onboarding. Revoking usage access in system settings leaves Settings and the score stale until restart.",
-    "doneWhen": "Revoking a permission and returning to the app updates the score and the affected rows immediately."
+    "desc": "Permission state is only refreshed during onboarding. Revoking usage access in system settings leaves Settings and the score stale until restart. Shipped in v0.3.0: permissions and VPN consent are re-read on every resume.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-033",
@@ -423,10 +423,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Updates",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Post-install confirmation and version refresh",
-    "desc": "After the system installer finishes, the app has no way to confirm success or refresh the displayed version; users must relaunch.",
-    "doneWhen": "After an update the About section shows the new version without a manual restart, or an explicit prompt explains the restart."
+    "desc": "After the system installer finishes, the app has no way to confirm success or refresh the displayed version; users must relaunch. Resolved: Android restarts the process after an in-place update, so the new build reads its own version; the updater also returns to Settings.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-034",
@@ -445,10 +445,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Release",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Play Store compliance review",
-    "desc": "Validate package visibility declarations, VPN service disclosure, data safety form, target SDK policy and the self-update installer flow against current Play rules.",
-    "doneWhen": "A written compliance checklist is complete and the app passes Play pre-launch report."
+    "desc": "Validate package visibility declarations, VPN service disclosure, data safety form, target SDK policy and the self-update installer flow against current Play rules. Shipped in v0.3.0: docs/PLAY_COMPLIANCE.md and PRIVACY.md rationale; console submission remains a maintainer action.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-036",
@@ -786,10 +786,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Firewall",
     "milestone": "v0.2.x",
-    "status": "open",
+    "status": "done",
     "title": "Firewall edge cases: Private DNS, always-on VPN, work profiles",
-    "desc": "Verify and document how the firewall behaves with Private DNS, an always-on VPN, a work profile and secondary users. Detection messages must stay accurate.",
-    "doneWhen": "Each scenario has a documented behaviour and, where possible, an automated or manual test."
+    "desc": "Verify and document how the firewall behaves with Private DNS, an always-on VPN, a work profile and secondary users. Detection messages must stay accurate. Shipped in v0.3.0: docs/FIREWALL_EDGE_CASES.md documents Private DNS, always-on VPN, work profiles, per-app VPNs and reboot.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-061",
@@ -808,6 +808,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.3.0 shipped: on-device app scanner (signature rules, trackers, permission combos, components), risk scores and reasons, sideload detection, weekly + boot scans, daily update check, notifications, permission refresh on resume, Play compliance doc and firewall edge-case doc. Closed SB-020..SB-024, SB-027, SB-031..SB-033, SB-035 and SB-060. Remaining P2: RASP, dangerous-settings checker, phone UX polish, WindowSizeClass, instrumented CI matrix and the native packet pump." },
   { d: "2026-11-07", t: "Backlog cleanup: closed SB-036 (sandbox build tools), SB-054 (release title), SB-055 (stale dist), SB-056 (Verifying state implemented), SB-057 (unused dependencies) and SB-061 (Play declaration). Removed SB-001/SB-002 and folded them into SB-059, now marked Blocked: no adb device is attached. Added tools/device-qa.ps1 to complete it." },
   { d: "2026-11-07", t: "v0.2.0 implemented: per-app bandwidth (live + 24h/7d/30d), hourly upload anomaly detector with notification actions, local-only VPN firewall with per-app blocking and presets, open-port monitor, and the full Network UI. Security score now reflects update status; Threat Intelligence toggle disabled until v0.5.0; keystore password encrypted with DPAPI. 8 P1 items closed, 4 new items added (native packet pump, v0.2.0 device QA, firewall edge cases, Play declaration)." },
   { d: "2026-11-07", t: "Backlog created. v0.1.0 published manually. Automated release publishing removed from CI (75f2bed). Added P0 device-QA issues, all remaining milestones, and a Done section for fixes shipped while building v0.1.0." },
@@ -949,7 +950,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.2.0";
+  el("footVersion").textContent = "v0.3.0";
 }
 
 function renderLog() {

@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="apps_title">Applications et autorisations</string>
-    <string name="apps_subtitle">Comprenez ce que chaque application installée peut faire sur cet appareil.</string>
-    <string name="apps_roadmap_banner">L\'analyseur de malwares et l\'auditeur d\'autorisations arrivent en v0.3.0.</string>
-    <string name="apps_planned_title">Prévu pour la v0.3.0</string>
-    <string name="apps_planned_one">Une note de risque pour chaque application, expliquée simplement.</string>
-    <string name="apps_planned_two">La détection des SDK de pistage et des combinaisons d\'autorisations dangereuses.</string>
-    <string name="apps_planned_three">Un badge clair Play Store, Système ou Installé manuellement pour chaque application.</string>
+    <string name="apps_subtitle">Chaque application installée, ce à quoi elle a accès et son niveau de risque — calculé sur cet appareil.</string>
+    <string name="apps_filter_all">Toutes</string>
+    <string name="apps_filter_risky">À risque</string>
+    <string name="apps_filter_sideloaded">Installées manuellement</string>
+    <string name="apps_loading">Analyse des applications installées…</string>
+    <string name="apps_progress">%1$d applications analysées sur %2$d…</string>
+    <string name="apps_count">%1$d applications</string>
+    <string name="apps_refresh">Actualiser</string>
+    <string name="apps_empty">Aucune application ne correspond à ce filtre.</string>
+
+    <string name="apps_source_play">Play Store</string>
+    <string name="apps_source_system">Système</string>
+    <string name="apps_source_sideloaded">Installée manuellement</string>
+    <string name="apps_source_unknown">Source inconnue</string>
+
+    <string name="apps_detail_meta">Version %1$s · installée le %2$s</string>
+    <string name="apps_detail_rating">Score %1$d/100 · %2$s</string>
+    <string name="apps_detail_findings">Pourquoi cette note</string>
+    <string name="apps_detail_no_findings">Aucun signal de risque détecté.</string>
+    <string name="apps_detail_permissions">Autorisations demandées : %1$d</string>
+    <string name="apps_detail_close">Fermer</string>
+    <string name="apps_score_badge">%1$d · %2$s</string>
+
+    <string name="risk_safe">Sûre</string>
+    <string name="risk_low">Faible</string>
+    <string name="risk_medium">Moyen</string>
+    <string name="risk_high">Élevé</string>
+    <string name="risk_critical">Critique</string>
+
+    <string name="finding_sms">Peut lire ou envoyer vos SMS.</string>
+    <string name="finding_call_log">Peut lire votre historique d\'appels.</string>
+    <string name="finding_contacts">Peut lire vos contacts.</string>
+    <string name="finding_location">Peut accéder à votre position.</string>
+    <string name="finding_camera">Peut utiliser la caméra.</string>
+    <string name="finding_microphone">Peut utiliser le microphone.</string>
+    <string name="finding_overlay">Peut s\'afficher par-dessus les autres applications.</string>
+    <string name="finding_accessibility">Peut contrôler l\'écran via l\'accessibilité.</string>
+    <string name="finding_device_admin">Possède des droits d\'administrateur de l\'appareil.</string>
+    <string name="finding_notification_listener">Peut lire vos notifications.</string>
+    <string name="finding_install_packages">Peut installer d\'autres applications.</string>
+    <string name="finding_usage_access">Peut voir quelles applications vous utilisez.</string>
+    <string name="finding_tracker">Contient un SDK de pistage : %1$s</string>
+    <string name="finding_suspicious_sdk">Contient un SDK suspect : %1$s</string>
+    <string name="finding_sideloaded">Installée depuis %1$s, pas depuis le Play Store.</string>
+    <string name="finding_exported">%1$s composants exportés peuvent recevoir des intents externes.</string>
+    <string name="finding_hidden_launcher">N\'a pas d\'icône et peut se cacher de la liste des applications.</string>
+    <string name="finding_signature">Correspond à la règle d\'analyse : %1$s</string>
+    <string name="finding_combo_sms_accessibility">Combinaison dangereuse : lit les SMS et peut contrôler l\'écran.</string>
+    <string name="finding_combo_overlay_accessibility">Combinaison dangereuse : s\'affiche par-dessus les applications et peut contrôler l\'écran.</string>
+    <string name="finding_combo_sms_admin">Combinaison dangereuse : lit les SMS et possède les droits d\'administrateur.</string>
 </resources>

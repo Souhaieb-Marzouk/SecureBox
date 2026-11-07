@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="apps_title">Apps &amp; permissions</string>
-    <string name="apps_subtitle">Understand what every installed app can do on this device.</string>
-    <string name="apps_roadmap_banner">The malware scanner and permission auditor arrive in v0.3.0.</string>
-    <string name="apps_planned_title">Planned for v0.3.0</string>
-    <string name="apps_planned_one">A risk rating for every app, explained in plain language.</string>
-    <string name="apps_planned_two">Detection of tracking SDKs and dangerous permission combinations.</string>
-    <string name="apps_planned_three">A clear Play Store, System or Sideloaded badge for each app.</string>
+    <string name="apps_subtitle">Every installed app, what it can access, and how risky it looks — computed on this device.</string>
+    <string name="apps_filter_all">All apps</string>
+    <string name="apps_filter_risky">Risky</string>
+    <string name="apps_filter_sideloaded">Sideloaded</string>
+    <string name="apps_loading">Analyzing installed apps…</string>
+    <string name="apps_progress">Analyzed %1$d of %2$d apps…</string>
+    <string name="apps_count">%1$d apps</string>
+    <string name="apps_refresh">Refresh</string>
+    <string name="apps_empty">No apps match this filter.</string>
+
+    <string name="apps_source_play">Play Store</string>
+    <string name="apps_source_system">System</string>
+    <string name="apps_source_sideloaded">Sideloaded</string>
+    <string name="apps_source_unknown">Unknown source</string>
+
+    <string name="apps_detail_meta">Version %1$s · installed %2$s</string>
+    <string name="apps_detail_rating">Score %1$d/100 · %2$s</string>
+    <string name="apps_detail_findings">Why this rating</string>
+    <string name="apps_detail_no_findings">No risk signals found.</string>
+    <string name="apps_detail_permissions">Permissions requested: %1$d</string>
+    <string name="apps_detail_close">Close</string>
+    <string name="apps_score_badge">%1$d · %2$s</string>
+
+    <string name="risk_safe">Safe</string>
+    <string name="risk_low">Low</string>
+    <string name="risk_medium">Medium</string>
+    <string name="risk_high">High</string>
+    <string name="risk_critical">Critical</string>
+
+    <string name="finding_sms">Can read or send your text messages.</string>
+    <string name="finding_call_log">Can read your call history.</string>
+    <string name="finding_contacts">Can read your contacts.</string>
+    <string name="finding_location">Can access your location.</string>
+    <string name="finding_camera">Can use the camera.</string>
+    <string name="finding_microphone">Can use the microphone.</string>
+    <string name="finding_overlay">Can draw over other apps.</string>
+    <string name="finding_accessibility">Can control the screen through accessibility.</string>
+    <string name="finding_device_admin">Has device administrator rights.</string>
+    <string name="finding_notification_listener">Can read your notifications.</string>
+    <string name="finding_install_packages">Can install other apps.</string>
+    <string name="finding_usage_access">Can see which apps you use.</string>
+    <string name="finding_tracker">Contains a tracking SDK: %1$s</string>
+    <string name="finding_suspicious_sdk">Contains a suspicious SDK: %1$s</string>
+    <string name="finding_sideloaded">Installed from %1$s, not the Play Store.</string>
+    <string name="finding_exported">%1$s exported components can receive outside intents.</string>
+    <string name="finding_hidden_launcher">Has no launcher icon and can hide from the app list.</string>
+    <string name="finding_signature">Matches scanner rule: %1$s</string>
+    <string name="finding_combo_sms_accessibility">Dangerous combination: reads SMS and can control the screen.</string>
+    <string name="finding_combo_overlay_accessibility">Dangerous combination: draws over apps and can control the screen.</string>
+    <string name="finding_combo_sms_admin">Dangerous combination: reads SMS and has device admin rights.</string>
 </resources>
