@@ -75,8 +75,14 @@ Write-Host "`nLaunching ..."
 & $Adb shell am start -n "$Package/.MainActivity" | Out-Null
 Start-Sleep -Seconds 4
 
-$resumed = & $Adb shell dumpsys activity activities | Select-String 'mResumedActivity' | Select-Object -First 1
-Write-Host "Resumed: $($resumed.Line.Trim())"
+$resumed = & $Adb shell dumpsys activity activities |
+    Select-String 'mResumedActivity|topResumedActivity' |
+    Select-Object -First 1
+if ($resumed) {
+    Write-Host "Resumed: $($resumed.Line.Trim())"
+} else {
+    Write-Host "Resumed: could not read dumpsys; check the app is on screen" -ForegroundColor Yellow
+}
 
 Write-Host "`nRecent crashes (AndroidRuntime):"
 $crashes = & $Adb logcat -d -t 400 -s AndroidRuntime:E
