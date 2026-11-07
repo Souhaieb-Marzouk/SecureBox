@@ -13,6 +13,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.2.1] - 2026-11-07
+
+### Added
+
+- Checksum-verification dialog and a real `UpdatePhase.Verifying` state in the updater.
+- `tools/sandbox-build.ps1` and `tools/sandbox-build-root.gradle` for restricted build environments.
+- `tools/device-qa.ps1` on-device smoke test helper.
+- `docs/PLAY_COMPLIANCE.md` with the package-visibility declaration, VPN disclosure and data-safety answers.
+- A real Blocked state in the backlog.
+
+### Changed
+
+- Removed unused dependencies and catalog entries (`mockk`, `kotlinx-coroutines-test`, `material-icons-extended`, `lifecycle-process`, `espresso-core`, unused app test dependencies).
+- Backlog: six issues closed; the two v0.1 device checks folded into SB-059 (Blocked pending hardware).
+
+### Fixed
+
+- Dead `UpdatePhase.Verifying` replaced by a working verification step.
+- `v0.1.0` and `v0.2.0` release titles use the specified em dash.
+- Stale `SecureBox-dist` copy removed from the old workspace.
+- CI now runs the `core-domain` JVM tests that `testDebugUnitTest` skipped.
+
 ## [0.2.0] - 2026-11-07
 
 ### Added
