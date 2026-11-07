@@ -27,7 +27,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Settings: language, device mode with re-detection, theme, Threat Intelligence toggle ("Free Trial"), update check, privacy policy, about, GitHub/license links.
 - Isolated `feature-threatintel` module with a local feature flag and trial badge, ready for the v0.5.0 signed feed.
 - Documentation: `README.md`, `PRIVACY.md`, `SECURITY.md`, `BUILDING.md`, `TESTING.md`, `docs/ARCHITECTURE.md`.
-- GitHub Actions: CI (tests, lint, hardcoded-string guard, debug APK) and release workflow (signed universal + ABI APKs, `SHA256SUMS`, automated GitHub Release).
+- GitHub Actions: CI (tests, lint, hardcoded-string guard, debug APK) and a signed-build workflow (signed universal + ABI APKs, `SHA256SUMS`, uploaded as workflow artifacts). Releases are published manually.
 - Unit tests for SemVer parsing, update evaluation, SHA-256 handling and the security score.
 
 ### Security

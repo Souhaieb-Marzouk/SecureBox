@@ -43,7 +43,7 @@ The Compose test in `feature-onboarding` renders the real `OnboardingScreen` and
 | Job | Device | Command |
 |---|---|---|
 | `verify` | GitHub runner | `verifyNoHardcodedStrings`, `testDebugUnitTest`, `lintDebug`, `assembleDebug` |
-| `release` | GitHub runner (tag push) | `lintRelease`, `testDebugUnitTest`, `assembleRelease`, `apksigner verify`, SHA-256, publish |
+| `signed-build` | GitHub runner (tag push or manual) | `lintRelease`, `testDebugUnitTest`, `assembleRelease`, `apksigner verify`, SHA-256, artifact upload (no release creation) |
 
 Instrumented tests run on a dedicated emulator matrix once Milestone 2 introduces VPN code (a phone AVD and a Leanback AVD, API 33+).
 

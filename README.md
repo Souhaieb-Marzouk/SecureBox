@@ -33,7 +33,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **APK self-integrity check**: the app verifies its own signing certificate at startup.
 - **Settings**: language, device mode (with re-detection), theme, Threat Intelligence toggle ("Free Trial"), update check, privacy policy, about.
 - **Docs & policies**: `PRIVACY.md`, `SECURITY.md`, `BUILDING.md`, `TESTING.md`.
-- **CI/CD**: GitHub Actions builds, tests, lints, signs, hashes and publishes APKs on tag push.
+- **CI/CD**: GitHub Actions builds, tests, lints, signs and hashes APKs on tag push and uploads them as workflow artifacts; the GitHub Release itself is published manually.
 
 ## Roadmap
 
