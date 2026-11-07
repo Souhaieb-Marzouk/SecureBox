@@ -38,6 +38,10 @@ node tools/sign-release.mjs --file .\SecureBox-dist\vX.Y.Z\SHA256SUMS --key C:\U
 
 Attach `SHA256SUMS.sig` to the GitHub release next to `SHA256SUMS` and the APKs.
 
+The `signed-build.yml` workflow signs the checksums automatically when the
+`RELEASE_SUMS_KEY` secret is configured; without it, the artifact is uploaded unsigned and you
+should sign and attach the `.sig` locally.
+
 ## Why Ed25519
 
 - Small keys and signatures (32/64 bytes), fast verification on any platform.

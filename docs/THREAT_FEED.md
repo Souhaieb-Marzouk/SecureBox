@@ -50,7 +50,8 @@ update. The feed is **optional**: the app ships with a bundled ruleset and works
 
 The private key must never be committed or pasted into CI logs. Add it as the
 `THREAT_FEED_KEY` repository secret; `.github/workflows/threat-feed.yml` signs and verifies the feed
-on every change to `latest.json`.
+on every change to `latest.json`. If the secret is absent, the workflow logs a warning and skips
+signing instead of failing; in that case sign locally and commit `latest.json.sig`.
 
 ## Sign locally
 
