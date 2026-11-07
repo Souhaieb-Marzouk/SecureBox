@@ -81,6 +81,7 @@ fun DashboardScreen(
     val suggestions = state.score.factors.filterNot { it.satisfied }
     val healthy = suggestions.isEmpty()
     val wide = LocalConfiguration.current.screenWidthDp >= 600
+    val compact = LocalConfiguration.current.screenWidthDp < 360
 
     Column(
         modifier =
@@ -129,7 +130,7 @@ fun DashboardScreen(
                     grade = state.score.grade,
                     gradeLabel = stringResource(ScoreGradeLabels.of(state.score.grade)),
                     contentDescription = stringResource(R.string.dashboard_score_description, state.score.value),
-                    size = if (wide) 180.dp else 132.dp,
+                    size = if (wide) 180.dp else if (compact) 112.dp else 132.dp,
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -258,6 +259,7 @@ private fun QuickTile(
         modifier = modifier,
         shape = RoundedCornerShape(22.dp),
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.78f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
         shadowElevation = 6.dp,
     ) {

@@ -4,7 +4,7 @@
     <string name="apps_subtitle">Chaque application installée, ce à quoi elle a accès et son niveau de risque — calculé sur cet appareil.</string>
     <string name="apps_filter_all">Toutes</string>
     <string name="apps_filter_risky">À risque</string>
-    <string name="apps_filter_sideloaded">Installées manuellement</string>
+    <string name="apps_filter_sideloaded">Manuelles</string>
     <string name="apps_loading">Analyse des applications installées…</string>
     <string name="apps_progress">%1$d applications analysées sur %2$d…</string>
     <string name="apps_count">%1$d applications</string>

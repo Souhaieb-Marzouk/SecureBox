@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.6.0` — Aurora Redesign |
+| **Current release** | `v0.6.1` — Readability & TV Fixes |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |

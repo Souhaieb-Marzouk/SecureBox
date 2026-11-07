@@ -1,7 +1,12 @@
 package io.securebox.feature.network
 
 import android.app.Activity
+import android.app.UiModeManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.net.Uri
 import android.net.VpnService
 import android.provider.Settings
 import android.text.format.Formatter
@@ -21,9 +26,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -32,10 +39,14 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -123,6 +134,14 @@ fun NetworkScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    var usageHelp by remember { mutableStateOf(false) }
+    val isTelevision =
+        remember(context) {
+            context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK) ||
+                context.packageManager.hasSystemFeature(PackageManager.FEATURE_TELEVISION) ||
+                context.getSystemService(UiModeManager::class.java)?.currentModeType ==
+                Configuration.UI_MODE_TYPE_TELEVISION
+        }
     val maxMetric = state.apps.maxOfOrNull { if (state.range == TrafficRange.LIVE) it.rateBytesPerSecond else it.totalBytes }?.coerceAtLeast(1L) ?: 1L
 
     LazyColumn(
@@ -141,7 +160,9 @@ fun NetworkScreen(
             item {
                 UsageAccessCard(
                     onOpenSettings = {
-                        runCatching { context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
+                        // On TVs the phone-style Usage access activity often resolves but shows a
+                        // blank or unrelated screen. Show the manual path and offer generic Settings.
+                        if (isTelevision || !openUsageAccessSettings(context)) usageHelp = true
                     },
                 )
             }
@@ -189,11 +210,11 @@ fun NetworkScreen(
         }
 
         item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                RangeChip(TrafficRange.LIVE, state.range, onRange)
-                RangeChip(TrafficRange.DAY, state.range, onRange)
-                RangeChip(TrafficRange.WEEK, state.range, onRange)
-                RangeChip(TrafficRange.MONTH, state.range, onRange)
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                item { RangeChip(TrafficRange.LIVE, state.range, onRange) }
+                item { RangeChip(TrafficRange.DAY, state.range, onRange) }
+                item { RangeChip(TrafficRange.WEEK, state.range, onRange) }
+                item { RangeChip(TrafficRange.MONTH, state.range, onRange) }
             }
         }
 
@@ -235,6 +256,29 @@ fun NetworkScreen(
 
         item { PortsCard(state.ports, onRefresh = onRefresh) }
         item { AnomalyCard(state.anomaly) }
+    }
+
+    if (usageHelp) {
+        AlertDialog(
+            onDismissRequest = { usageHelp = false },
+            title = { Text(text = stringResource(R.string.network_usage_manual_title)) },
+            text = { Text(text = stringResource(R.string.network_usage_manual_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        usageHelp = false
+                        openGenericSettings(context)
+                    },
+                ) {
+                    Text(text = stringResource(R.string.network_usage_manual_open))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { usageHelp = false }) {
+                    Text(text = stringResource(R.string.network_usage_manual_close))
+                }
+            },
+        )
     }
 }
 
@@ -320,7 +364,11 @@ private fun PresetRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(selected = selected, onClick = onClick)
-        Text(text = label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 6.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f).padding(start = 6.dp),
+        )
     }
 }
 
@@ -584,6 +632,32 @@ private fun TextButtonLabel(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
         )
     }
+}
+
+private fun openGenericSettings(context: Context) {
+    runCatching {
+        context.startActivity(
+            Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+        )
+    }
+}
+
+private fun openUsageAccessSettings(context: Context): Boolean {
+    // Android TV boxes often omit the phone-style Usage access screen, and some OEM settings apps
+    // resolve the action but fail when started. Try the specific screen, then generic Settings, then
+    // the app's own info page, and report failure so the UI can show manual steps.
+    val candidates =
+        listOf(
+            Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+            Intent(Settings.ACTION_SETTINGS),
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}")),
+        )
+    for (intent in candidates) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (intent.resolveActivity(context.packageManager) == null) continue
+        if (runCatching { context.startActivity(intent) }.isSuccess) return true
+    }
+    return false
 }
 
 @Composable

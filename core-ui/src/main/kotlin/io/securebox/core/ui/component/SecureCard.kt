@@ -35,6 +35,7 @@ fun SecureCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surface.copy(alpha = if (dark) 0.78f else 0.92f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
         border = border ?: BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.13f)),
         shadowElevation = if (dark) 10.dp else 4.dp,
     ) {

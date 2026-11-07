@@ -1,11 +1,14 @@
 package io.securebox.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 private val DarkScheme =
@@ -70,9 +73,18 @@ fun SecureBoxTheme(
     typography: Typography = SecureBoxTypography,
     content: @Composable () -> Unit,
 ) {
+    val colorScheme = if (darkTheme) DarkScheme else LightScheme
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkScheme else LightScheme,
+        colorScheme = colorScheme,
         typography = typography,
-        content = content,
-    )
+    ) {
+        // MaterialTheme does not set LocalContentColor itself. Without this, Text outside a Surface
+        // falls back to black, which is unreadable on the dark Aurora backdrop.
+        CompositionLocalProvider(
+            LocalContentColor provides colorScheme.onBackground,
+            LocalTextStyle provides typography.bodyLarge,
+        ) {
+            content()
+        }
+    }
 }

@@ -5,6 +5,10 @@
 
     <string name="network_usage_needed_title">Usage access is off</string>
     <string name="network_usage_needed_body">SecureBox needs usage access to read per-app traffic. The data stays on this device and is never uploaded.</string>
+    <string name="network_usage_manual_title">Allow usage access manually</string>
+    <string name="network_usage_manual_body">Your TV\'s settings app did not open automatically. Open Settings → Apps → Special app access → Usage access, then allow SecureBox. On some boxes it is called “Usage statistics”.</string>
+    <string name="network_usage_manual_open">Open settings</string>
+    <string name="network_usage_manual_close">Cancel</string>
     <string name="network_open_settings">Open settings</string>
 
     <string name="network_firewall_title">Local firewall</string>

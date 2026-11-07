@@ -5,6 +5,10 @@
 
     <string name="network_usage_needed_title">L\'accès à l\'usage est désactivé</string>
     <string name="network_usage_needed_body">SecureBox a besoin de l\'accès à l\'usage pour lire le trafic de chaque application. Les données restent sur cet appareil et ne sont jamais envoyées.</string>
+    <string name="network_usage_manual_title">Autoriser l\'accès à l\'usage manuellement</string>
+    <string name="network_usage_manual_body">Les réglages de votre TV ne se sont pas ouverts automatiquement. Ouvrez Réglages → Applications → Accès spéciaux → Accès à l\'usage, puis autorisez SecureBox. Sur certains boîtiers, cela s\'appelle « Statistiques d\'usage ».</string>
+    <string name="network_usage_manual_open">Ouvrir les réglages</string>
+    <string name="network_usage_manual_close">Annuler</string>
     <string name="network_open_settings">Ouvrir les réglages</string>
 
     <string name="network_firewall_title">Pare-feu local</string>

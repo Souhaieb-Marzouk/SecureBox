@@ -9,6 +9,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.6.1] - 2026-11-08
+
+### Fixed
+
+- Dark-theme text outside cards no longer falls back to black; the theme provides `LocalContentColor`/`LocalTextStyle`.
+- French and English navigation, filters, ranges, settings rows and update button fit narrow phones; chips scroll horizontally.
+- Android TV Usage access action now shows the manual path and opens a working generic Settings screen.
+
 ## [0.6.0] - 2026-11-07
 
 ### Added

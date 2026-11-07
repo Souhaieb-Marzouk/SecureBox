@@ -2,7 +2,7 @@
 <resources>
     <string name="update_section_title">Mises à jour de l\'application</string>
     <string name="update_installed_version">Version installée %1$s (build %2$d)</string>
-    <string name="update_check_button">Rechercher des mises à jour</string>
+    <string name="update_check_button">Vérifier</string>
     <string name="update_checking">Recherche de mises à jour…</string>
     <string name="update_up_to_date">Vous avez la dernière version.</string>
     <string name="update_never_checked">Pas encore vérifié.</string>

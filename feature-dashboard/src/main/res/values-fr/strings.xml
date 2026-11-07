@@ -18,8 +18,8 @@
     <string name="dashboard_quick_scan_body">Trouver les applications à risque.</string>
     <string name="dashboard_quick_block">Bloquer internet</string>
     <string name="dashboard_quick_block_body">Empêcher une application d\'aller en ligne.</string>
-    <string name="dashboard_quick_apps">Voir les applications</string>
-    <string name="dashboard_quick_apps_body">Découvrir ce à quoi elles ont accès.</string>
+    <string name="dashboard_quick_apps">Applications</string>
+    <string name="dashboard_quick_apps_body">Voir ce à quoi elles ont accès.</string>
     <string name="dashboard_quick_help">Comment faire</string>
     <string name="dashboard_quick_help_body">Ouvrir le guide simple.</string>
 

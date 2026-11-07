@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -43,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -94,7 +96,7 @@ fun AppsScreen(
 
     PullToRefreshBox(refreshing = state.loading, onRefresh = onRefresh, modifier = modifier) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().testTag("apps_list"),
             contentPadding = PaddingValues(20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -127,22 +129,28 @@ fun AppsScreen(
             }
         }
         item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(
-                    selected = state.filter == AppsFilter.ALL,
-                    onClick = { onFilter(AppsFilter.ALL) },
-                    label = { Text(stringResource(R.string.apps_filter_all)) },
-                )
-                FilterChip(
-                    selected = state.filter == AppsFilter.RISKY,
-                    onClick = { onFilter(AppsFilter.RISKY) },
-                    label = { Text(stringResource(R.string.apps_filter_risky)) },
-                )
-                FilterChip(
-                    selected = state.filter == AppsFilter.SIDELOADED,
-                    onClick = { onFilter(AppsFilter.SIDELOADED) },
-                    label = { Text(stringResource(R.string.apps_filter_sideloaded)) },
-                )
+            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.ALL,
+                        onClick = { onFilter(AppsFilter.ALL) },
+                        label = { Text(stringResource(R.string.apps_filter_all)) },
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.RISKY,
+                        onClick = { onFilter(AppsFilter.RISKY) },
+                        label = { Text(stringResource(R.string.apps_filter_risky)) },
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.SIDELOADED,
+                        onClick = { onFilter(AppsFilter.SIDELOADED) },
+                        label = { Text(stringResource(R.string.apps_filter_sideloaded)) },
+                    )
+                }
             }
         }
         if (state.loading) {

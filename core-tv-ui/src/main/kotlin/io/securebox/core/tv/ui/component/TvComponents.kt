@@ -52,6 +52,7 @@ fun TvActionCard(
             } else {
                 MaterialTheme.colorScheme.surfaceVariant
             },
+        contentColor = MaterialTheme.colorScheme.onSurface,
         border =
             if (focused) {
                 BorderStroke(4.dp, MaterialTheme.colorScheme.primary)
@@ -117,6 +118,7 @@ fun TvNavItem(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
         color = background,
+        contentColor = MaterialTheme.colorScheme.onSurface,
         border =
             if (focused) {
                 BorderStroke(3.dp, MaterialTheme.colorScheme.primary)

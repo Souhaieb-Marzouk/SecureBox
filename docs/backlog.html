@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.6.0</b></span>
+      <span>Baseline <b>v0.6.1</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-072",
+    "p": "P1",
+    "type": "issue",
+    "area": "Network / TV",
+    "milestone": "v0.6.1",
+    "status": "done",
+    "title": "Open settings for Usage access did nothing on Android TV",
+    "desc": "The action only tried ACTION_USAGE_ACCESS_SETTINGS, which many boxes resolve to a blank screen or fail to launch. v0.6.1 detects TV, shows the exact manual path, and the dialog action opens generic Settings; phones still open the Usage access screen directly with fallbacks to Settings and App info.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-071",
+    "p": "P1",
+    "type": "issue",
+    "area": "Layout / i18n",
+    "milestone": "v0.6.1",
+    "status": "done",
+    "title": "French labels overflowed controls and layouts on narrow phones",
+    "desc": "Navigation labels were shortened (Accueil, Réseau, Applis, Menaces, Réglages), app filters and network ranges now scroll horizontally, settings and firewall rows give labels weight so they wrap, the update button is shorter, and the dashboard gauge shrinks below 360 dp. English labels were shortened where needed too.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-070",
+    "p": "P0",
+    "type": "issue",
+    "area": "Design",
+    "milestone": "v0.6.1",
+    "status": "done",
+    "title": "Text outside cards rendered black in dark theme",
+    "desc": "Text not wrapped in a Surface fell back to the default LocalContentColor (black) on the dark Aurora backdrop. SecureBoxTheme now provides onBackground as the default content colour and bodyLarge as the default text style; cards, action tiles, banners and TV items also set contentColor explicitly.",
+    "doneAt": "2026-11-08"
+  },
   {
     "id": "SB-069",
     "p": "P1",
@@ -896,6 +929,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-08", t: "v0.6.1: fixed dark-theme default text colour, shortened and wrapped EN/FR labels, made filter/range chips scrollable, and added a working TV Usage access fallback with generic Settings." },
   { d: "2026-11-07", t: "v0.6.0: Aurora redesign with a new 2.5D shield mark, adaptive launcher icon, TV banner, glass cards, gradient score ring, floating phone navigation, cinematic TV sidebar, a four-action dashboard and a plain-language How to use guide." },
   { d: "2026-11-07", t: "v0.5.2: Apps tab now explains scores and provides system-settings actions; Live bandwidth lists every app via NetworkStatsManager (including Ethernet); Open ports/Upload anomalies explain themselves; rooted/test-key TV boxes are advisory instead of tampered; installed version/build read from PackageManager." },
   { d: "2026-11-07", t: "v0.5.1 audit release: fixed the IPv6 firewall bypass, feed byte stability and CI asset/signature gaps, FileProvider debug installs, feed size/validation, worker constraints, backup rules, plurals/icons and dashboard firewall scoring. Full gates pass; 44 unit tests." },
@@ -1045,7 +1079,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.6.0";
+  el("footVersion").textContent = "v0.6.1";
 }
 
 function renderLog() {

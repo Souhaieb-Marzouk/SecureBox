@@ -2,9 +2,9 @@
 <resources>
     <string name="app_name">SecureBox</string>
 
-    <string name="nav_dashboard">Tableau de bord</string>
+    <string name="nav_dashboard">Accueil</string>
     <string name="nav_network">Réseau</string>
-    <string name="nav_apps">Applications</string>
+    <string name="nav_apps">Applis</string>
     <string name="nav_threats">Menaces</string>
     <string name="nav_settings">Réglages</string>
 

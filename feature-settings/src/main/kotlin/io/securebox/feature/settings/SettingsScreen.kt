@@ -378,7 +378,7 @@ private fun SettingsSection(
         SectionTitle(text = title)
         Text(text = hint, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Surface(
-            shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.surfaceVariant,
         ) {
             Column(modifier = Modifier.padding(12.dp), content = content)
@@ -401,7 +401,11 @@ private fun RadioRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(selected = selected, onClick = onClick)
-        Text(text = label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 8.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f).padding(start = 8.dp),
+        )
     }
 }
 

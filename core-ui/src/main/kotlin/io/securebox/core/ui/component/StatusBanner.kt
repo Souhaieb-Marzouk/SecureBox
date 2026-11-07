@@ -44,6 +44,7 @@ fun StatusBanner(
         modifier = modifier,
         shape = RoundedCornerShape(18.dp),
         color = accent.copy(alpha = 0.10f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
         border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
     ) {
         Row(

@@ -2,9 +2,9 @@ package io.securebox.feature.apps
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
@@ -61,7 +61,7 @@ class AppsScreenTest {
         )
 
     private fun scrollTo(text: String) {
-        composeRule.onNode(hasScrollAction()).performScrollToNode(hasText(text))
+        composeRule.onNodeWithTag("apps_list").performScrollToNode(hasText(text))
     }
 
     @Test

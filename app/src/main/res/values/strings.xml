@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">SecureBox</string>
 
-    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_dashboard">Home</string>
     <string name="nav_network">Network</string>
     <string name="nav_apps">Apps</string>
     <string name="nav_threats">Threats</string>
