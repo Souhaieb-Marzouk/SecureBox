@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.4.1</b></span>
+      <span>Baseline <b>v0.5.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -478,10 +478,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "done",
     "title": "Signed threat feed client with Ed25519 verification",
-    "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally.",
-    "doneWhen": "A tampered payload is rejected and reported, and a valid payload updates the ruleset atomically."
+    "desc": "Fetch a versioned JSON feed, verify its Ed25519 signature with an embedded public key, reject unsigned or tampered feeds, and store the accepted ruleset locally. Shipped in v0.5.0: Ed25519-verified feed client with atomic DataStore storage and 3 tests.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-041",
@@ -489,9 +489,9 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "blocked",
     "title": "Enhanced detection hooks",
-    "desc": "The feed must update the scanner ruleset, the tracker SDK list and the DNS blocklist used by the firewall, without a code change.",
+    "desc": "The feed must update the scanner ruleset, the tracker SDK list and the DNS blocklist used by the firewall, without a code change. Blocked on architecture: verified rules and trackers do update, but the feed domains list is only stored/displayed. The current VPN routes blocked apps only and discards packets, so it has no DNS layer to enforce domains; a forwarding-DNS design is required.",
     "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh."
   },
   {
@@ -500,10 +500,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "done",
     "title": "Threat Intelligence status card",
-    "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier.",
-    "doneWhen": "The card reflects real feed state and the manual update works offline-safe."
+    "desc": "Show last update time, feed version, rule count, next auto-update, an Update Now button and the local-only upgrade placeholder for a future paid tier. Shipped in v0.5.0: Threat Intelligence status screen with version, counts, dates, signature state, Update now and the paid placeholder.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-043",
@@ -511,10 +511,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "done",
     "title": "24-hour feed auto-update",
-    "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline.",
-    "doneWhen": "The job runs once per day, honours opt-out, and never blocks the UI."
+    "desc": "A WorkManager job refreshes the feed daily with opt-out, respecting battery and network constraints and degrading gracefully offline. Shipped in v0.5.0: daily ThreatFeedWorker honouring both the module toggle and auto-update preference.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-044",
@@ -522,10 +522,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "done",
     "title": "Starter feed and signing-key workflow",
-    "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app.",
-    "doneWhen": "CI can sign a feed, the app verifies it, and the private key never enters the repository."
+    "desc": "Publish threat-intel/latest.json and a GitHub Actions workflow that signs it with an Ed25519 key held in secrets; embed only the public key in the app. Shipped in v0.5.0: starter threat-intel/latest.json, Ed25519 signing tool and the threat-feed CI workflow.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-045",
@@ -533,10 +533,10 @@ const ITEMS = [
     "type": "feature",
     "area": "i18n",
     "milestone": "v1.0.0",
-    "status": "open",
+    "status": "done",
     "title": "Full French review",
-    "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'.",
-    "doneWhen": "TRANSLATION_TODO.md is empty and no English leaks remain in a full walkthrough."
+    "desc": "Resolve every item in TRANSLATION_TODO.md with a fluent reviewer, including the flagged strings such as 'checksum', 'VPN local' and 'boîtier TV'. Shipped in v0.5.0: TRANSLATION_TODO closed; VPN, GitHub quota and completion-title wording reviewed, stale roadmap copy removed.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-046",
@@ -544,9 +544,9 @@ const ITEMS = [
     "type": "feature",
     "area": "Accessibility",
     "milestone": "v1.0.0",
-    "status": "open",
+    "status": "blocked",
     "title": "Accessibility pass",
-    "desc": "TalkBack labels for the score, cards and dialogs, D-pad traversal order, focus visibility on TV, contrast verification and large-font layout checks.",
+    "desc": "TalkBack labels for the score, cards and dialogs, D-pad traversal order, focus visibility on TV, contrast verification and large-font layout checks. Blocked on a human TalkBack and 200% font-scale pass on hardware; D-pad focus and score semantics are in place, but the checklist cannot be honestly closed without the assistive-tech walkthrough.",
     "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale."
   },
   {
@@ -555,10 +555,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Performance",
     "milestone": "v1.0.0",
-    "status": "open",
+    "status": "done",
     "title": "Performance tuning",
-    "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions.",
-    "doneWhen": "Cold start is under one second on a mid-range phone and the universal APK stays under 40 MB."
+    "desc": "Measure cold start, baseline profile coverage, jank on the dashboard and APK size; set budgets and fix regressions. Shipped in v0.5.0: cold start 400-414 ms over three runs on OPPO CPH2173, universal APK 2.29 MB; budgets documented in docs/PERFORMANCE.md.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-048",
@@ -566,9 +566,9 @@ const ITEMS = [
     "type": "feature",
     "area": "Release",
     "milestone": "v1.0.0",
-    "status": "open",
+    "status": "blocked",
     "title": "End-to-end QA and v1.0.0 release",
-    "desc": "Complete the full TESTING.md checklist on a real phone and TV box, fix everything found, and publish v1.0.0 with hashes and notes.",
+    "desc": "Complete the full TESTING.md checklist on a real phone and TV box, fix everything found, and publish v1.0.0 with hashes and notes. Blocked on a physical Android TV box and the maintainer publish action; the phone checklist is mostly green, TV rows and v1.0.0 publication remain.",
     "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published."
   },
   {
@@ -577,10 +577,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Updates",
     "milestone": "v0.3.0",
-    "status": "open",
+    "status": "done",
     "title": "Markdown renderer improvements",
-    "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text.",
-    "doneWhen": "Links are clickable and code fences render without breaking the dialog."
+    "desc": "Release notes currently support headings, bullets, bold and inline code only; links and fenced code blocks render as plain text. Shipped in v0.5.0: clickable http(s) links and fenced code blocks in release notes.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-050",
@@ -588,10 +588,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Updates",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "Clean up cached update packages",
-    "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions.",
-    "doneWhen": "The updater keeps at most the current verified file and deletes the rest on start."
+    "desc": "Only the just-downloaded file is managed; older APKs can accumulate in cacheDir/updates across versions. Shipped in v0.5.0: cacheDir/updates is cleaned before each download, keeping at most the verified file.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-051",
@@ -599,10 +599,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Supply chain",
     "milestone": "v1.0.0",
-    "status": "open",
+    "status": "done",
     "title": "Sign SHA256SUMS with a detached Ed25519 signature",
-    "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub.",
-    "doneWhen": "SHA256SUMS.sig is published and a documented verification command validates it."
+    "desc": "Checksums currently come from the same GitHub release as the APK. A detached signature would let power users verify provenance independently of GitHub. Shipped in v0.5.0: SHA256SUMS.sig (Ed25519), tools/sign-release.mjs and tools/verify-release.mjs, docs/RELEASE_SIGNING.md.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-052",
@@ -610,10 +610,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Build",
     "milestone": "v0.2.0",
-    "status": "open",
+    "status": "done",
     "title": "x86_64 ABI split for emulators",
-    "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK.",
-    "doneWhen": "A securebox-x86_64-release.apk is produced and documented."
+    "desc": "Splits only cover arm64-v8a and armeabi-v7a; emulator users must install the larger universal APK. Shipped in v0.5.0: securebox-x86_64-release.apk produced and preferred by the updater on x86_64.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-053",
@@ -621,10 +621,10 @@ const ITEMS = [
     "type": "feature",
     "area": "Settings",
     "milestone": "v0.5.0",
-    "status": "open",
+    "status": "done",
     "title": "Paid-tier 'Upgrade available' placeholder",
-    "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now.",
-    "doneWhen": "A disabled link with local copy appears only when a paid tier is flagged."
+    "desc": "When a paid Threat Intelligence tier is enabled later, the trial card must show a local-only upgrade link without requiring a backend now. Shipped in v0.5.0: FeatureFlags.PAID_TIER_AVAILABLE guards a local-only Settings card.",
+    "doneAt": "2026-11-07"
   },
   {
     "id": "SB-054",
@@ -819,6 +819,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-07", t: "v0.5.0: signed threat feed (Ed25519) with status screen and daily updates, signed release manifests, markdown links/code fences, update cache cleanup, x86_64 split, paid-tier placeholder, French review closed, 400 ms cold start. 11 P3 items closed; SB-041 (DNS enforcement), SB-046 (TalkBack/font pass) and SB-048 (TV + v1.0.0 publish) are explicitly blocked." },
   { d: "2026-11-07", t: "v0.4.1 confirmed on phone: N2 (VPN key + Protecting N apps), N3 (Wi-Fi and mobile data) and N5 (usage-access revoke/grant) pass, and SB-062 is verified (compact rail + Use phone layout). Remaining in SB-059: N6, re-sign check and the physical TV box." },
   { d: "2026-11-07", t: "v0.4.1 hotfix: SB-062 closed. Switching to TV mode on a phone now collapses the sidebar to an icon rail and shows a Use phone layout escape. Do not publish 0.4.0. Phone manual checklist recorded; N6, re-sign check and the physical TV box remain in SB-059." },
   { d: "2026-11-07", t: "v0.4.0 shipped: RASP with update lock, device hardening checklist, adaptive navigation rail, TV initial focus, pull-to-refresh, bottom-sheet app details, instrumented Compose tests with phone/TV emulator CI, and the native packet pump. All P2 items are now closed; SB-059 (physical device QA) remains blocked and the 14 P3 items are next." },
@@ -964,7 +965,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.4.1";
+  el("footVersion").textContent = "v0.5.0";
 }
 
 function renderLog() {

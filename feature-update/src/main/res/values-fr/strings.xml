@@ -24,7 +24,7 @@
     <string name="update_failed_title">La mise à jour n\'a pas pu aboutir</string>
     <string name="update_retry">Réessayer</string>
     <string name="update_error_action">Action recommandée : vérifiez votre connexion internet et réessayez.</string>
-    <string name="update_error_rate_limited">Limite de requêtes GitHub atteinte. Réessayez plus tard.</string>
+    <string name="update_error_rate_limited">Quota GitHub atteint. Réessayez plus tard.</string>
     <string name="update_error_rate_limited_why">GitHub limite les vérifications anonymes. Patienter quelques minutes suffit.</string>
     <string name="update_error_no_release">Aucune version n\'a encore été publiée.</string>
     <string name="update_error_network">Impossible de joindre GitHub. Vérifiez votre connexion.</string>

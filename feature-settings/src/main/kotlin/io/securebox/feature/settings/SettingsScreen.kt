@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.securebox.core.domain.FeatureFlags
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ThemeMode
@@ -46,6 +47,7 @@ private const val LICENSE_URL = "$GITHUB_URL/blob/main/LICENSE"
 @Composable
 fun SettingsRoute(
     onOpenPrivacy: () -> Unit,
+    onOpenThreatIntel: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -58,6 +60,7 @@ fun SettingsRoute(
         onThreatIntelEnabled = viewModel::setThreatIntelEnabled,
         onRefreshIntegrity = viewModel::refreshIntegrity,
         onOpenPrivacy = onOpenPrivacy,
+        onOpenThreatIntel = onOpenThreatIntel,
     )
 }
 
@@ -71,6 +74,7 @@ fun SettingsScreen(
     onThreatIntelEnabled: (Boolean) -> Unit,
     onRefreshIntegrity: () -> Unit,
     onOpenPrivacy: () -> Unit,
+    onOpenThreatIntel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -206,15 +210,11 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f),
                     )
-                    // Intentionally disabled: the signed feed does not exist before v0.5.0, and a
-                    // working-looking switch would imply protection that is not there.
-                    Switch(checked = false, onCheckedChange = null, enabled = false)
+                    Switch(checked = state.settings.threatIntelEnabled, onCheckedChange = onThreatIntelEnabled)
                 }
-                Text(
-                    text = stringResource(R.string.settings_threat_intel_coming),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.tertiary,
-                )
+                TextButton(onClick = onOpenThreatIntel) {
+                    Text(text = stringResource(R.string.settings_threat_intel_open))
+                }
             }
         }
 
@@ -248,6 +248,22 @@ fun SettingsScreen(
                     }
                     TextButton(onClick = onRefreshIntegrity) {
                         Text(stringResource(R.string.settings_integrity_recheck))
+                    }
+                }
+            }
+        }
+
+        if (FeatureFlags.PAID_TIER_AVAILABLE) {
+            item { SectionTitle(text = stringResource(R.string.settings_paid_title)) }
+            item {
+                SecureCard {
+                    Text(
+                        text = stringResource(R.string.settings_paid_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    TextButton(onClick = {}, enabled = false) {
+                        Text(stringResource(R.string.settings_paid_cta))
                     }
                 }
             }

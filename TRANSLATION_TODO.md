@@ -1,42 +1,34 @@
-# Translation TODO
+# Translation status
 
-SecureBox ships user-facing copy in **English** (`app/src/main/res/values/`, plus each module's
-`values/strings.xml`) and **French** (`values-fr/strings.xml` in the same modules).
+SecureBox ships user-facing copy in **English** (`values/strings.xml`) and **French**
+(`values-fr/strings.xml`) for every module. English values are the source of truth; French is
+maintained alongside them.
 
-Every string below was translated carefully but should be reviewed by a fluent French speaker before
-v1.0.0. Strings marked ⚠️ are the ones where a native reviewer is most likely to prefer different
-wording.
+## Outstanding review items
 
-## Terms kept in English on purpose
+**None.** The v0.4.0 French review closed every row that was previously listed here:
 
-| Term | Reason |
+| Decision | Result |
 |---|---|
-| "Threat Intelligence" | Product/module name and a common industry term; also used in the GitHub repository. |
-| "SecureBox" | Brand name, never translated. |
-| "GitHub" | Proper noun. |
-| "Android TV" | Platform name. |
+| "VPN local" | Changed to **"VPN local uniquement"** for clarity. |
+| GitHub rate limit | Changed to **"Quota GitHub atteint. Réessayez plus tard."** |
+| "checksum" | Kept **"empreinte"** consistently across the updater. |
+| Firewall roadmap copy | Removed the stale "Arrive en v0.2.0" phrase. |
+| "boîtier TV" | Kept; preferred over "box Android TV". |
+| Usage access | Kept Android's own label **"accès à l'usage"**. |
+| Completion title | Changed to gender-neutral **"Votre appareil est protégé"**. |
 
-## Strings needing review
+## Process for new strings
 
-| Key | English | French (current) | Note |
-|---|---|---|---|
-| `onboarding_permission_vpn_why` | "A local-only VPN lets SecureBox stop one app's internet access. No traffic ever leaves your device." | "Un VPN local permet à SecureBox de couper l'accès internet d'une application. Aucun trafic ne quitte votre appareil." | ⚠️ "VPN local" vs "VPN local uniquement" — the latter is more explicit but longer. |
-| `update_error_rate_limited` | "GitHub rate limit reached. Try again later." | "Limite de requêtes GitHub atteinte. Réessayez plus tard." | ⚠️ Consider "Quota GitHub atteint" for brevity. |
-| `update_error_checksum_why` | "A mismatch can mean a corrupted download or a tampered file." | "Une différence peut signifier un téléchargement corrompu ou un fichier modifié." | ⚠️ "empreinte" vs "somme de contrôle" for "checksum"; the app uses "empreinte" consistently. |
-| `settings_firewall_body` | "Blocks an app's internet access on this device. Arrives in v0.2.0." | "Bloque l'accès internet d'une application sur cet appareil. Arrive en v0.2.0." | ⚠️ Confirm future-tense style for roadmap strings. |
-| `privacy_on_device_body` | "Your app list never leaves the phone or TV box." | "Votre liste d'applications ne quitte jamais le téléphone ou le boîtier TV." | ⚠️ "boîtier TV" vs "box Android TV" — the former is preferred by French reviewers in our test. |
-| `dashboard_factor_usage` | "Allow usage access to see per-app data." | "Autorisez l'accès à l'usage pour voir les données par application." | ⚠️ "accès à l'usage" is Android's own French label; confirm. |
-| `onboarding_done_title` | "You're protected" | "Vous êtes protégé" | ⚠️ Gender-neutral alternative: "Votre appareil est protégé". |
-
-## Process
-
-1. Review the table above.
-2. If a change is needed, edit BOTH `values/strings.xml` and `values-fr/strings.xml`.
-3. Run `./gradlew verifyNoHardcodedStrings lintDebug` (lint reports missing translations as warnings).
-4. Remove the row from this file in the same commit.
+1. Add the English string to the module's `values/strings.xml`.
+2. Add the French string to the matching `values-fr/strings.xml` in the same commit.
+3. Run `./gradlew verifyNoHardcodedStrings lintDebug`; missing translations surface as lint warnings.
+4. If a term needs a decision, record it in this file and resolve it before the release.
 
 ## Known gaps
 
-- `feature-network`, `feature-apps` and `feature-threats` screens are roadmap placeholders; their copy will be rewritten in v0.2.0/v0.3.0 and must be re-reviewed then.
-- No RTL language is supported yet; `supportsRtl` is enabled and layouts use start/end, but no RTL translation exists.
-- Plural forms: no `plurals.xml` resources are needed in v0.1.0; they will be introduced with the bandwidth module (counts of apps/bytes).
+- No RTL language is shipped. `supportsRtl` is enabled and layouts use start/end, but there is no
+  RTL translation yet.
+- Plurals are handled with quantity strings where counts are shown; new count strings must add a
+  `plurals.xml` entry rather than concatenating numbers.
+- Screenshots and store listings are English-only until the v1.0.0 store pass.

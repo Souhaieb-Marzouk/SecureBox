@@ -22,6 +22,7 @@ import io.securebox.core.domain.security.RiskScorer
 import io.securebox.core.domain.security.RuleEngine
 import io.securebox.core.domain.security.ScanSummary
 import io.securebox.core.domain.security.SecurityRepository
+import io.securebox.core.domain.security.ThreatFeedRepository
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,6 +40,7 @@ class AndroidSecurityRepository
         private val rulesRepository: SecurityRulesRepository,
         private val permissionAuditor: PermissionAuditor,
         private val riskScorer: RiskScorer,
+        private val threatFeedRepository: ThreatFeedRepository,
         private val dataStore: DataStore<Preferences>,
     ) : SecurityRepository {
         private val packageManager: PackageManager get() = context.packageManager
@@ -91,7 +93,18 @@ class AndroidSecurityRepository
             withContext(Dispatchers.IO) {
                 val started = System.currentTimeMillis()
                 val apps = installedApps().filterNot { it.isSystem }
-                val ruleSet = rulesRepository.rules()
+                val baseRules = rulesRepository.rules()
+                val feed = runCatching { threatFeedRepository.activeFeed() }.getOrNull()
+                val ruleSet =
+                    if (feed == null) {
+                        baseRules
+                    } else {
+                        baseRules.copy(
+                            version = maxOf(baseRules.version, feed.version),
+                            rules = baseRules.rules + feed.rules,
+                            trackerPrefixes = (baseRules.trackerPrefixes + feed.trackerPrefixes).distinct(),
+                        )
+                    }
                 val engine = RuleEngine(ruleSet)
                 val reports = ArrayList<AppRiskReport>(apps.size)
                 var findingsCount = 0
@@ -152,7 +165,10 @@ class AndroidSecurityRepository
             }
         }
 
-        override suspend fun rulesVersion(): Int = rulesRepository.rules().version
+        override suspend fun rulesVersion(): Int {
+            val feed = runCatching { threatFeedRepository.activeFeed() }.getOrNull()
+            return maxOf(rulesRepository.rules().version, feed?.version ?: 0)
+        }
 
         private fun buildReport(
             app: AppSecurityInfo,

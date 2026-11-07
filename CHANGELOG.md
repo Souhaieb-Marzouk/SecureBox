@@ -13,6 +13,28 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - v0.5.0: Threat Intelligence add-on with Ed25519-signed feeds.
 - v1.0.0: localization review, accessibility pass, real-device sign-off.
 
+## [0.5.0] - 2026-11-07
+
+### Added
+
+- Signed threat feed (Ed25519), starter `threat-intel/latest.json`, signing CI workflow and verification tools.
+- Threat Intelligence screen with feed status, Update now and daily auto-update; verified rules and trackers merge into the scanner.
+- Detached Ed25519 signature for release checksums (`SHA256SUMS.sig`, `tools/verify-release.mjs`).
+- x86_64 ABI split.
+- Clickable links and fenced code blocks in release notes.
+- Local-only paid-tier placeholder behind `FeatureFlags.PAID_TIER_AVAILABLE`.
+- `docs/THREAT_FEED.md`, `docs/PERFORMANCE.md`; 3 Ed25519 tests (44 total).
+
+### Fixed
+
+- Stale APKs are deleted from `cacheDir/updates` before a new download.
+- French review closed: VPN wording, GitHub quota, gender-neutral completion title, stale roadmap copy.
+
+### Known limits
+
+- Feed `domains` are not enforced by the firewall (no forwarding DNS); tracked as blocked in SB-041.
+- TalkBack/200% font pass and TV QA remain open.
+
 ## [0.4.1] - 2026-11-07
 
 ### Fixed

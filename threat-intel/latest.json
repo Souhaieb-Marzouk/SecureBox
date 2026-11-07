@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-07T00:00:00Z",
+  "rules": [
+    {
+      "id": "feed-001",
+      "name": "Banking overlay dropper",
+      "severity": "HIGH",
+      "patterns": ["dropper_payload", "overlay_inject"],
+      "allRequired": true
+    },
+    {
+      "id": "feed-002",
+      "name": "SMS exfiltration helper",
+      "severity": "CRITICAL",
+      "patterns": ["exfiltrate_sms", "sms_stealer"],
+      "allRequired": false
+    },
+    {
+      "id": "feed-003",
+      "name": "Accessibility keylogger",
+      "severity": "HIGH",
+      "patterns": ["keylog_accessibility", "record_keystrokes"],
+      "allRequired": true
+    }
+  ],
+  "trackers": [
+    "com.adjust.sdk",
+    "com.appsflyer",
+    "com.facebook.appevents",
+    "com.google.firebase.analytics",
+    "com.mixpanel.android",
+    "com.amplitude.api"
+  ],
+  "domains": [
+    "ads.example.com",
+    "tracker.example.net"
+  ]
+}

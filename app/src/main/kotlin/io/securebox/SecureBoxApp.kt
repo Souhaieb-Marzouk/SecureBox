@@ -10,6 +10,7 @@ import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import io.securebox.work.AnomalyCheckWorker
 import io.securebox.work.ScanWorker
+import io.securebox.work.ThreatFeedWorker
 import io.securebox.work.UpdateCheckWorker
 import java.util.concurrent.TimeUnit
 
@@ -21,6 +22,7 @@ class SecureBoxApp : Application() {
         scheduleAnomalyChecks()
         scheduleWeeklyScan()
         scheduleUpdateChecks()
+        scheduleThreatFeed()
     }
 
     /**
@@ -74,6 +76,18 @@ class SecureBoxApp : Application() {
             .getInstance(this)
             .enqueueUniquePeriodicWork(
                 UpdateCheckWorker.UNIQUE_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+    }
+
+    /** Daily signed-feed refresh; the worker re-checks both feed preferences. */
+    private fun scheduleThreatFeed() {
+        val request = PeriodicWorkRequestBuilder<ThreatFeedWorker>(24, TimeUnit.HOURS).build()
+        WorkManager
+            .getInstance(this)
+            .enqueueUniquePeriodicWork(
+                ThreatFeedWorker.UNIQUE_WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
                 request,
             )

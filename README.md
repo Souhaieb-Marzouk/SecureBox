@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.4.1` — TV Layout Escape Fix |
+| **Current release** | `v0.5.0` — Threat Intelligence & Polish |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
@@ -34,6 +34,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Per-app risk score**: 0–100 with plain-language reasons, All / Risky / Sideloaded filters, and a bottom-sheet detail view.
 - **Sideload awareness**: Play Store / System / Sideloaded badges with installer details.
 - **Automatic scans**: weekly and post-boot scans, controlled by a user preference, plus a notification when risky apps are found.
+- **Signed threat feed**: optional Ed25519-verified rules and tracker updates, manual or daily, with a status screen and offline-safe failure.
 - **Per-app bandwidth**: live rates plus 24 h / 7 d / 30 d history, sorted by consumption, with a block switch on every row.
 - **Upload anomaly detector**: 7-day hourly baseline, 3× / 100 MB per hour thresholds, hourly checks and actionable notifications.
 - **Local-only firewall**: block any app's internet with a `VpnService`, Allow all / Block unknown apps presets, persistent local-only notification and conflicting-VPN detection.

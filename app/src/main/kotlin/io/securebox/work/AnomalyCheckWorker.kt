@@ -13,6 +13,7 @@ import io.securebox.core.domain.network.FirewallRepository
 import io.securebox.core.domain.repository.SettingsRepository
 import io.securebox.core.domain.repository.UpdateRepository
 import io.securebox.core.domain.security.SecurityRepository
+import io.securebox.core.domain.security.ThreatFeedRepository
 
 /** Hilt bridge for components (workers, receivers) that cannot use constructor injection. */
 @EntryPoint
@@ -23,6 +24,8 @@ interface NetworkEntryPoint {
     fun firewallRepository(): FirewallRepository
 
     fun securityRepository(): SecurityRepository
+
+    fun threatFeedRepository(): ThreatFeedRepository
 
     fun settingsRepository(): SettingsRepository
 

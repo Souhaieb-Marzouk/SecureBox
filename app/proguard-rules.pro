@@ -32,3 +32,9 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn org.conscrypt.**
+
+# Ed25519 feed verification. The library has an optional branch for the JDK-only X509Key class,
+# which does not exist on Android; keep the concrete keys and ignore that missing reference.
+-dontwarn sun.security.x509.X509Key
+-keep class net.i2p.crypto.eddsa.** { *; }
+

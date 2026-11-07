@@ -11,6 +11,7 @@ import io.securebox.feature.dashboard.DashboardRoute
 import io.securebox.feature.network.NetworkRoute
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
+import io.securebox.feature.threatintel.ThreatIntelRoute
 import io.securebox.feature.threats.HardeningRoute
 import io.securebox.feature.threats.ThreatsRoute
 
@@ -41,7 +42,13 @@ fun SecureBoxNavHost(
             HardeningRoute(onBack = { navController.popBackStack() })
         }
         composable(Routes.SETTINGS) {
-            SettingsRoute(onOpenPrivacy = { navController.navigate(Routes.PRIVACY) })
+            SettingsRoute(
+                onOpenPrivacy = { navController.navigate(Routes.PRIVACY) },
+                onOpenThreatIntel = { navController.navigate(Routes.THREAT_INTEL) },
+            )
+        }
+        composable(Routes.THREAT_INTEL) {
+            ThreatIntelRoute(onBack = { navController.popBackStack() })
         }
         composable(Routes.PRIVACY) {
             PrivacyScreen(onBack = { navController.popBackStack() })

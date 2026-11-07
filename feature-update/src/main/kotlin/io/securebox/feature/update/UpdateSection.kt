@@ -2,6 +2,7 @@ package io.securebox.feature.update
 
 import android.text.format.Formatter
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,12 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,10 +34,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -329,70 +338,157 @@ private fun InstallPermissionDialog(
 }
 
 /**
- * Tiny Markdown renderer for release notes: headings, bullets, bold and inline code.
- * A full Markdown engine would add weight the app does not need.
+ * Tiny Markdown renderer for release notes: headings, bullets, bold, inline code, links and fenced
+ * code blocks. A full Markdown engine would add weight the app does not need.
  */
 @Composable
 fun MarkdownText(
     markdown: String,
     modifier: Modifier = Modifier,
 ) {
-    val lines = remember(markdown) { markdown.lines() }
+    val blocks = remember(markdown) { parseMarkdownBlocks(markdown) }
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        lines.forEach { rawLine ->
-            val line = rawLine.trimEnd()
-            when {
-                line.isBlank() -> Spacer(modifier = Modifier.height(2.dp))
-                line.startsWith("### ") ->
-                    Text(text = inlineMarkdown(line.removePrefix("### ")), style = MaterialTheme.typography.titleMedium)
-
-                line.startsWith("## ") ->
-                    Text(text = inlineMarkdown(line.removePrefix("## ")), style = MaterialTheme.typography.titleLarge)
-
-                line.startsWith("# ") ->
-                    Text(text = inlineMarkdown(line.removePrefix("# ")), style = MaterialTheme.typography.headlineMedium)
-
-                line.startsWith("- ") || line.startsWith("* ") ->
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Box(
+        blocks.forEach { block ->
+            when (block) {
+                is MarkdownBlock.Code -> {
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = block.text,
+                            style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
                             modifier =
                                 Modifier
-                                    .padding(top = 8.dp)
-                                    .size(6.dp)
-                                    .background(MaterialTheme.colorScheme.primary, CircleShape),
-                        )
-                        Text(
-                            text = inlineMarkdown(line.drop(2)),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    .horizontalScroll(rememberScrollState())
+                                    .padding(12.dp),
                         )
                     }
+                }
 
-                else ->
-                    Text(
-                        text = inlineMarkdown(line),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                is MarkdownBlock.Line -> {
+                    val line = block.text
+                    when {
+                        line.isBlank() -> Spacer(modifier = Modifier.height(2.dp))
+                        line.startsWith("### ") ->
+                            MarkdownInline(text = line.removePrefix("### "), style = MaterialTheme.typography.titleMedium)
+
+                        line.startsWith("## ") ->
+                            MarkdownInline(text = line.removePrefix("## "), style = MaterialTheme.typography.titleLarge)
+
+                        line.startsWith("# ") ->
+                            MarkdownInline(text = line.removePrefix("# "), style = MaterialTheme.typography.headlineMedium)
+
+                        line.startsWith("- ") || line.startsWith("* ") ->
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Box(
+                                    modifier =
+                                        Modifier
+                                            .padding(top = 8.dp)
+                                            .size(6.dp)
+                                            .background(MaterialTheme.colorScheme.primary, CircleShape),
+                                )
+                                MarkdownInline(
+                                    text = line.drop(2),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+
+                        else ->
+                            MarkdownInline(
+                                text = line,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                    }
+                }
             }
         }
     }
 }
 
-/** Very small inline formatter: **bold** and `code`. */
-private fun inlineMarkdown(text: String): AnnotatedString =
+private sealed interface MarkdownBlock {
+    data class Line(val text: String) : MarkdownBlock
+
+    data class Code(val text: String) : MarkdownBlock
+}
+
+private fun parseMarkdownBlocks(markdown: String): List<MarkdownBlock> {
+    val blocks = mutableListOf<MarkdownBlock>()
+    val code = StringBuilder()
+    var inCode = false
+    markdown.lines().forEach { raw ->
+        val line = raw.trimEnd()
+        if (line.startsWith("```")) {
+            if (inCode) {
+                blocks += MarkdownBlock.Code(code.toString().trimEnd())
+                code.clear()
+            }
+            inCode = !inCode
+            return@forEach
+        }
+        if (inCode) code.appendLine(line) else blocks += MarkdownBlock.Line(line)
+    }
+    if (inCode && code.isNotEmpty()) blocks += MarkdownBlock.Code(code.toString().trimEnd())
+    return blocks
+}
+
+private const val LINK_ANNOTATION = "securebox-link"
+
+@Composable
+private fun MarkdownInline(
+    text: String,
+    style: TextStyle,
+    color: Color = Color.Unspecified,
+) {
+    val uriHandler = LocalUriHandler.current
+    val linkColor = MaterialTheme.colorScheme.primary
+    val annotated = remember(text, linkColor) { buildInlineMarkdown(text, linkColor) }
+    ClickableText(
+        text = annotated,
+        style = style.copy(color = color),
+        onClick = { offset ->
+            annotated
+                .getStringAnnotations(LINK_ANNOTATION, offset, offset)
+                .firstOrNull()
+                ?.let { uriHandler.openUri(it.item) }
+        },
+    )
+}
+
+private fun buildInlineMarkdown(
+    text: String,
+    linkColor: Color,
+): AnnotatedString =
     buildAnnotatedString {
-        val segments = text.split("`")
-        segments.forEachIndexed { segmentIndex, segment ->
-            val isCode = segmentIndex % 2 == 1
-            val boldParts = segment.split("**")
-            boldParts.forEachIndexed { boldIndex, part ->
-                val isBold = boldIndex % 2 == 1
-                when {
-                    isCode -> withStyle(SpanStyle(fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)) { append(part) }
-                    isBold -> withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(part) }
-                    else -> append(part)
-                }
+        val linkPattern = Regex("\\[([^\\]]+)]\\((https?://[^)]+)\\)")
+        var cursor = 0
+        linkPattern.findAll(text).forEach { match ->
+            appendInline(text.substring(cursor, match.range.first))
+            pushStringAnnotation(LINK_ANNOTATION, match.groupValues[2])
+            withStyle(SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline)) {
+                appendInline(match.groupValues[1])
+            }
+            pop()
+            cursor = match.range.last + 1
+        }
+        appendInline(text.substring(cursor))
+    }
+
+private fun AnnotatedString.Builder.appendInline(text: String) {
+    val segments = text.split("`")
+    segments.forEachIndexed { segmentIndex, segment ->
+        val isCode = segmentIndex % 2 == 1
+        val boldParts = segment.split("**")
+        boldParts.forEachIndexed { boldIndex, part ->
+            val isBold = boldIndex % 2 == 1
+            when {
+                isCode -> withStyle(SpanStyle(fontFamily = FontFamily.Monospace)) { append(part) }
+                isBold -> withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(part) }
+                else -> append(part)
             }
         }
     }
+}

@@ -1,0 +1,44 @@
+name: Sign threat feed
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "threat-intel/latest.json"
+
+permissions:
+  contents: write
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Write signing key
+        env:
+          THREAT_FEED_KEY: ${{ secrets.THREAT_FEED_KEY }}
+        run: |
+          if [ -z "$THREAT_FEED_KEY" ]; then
+            echo "THREAT_FEED_KEY secret is not configured; skipping." >&2
+            exit 1
+          fi
+          printf '%s\n' "$THREAT_FEED_KEY" > "$RUNNER_TEMP/threat-feed.pem"
+
+      - name: Sign latest.json
+        run: node tools/sign-release.mjs --file threat-intel/latest.json --key "$RUNNER_TEMP/threat-feed.pem"
+
+      - name: Verify before committing
+        run: node tools/verify-release.mjs --file threat-intel/latest.json --sig threat-intel/latest.json.sig --key docs/threat-feed-public.pem
+
+      - name: Commit signature
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: threat-intel/latest.json.sig
+          commit_message: "chore(feed): sign latest.json"

@@ -20,6 +20,7 @@ import io.securebox.core.data.security.AndroidIntegrityRepository
 import io.securebox.core.data.security.AndroidSecurityRepository
 import io.securebox.core.data.settings.SettingsRepositoryImpl
 import io.securebox.core.data.settings.secureBoxDataStore
+import io.securebox.core.data.threat.ThreatFeedRepositoryImpl
 import io.securebox.core.domain.device.DeviceModeDetector
 import io.securebox.core.domain.network.AnomalyRepository
 import io.securebox.core.domain.network.FirewallRepository
@@ -32,6 +33,7 @@ import io.securebox.core.domain.security.IntegrityRepository
 import io.securebox.core.domain.security.PermissionAuditor
 import io.securebox.core.domain.security.RiskScorer
 import io.securebox.core.domain.security.SecurityRepository
+import io.securebox.core.domain.security.ThreatFeedRepository
 import javax.inject.Singleton
 
 @Module
@@ -94,4 +96,8 @@ abstract class DataBindingsModule {
     @Binds
     @Singleton
     abstract fun bindDeviceSettingsRepository(impl: AndroidDeviceSettingsRepository): DeviceSettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindThreatFeedRepository(impl: ThreatFeedRepositoryImpl): ThreatFeedRepository
 }

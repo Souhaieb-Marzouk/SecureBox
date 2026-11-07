@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="threat_intel_badge_free_trial">Free Trial</string>
+    <string name="threat_intel_title">Threat Intelligence</string>
+    <string name="threat_intel_subtitle">Signed, optional updates that add detection rules without an app update.</string>
+    <string name="threat_intel_no_feed">No feed has been installed yet.</string>
+    <string name="threat_intel_version">Feed v%1$d</string>
+    <string name="threat_intel_rules">%1$d signature rules</string>
+    <string name="threat_intel_trackers">%1$d tracker prefixes</string>
+    <string name="threat_intel_domains">%1$d domains</string>
+    <string name="threat_intel_installed">Installed %1$s</string>
+    <string name="threat_intel_checked">Last checked %1$s</string>
+    <string name="threat_intel_never">Never checked</string>
+    <string name="threat_intel_signature">Ed25519 signature verified</string>
+    <string name="threat_intel_update">Update now</string>
+    <string name="threat_intel_updating">Updating…</string>
+    <string name="threat_intel_result_updated">Rules updated.</string>
+    <string name="threat_intel_result_up_to_date">Already up to date.</string>
+    <string name="threat_intel_result_invalid">Signature check failed. The feed was rejected and nothing changed.</string>
+    <string name="threat_intel_result_not_configured">This build has no feed URL configured.</string>
+    <string name="threat_intel_result_failed">Update failed.</string>
+    <string name="threat_intel_auto_title">Daily auto-update</string>
+    <string name="threat_intel_auto_body">Checks once a day on Wi-Fi or mobile data. You can turn it off.</string>
+    <string name="threat_intel_local">Only the signed ruleset is downloaded. No app names, scans or device data are uploaded.</string>
+    <string name="threat_intel_paid_title">Threat Intelligence Pro</string>
+    <string name="threat_intel_paid_body">A paid tier is planned. This placeholder is local only — no account, purchase or backend.</string>
+    <string name="threat_intel_paid_cta">Upgrade available (coming soon)</string>
+    <string name="threat_intel_back">Back</string>
 </resources>

@@ -28,7 +28,7 @@
     <string name="onboarding_permission_usage_title">Voir quelles applications utilisent des données</string>
     <string name="onboarding_permission_usage_why">Permet à SecureBox d\'afficher la consommation internet de chaque application. Les statistiques sont lues sur votre appareil et ne sont jamais envoyées.</string>
     <string name="onboarding_permission_vpn_title">Bloquer l\'accès internet des applications</string>
-    <string name="onboarding_permission_vpn_why">Un VPN local permet à SecureBox de couper l\'accès internet d\'une application. Aucun trafic ne quitte votre appareil.</string>
+    <string name="onboarding_permission_vpn_why">Un VPN local uniquement permet à SecureBox de couper l\'accès internet d\'une application. Aucun trafic ne quitte votre appareil.</string>
     <string name="onboarding_permission_notifications_title">Vous avertir en cas de problème</string>
     <string name="onboarding_permission_notifications_why">Envoie une alerte lorsqu\'une application consomme un volume inhabituel de données ou se comporte comme un malware.</string>
     <string name="onboarding_permission_install_title">Installer les mises à jour de SecureBox</string>
@@ -37,7 +37,7 @@
     <string name="onboarding_permission_allow">Autoriser</string>
     <string name="onboarding_permission_allowed">Autorisé</string>
 
-    <string name="onboarding_done_title">Vous êtes protégé</string>
+    <string name="onboarding_done_title">Votre appareil est protégé</string>
     <string name="onboarding_done_subtitle">Voici votre score de sécurité de départ. Il augmente à mesure que vous activez des protections.</string>
     <string name="onboarding_done_open">Ouvrir SecureBox</string>
     <string name="onboarding_done_score_description">Score de sécurité %1$d sur 100</string>

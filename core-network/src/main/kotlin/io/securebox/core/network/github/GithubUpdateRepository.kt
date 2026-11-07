@@ -90,6 +90,7 @@ class GithubUpdateRepository
                     ?: return@withContext DownloadResult.MissingChecksum
 
                 val targetDirectory = File(context.cacheDir, "updates").apply { mkdirs() }
+                cleanupDownloads(targetDirectory, keep = null)
                 val target = File(targetDirectory, asset.name)
                 if (target.exists()) target.delete()
 
@@ -111,6 +112,16 @@ class GithubUpdateRepository
 
                 DownloadResult.Verified(file = target, sha256 = actualHash)
             }
+
+        /** Keeps at most one APK in cacheDir/updates: the file being downloaded/installed. */
+        private fun cleanupDownloads(
+            directory: File,
+            keep: File?,
+        ) {
+            directory.listFiles()?.forEach { file ->
+                if (file.isFile && file != keep) file.delete()
+            }
+        }
 
         private fun chooseAsset(
             release: ReleaseInfo,

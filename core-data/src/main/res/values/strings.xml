@@ -6,4 +6,6 @@
     <string name="vpn_notification_stop">Turn off</string>
     <string name="vpn_channel_name">Firewall status</string>
     <string name="vpn_channel_description">Shows when the local firewall is running.</string>
+    <string name="feed_error_network">The threat feed could not be reached. Check your connection and try again.</string>
+    <string name="feed_error_parse">The signed feed was valid but its contents could not be read.</string>
 </resources>

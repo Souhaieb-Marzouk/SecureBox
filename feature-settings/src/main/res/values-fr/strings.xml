@@ -24,12 +24,13 @@
 
     <string name="settings_section_protection">Protection</string>
     <string name="settings_firewall_title">Pare-feu local</string>
-    <string name="settings_firewall_body">Bloque l\'accès internet d\'une application sur cet appareil. Arrive en v0.2.0.</string>
+    <string name="settings_firewall_body">Bloque l\'accès internet d\'une application sur cet appareil.</string>
     <string name="settings_firewall_status">Bientôt</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
-    <string name="settings_threat_intel_body">Les flux de menaces signés arrivent en v0.5.0. SecureBox ne télécharge encore aucune donnée de menace.</string>
+    <string name="settings_threat_intel_body">Un flux signé peut ajouter des règles de détection, des traqueurs et des domaines sans mise à jour de l\'application. Les mises à jour sont facultatives et vérifiées localement.</string>
     <string name="settings_threat_intel_toggle">Activer Threat Intelligence</string>
-    <string name="settings_threat_intel_coming">Pas encore actif — prévu pour la v0.5.0.</string>
+    <string name="settings_threat_intel_open">Ouvrir Threat Intelligence</string>
+    <string name="settings_threat_intel_coming">Les mises à jour signées sont facultatives et locales.</string>
 
     <string name="settings_section_updates">Mises à jour</string>
     <string name="settings_integrity_title">Intégrité de l\'appareil</string>
@@ -41,6 +42,9 @@
     <string name="settings_integrity_emulator">Exécution dans un émulateur.</string>
     <string name="settings_integrity_rooted">L\'appareil semble être rooté.</string>
     <string name="settings_integrity_signature">La signature de l\'APK ne correspond pas à la version officielle.</string>
+    <string name="settings_paid_title">Threat Intelligence</string>
+    <string name="settings_paid_body">Une offre payante avec des mises à jour signées est prévue. Cet emplacement est purement local : aucun paiement, compte ni serveur.</string>
+    <string name="settings_paid_cta">Mise à niveau disponible (bientôt)</string>
     <string name="settings_privacy_row_title">Politique de confidentialité</string>
     <string name="settings_privacy_row_body">Ce que SecureBox fait de vos données — et ce qu\'il ne fait jamais.</string>
     <string name="settings_section_about">À propos</string>

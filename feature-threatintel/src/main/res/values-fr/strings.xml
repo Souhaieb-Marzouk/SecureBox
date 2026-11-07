@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="threat_intel_badge_free_trial">Essai gratuit</string>
+    <string name="threat_intel_title">Threat Intelligence</string>
+    <string name="threat_intel_subtitle">Des mises à jour signées et facultatives qui ajoutent des règles de détection sans mise à jour de l\'application.</string>
+    <string name="threat_intel_no_feed">Aucun flux n\'est encore installé.</string>
+    <string name="threat_intel_version">Flux v%1$d</string>
+    <string name="threat_intel_rules">%1$d règles de signature</string>
+    <string name="threat_intel_trackers">%1$d préfixes de traqueurs</string>
+    <string name="threat_intel_domains">%1$d domaines</string>
+    <string name="threat_intel_installed">Installé le %1$s</string>
+    <string name="threat_intel_checked">Dernière vérification : %1$s</string>
+    <string name="threat_intel_never">Jamais vérifié</string>
+    <string name="threat_intel_signature">Signature Ed25519 vérifiée</string>
+    <string name="threat_intel_update">Mettre à jour</string>
+    <string name="threat_intel_updating">Mise à jour…</string>
+    <string name="threat_intel_result_updated">Règles mises à jour.</string>
+    <string name="threat_intel_result_up_to_date">Déjà à jour.</string>
+    <string name="threat_intel_result_invalid">Échec de la signature. Le flux a été rejeté et rien n\'a changé.</string>
+    <string name="threat_intel_result_not_configured">Cette version n\'a aucune URL de flux configurée.</string>
+    <string name="threat_intel_result_failed">Échec de la mise à jour.</string>
+    <string name="threat_intel_auto_title">Mise à jour automatique quotidienne</string>
+    <string name="threat_intel_auto_body">Une vérification par jour en Wi-Fi ou en données mobiles. Vous pouvez la désactiver.</string>
+    <string name="threat_intel_local">Seul le jeu de règles signé est téléchargé. Aucun nom d\'application, résultat d\'analyse ou donnée de l\'appareil n\'est envoyé.</string>
+    <string name="threat_intel_paid_title">Threat Intelligence Pro</string>
+    <string name="threat_intel_paid_body">Une offre payante est prévue. Cet emplacement est purement local — aucun compte, achat ou serveur.</string>
+    <string name="threat_intel_paid_cta">Mise à niveau disponible (bientôt)</string>
+    <string name="threat_intel_back">Retour</string>
 </resources>

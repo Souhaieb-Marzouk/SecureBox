@@ -24,12 +24,13 @@
 
     <string name="settings_section_protection">Protection</string>
     <string name="settings_firewall_title">Local firewall</string>
-    <string name="settings_firewall_body">Blocks an app\'s internet access on this device. Arrives in v0.2.0.</string>
+    <string name="settings_firewall_body">Blocks an app\'s internet access on this device.</string>
     <string name="settings_firewall_status">Coming soon</string>
     <string name="settings_threat_intel_title">Threat Intelligence</string>
-    <string name="settings_threat_intel_body">Signed threat feeds arrive in v0.5.0. SecureBox does not download any threat data yet.</string>
+    <string name="settings_threat_intel_body">A signed feed can add detection rules, trackers and domains without an app update. Updates are optional and verified on-device.</string>
     <string name="settings_threat_intel_toggle">Enable Threat Intelligence</string>
-    <string name="settings_threat_intel_coming">Not active yet — planned for v0.5.0.</string>
+    <string name="settings_threat_intel_open">Open Threat Intelligence</string>
+    <string name="settings_threat_intel_coming">Signed feed updates are optional and local-only.</string>
 
     <string name="settings_section_updates">Updates</string>
     <string name="settings_integrity_title">Device integrity</string>
@@ -41,6 +42,9 @@
     <string name="settings_integrity_emulator">Running in an emulator.</string>
     <string name="settings_integrity_rooted">The device appears to be rooted.</string>
     <string name="settings_integrity_signature">The APK signature does not match the official build.</string>
+    <string name="settings_paid_title">Threat Intelligence</string>
+    <string name="settings_paid_body">A paid tier with signed feed updates is planned. This placeholder is local only — there is no purchase flow, account or backend.</string>
+    <string name="settings_paid_cta">Upgrade available (coming soon)</string>
     <string name="settings_privacy_row_title">Privacy policy</string>
     <string name="settings_privacy_row_body">What SecureBox does with your data — and what it never does.</string>
     <string name="settings_section_about">About</string>

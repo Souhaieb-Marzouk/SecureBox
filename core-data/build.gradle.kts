@@ -15,6 +15,16 @@ android {
         // AES-256 key for the bundled scanner ruleset. This is obfuscation, not a secret: anyone
         // holding the APK can extract it. Real protection comes from signing the feed in v0.5.0.
         buildConfigField("String", "SCANNER_RULES_KEY", "\"7717e8f658f94b2b0df202757a2510b3aefd187d22ab19b4724c4fb677468b7c\"")
+        buildConfigField(
+            "String",
+            "THREAT_FEED_URL",
+            "\"https://raw.githubusercontent.com/Souhaieb-Marzouk/SecureBox/main/threat-intel/latest.json\"",
+        )
+        buildConfigField(
+            "String",
+            "THREAT_FEED_PUBLIC_KEY",
+            "\"46e1da16ba8e6584b217ba69cdf5be39f2585a34bcb2dc2e6f62c5d17900b055\"",
+        )
     }
 
     buildFeatures {
@@ -49,8 +59,12 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.okhttp)
+    implementation(libs.eddsa)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    testImplementation(libs.junit)
 }
 
