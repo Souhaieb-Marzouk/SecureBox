@@ -26,11 +26,20 @@ if (-not (Get-Command $Adb -ErrorAction SilentlyContinue)) {
     throw "adb not found. Install platform-tools or pass -Adb."
 }
 
+$expectedVersion = ""
 if (-not $Apk) {
     $repo = Split-Path $PSScriptRoot -Parent
-    $Apk = Join-Path (Split-Path $repo -Parent) 'SecureBox-dist\v0.2.0\securebox-universal-release.apk'
+    $dist = Join-Path (Split-Path $repo -Parent) 'SecureBox-dist'
+    $latest = Get-ChildItem $dist -Directory -ErrorAction Stop |
+        Where-Object { $_.Name -match '^v\d+\.\d+\.\d+$' } |
+        Sort-Object { [version]($_.Name.TrimStart('v')) } -Descending |
+        Select-Object -First 1
+    if (-not $latest) { throw "No release folder found under $dist" }
+    $Apk = Join-Path $latest.FullName 'securebox-universal-release.apk'
+    $expectedVersion = $latest.Name.TrimStart('v')
 }
 if (-not (Test-Path $Apk)) { throw "APK not found: $Apk" }
+Write-Host "APK: $Apk" -ForegroundColor Green
 
 $devices = & $Adb devices | Select-Object -Skip 1 | Where-Object { $_ -match '\tdevice$' }
 if (-not $devices) {
@@ -43,7 +52,16 @@ Write-Host "Installing $Apk ..."
 if ($LASTEXITCODE -ne 0) { throw "adb install failed" }
 
 Write-Host "`nPackage facts:"
-& $Adb shell dumpsys package $Package | Select-String 'versionCode=|versionName=' | ForEach-Object { $_.Line.Trim() }
+$facts = & $Adb shell dumpsys package $Package | Select-String 'versionCode=|versionName='
+$facts | ForEach-Object { $_.Line.Trim() }
+if ($expectedVersion) {
+    $installed = ($facts | Where-Object { $_.Line -match 'versionName=' } | Select-Object -First 1).Line
+    if ($installed -notmatch [regex]::Escape($expectedVersion)) {
+        Write-Host "WARNING: expected v$expectedVersion, found: $installed" -ForegroundColor Red
+    } else {
+        Write-Host "Version check: v$expectedVersion OK" -ForegroundColor Green
+    }
+}
 
 Write-Host "`nLaunching ..."
 & $Adb shell am start -n "$Package/.MainActivity" | Out-Null
@@ -65,4 +83,4 @@ try {
     Write-Host "  screenshot skipped"
 }
 
-Write-Host "`nNext: complete the v0.2.0 checks in TESTING.md (block a test app, unblock it, trigger an anomaly notification, open Network with usage access denied)." -ForegroundColor Yellow
+Write-Host "`nNext: complete the v0.4.0 checks in TESTING.md - onboarding, phone/TV shell, network N1-N6, scan and RASP." -ForegroundColor Yellow

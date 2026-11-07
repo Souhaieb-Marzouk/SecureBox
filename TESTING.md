@@ -90,6 +90,26 @@ Record the result for both a **physical phone** and a **physical Android TV box*
 | 18 | Rotate the device | State survives; layout adapts |
 | 19 | Change theme to Light, then System | Applies immediately and persists after restart |
 
+### Network / firewall (physical device)
+
+The firewall only exists on real hardware: emulators do not exercise the real `VpnService`, the
+system VPN dialog, or per-app routing. Run these after the phone/TV shell checks.
+
+| # | Step | Expected |
+|---|---|---|
+| N1 | Grant VPN consent, block a browser or test app, then open a website in it | Page fails to load; unblock, reload, page loads |
+| N2 | Check the status bar while the firewall runs | VPN key icon is present; SecureBox shows "Protecting N apps" |
+| N3 | Repeat N1 on Wi-Fi and on mobile data | The blocked app fails on both networks |
+| N4 | With the firewall active, connect another VPN app | Network shows the conflict banner; SecureBox does not fight it or crash |
+| N5 | Revoke usage access in system settings, return to Network | Permission card appears; granting it repopulates the list on return |
+| N6 | Block one app and leave the firewall on for 10 minutes | No crash or ANR, reasonable battery use, tunnel survives screen-off |
+
+### Recording results
+
+Copy `docs/device-qa/v0.4.0-results.md`, fill in every row for a phone and a TV box, and paste the
+`tools/device-qa.ps1` output for each. Link the file from SB-059 in `docs/backlog.html`. SB-059 stays
+blocked until both devices pass.
+
 ### Update system
 
 | # | Step | Expected |
