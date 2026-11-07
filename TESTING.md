@@ -7,7 +7,7 @@ This document covers automated tests, how to run them, and the manual checklist 
 ### Unit tests (JVM)
 
 ```bash
-./gradlew testDebugUnitTest
+./gradlew testDebugUnitTest test
 ```
 
 | Area | Test class | What it proves |
@@ -42,8 +42,8 @@ The Compose test in `feature-onboarding` renders the real `OnboardingScreen` and
 
 | Job | Device | Command |
 |---|---|---|
-| `verify` | GitHub runner | `verifyNoHardcodedStrings`, `testDebugUnitTest`, `lintDebug`, `assembleDebug` |
-| `signed-build` | GitHub runner (tag push or manual) | `lintRelease`, `testDebugUnitTest`, `assembleRelease`, `apksigner verify`, SHA-256, artifact upload (no release creation) |
+| `verify` | GitHub runner | `verifyNoHardcodedStrings`, `testDebugUnitTest`, `test`, `lintDebug`, `assembleDebug` |
+| `signed-build` | GitHub runner (tag push or manual) | `lintRelease`, `testDebugUnitTest`, `test`, `assembleRelease`, `apksigner verify`, SHA-256, artifact upload (no release creation) |
 
 Instrumented tests run on a dedicated emulator matrix once Milestone 2 introduces VPN code (a phone AVD and a Leanback AVD, API 33+).
 

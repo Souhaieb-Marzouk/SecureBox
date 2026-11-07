@@ -47,7 +47,7 @@ jobs:
         run: ./gradlew verifyNoHardcodedStrings --stacktrace
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest --stacktrace
+        run: ./gradlew testDebugUnitTest test --stacktrace
 
       - name: Lint (HardcodedText is an error)
         run: ./gradlew lintDebug --stacktrace

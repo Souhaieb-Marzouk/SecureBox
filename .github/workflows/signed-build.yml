@@ -81,7 +81,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Verify sources
-        run: ./gradlew verifyNoHardcodedStrings testDebugUnitTest lintRelease --stacktrace
+        run: ./gradlew verifyNoHardcodedStrings testDebugUnitTest test lintRelease --stacktrace
 
       - name: Build signed release APKs
         env:
