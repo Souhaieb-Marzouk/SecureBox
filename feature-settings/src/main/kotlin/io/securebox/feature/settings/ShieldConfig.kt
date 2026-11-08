@@ -22,22 +22,22 @@ val dnsPresetInfos: List<DnsPresetInfo> =
             preset = DnsPreset.ADGUARD,
             titleRes = R.string.shield_dns_adguard_title,
             bodyRes = R.string.shield_dns_adguard_body,
-            dohUrl = "https://dns.adguard-dns.com/dns-query",
-            dotHost = "dns.adguard-dns.com",
+            dohUrl = DnsPreset.ADGUARD.dohUrl,
+            dotHost = DnsPreset.ADGUARD.dotHost,
         ),
         DnsPresetInfo(
             preset = DnsPreset.CLOUDFLARE_FAMILIES,
             titleRes = R.string.shield_dns_cloudflare_title,
             bodyRes = R.string.shield_dns_cloudflare_body,
-            dohUrl = "https://family.cloudflare-dns.com/dns-query",
-            dotHost = "family.cloudflare-dns.com",
+            dohUrl = DnsPreset.CLOUDFLARE_FAMILIES.dohUrl,
+            dotHost = DnsPreset.CLOUDFLARE_FAMILIES.dotHost,
         ),
         DnsPresetInfo(
             preset = DnsPreset.QUAD9,
             titleRes = R.string.shield_dns_quad9_title,
             bodyRes = R.string.shield_dns_quad9_body,
-            dohUrl = "https://dns.quad9.net/dns-query",
-            dotHost = "dns.quad9.net",
+            dohUrl = DnsPreset.QUAD9.dohUrl,
+            dotHost = DnsPreset.QUAD9.dotHost,
         ),
     )
 

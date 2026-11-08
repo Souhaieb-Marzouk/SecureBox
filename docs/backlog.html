@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.7.0</b></span>
+      <span>Baseline <b>v0.8.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-082",
+    "p": "P1",
+    "type": "issue",
+    "area": "TV",
+    "milestone": "v0.8.0",
+    "status": "done",
+    "title": "Android TV remote could not scroll text-only sections",
+    "desc": "Cards now have a focusable body and a focusable tail; every scroll container has top/bottom focus anchors; headings, banners and settings sections are focus stops. This makes text above the first button and below the last button reachable in Network, Apps/detail, Settings, Dashboard, Threats, Hardening, Threat Intel, Privacy, Onboarding, Shield, DNS and Statistics.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-081",
+    "p": "P0",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v0.8.0",
+    "status": "done",
+    "title": "DNS Shield without Private DNS",
+    "desc": "One-switch DNS-only VPN for devices where Private DNS is missing. Adds a private DNS server and routes only DNS resolver IPs into the tunnel; all other app traffic bypasses SecureBox. Filters the local ad/tracker list, forwards to AdGuard/Cloudflare/Quad9 over DoH, needs one VPN consent, and is mutually exclusive with the local firewall. Protected sockets prevent a DoH loop.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-080",
+    "p": "P1",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v0.8.0",
+    "status": "done",
+    "title": "Cumulative protection statistics page",
+    "desc": "New Shield statistics page with ads, trackers, pages cleaned, dangerous links and locally blocked DNS queries. Counters persist in DataStore, update live and can be reset. Browser counts flush on close; DNS counts flush in batches. Upstream resolver blocks are not counted and the page says so.",
+    "doneAt": "2026-11-08"
+  },
   {
     "id": "SB-079",
     "p": "P1",
@@ -1006,6 +1039,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-08", t: "v0.8.0: protection statistics page, one-switch DNS Shield VPN with no Private DNS, and TV focus anchors so remote users can scroll text-only sections." },
   { d: "2026-11-08", t: "v0.7.0: Privacy Shield with private browser ad/tracker/annoyance filtering, Standard/High tracking modes, AdGuard/Cloudflare/Quad9 DNS presets with DoH test and Private DNS guidance, and local SHA-256 hash-prefix Safe Browsing." },
   { d: "2026-11-08", t: "v0.6.2: Apps now lists only currently granted permissions, re-audits on resume/Refresh, scores Criticality from permissions only, recommends keep/reduce/uninstall, and classifies apps as built-in, Play Store, other store or manual APK." },
   { d: "2026-11-08", t: "v0.6.1: fixed dark-theme default text colour, shortened and wrapped EN/FR labels, made filter/range chips scrollable, and added a working TV Usage access fallback with generic Settings." },
@@ -1158,7 +1192,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.7.0";
+  el("footVersion").textContent = "v0.8.0";
 }
 
 function renderLog() {

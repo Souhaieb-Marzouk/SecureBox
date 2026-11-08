@@ -49,6 +49,7 @@ import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.ui.component.AuroraBackground
 import io.securebox.core.ui.component.BrandMark
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScoreGauge
 import io.securebox.core.ui.component.ScoreGradeLabels
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -108,6 +109,7 @@ fun OnboardingScreen(
                     .padding(horizontal = 24.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            FocusAnchor()
             Brand()
             Spacer(modifier = Modifier.height(24.dp))
             if (state.step != OnboardingStep.DONE) {
@@ -147,6 +149,7 @@ fun OnboardingScreen(
                         DoneStep(state = state, onFinish = onFinish)
                 }
             }
+            FocusAnchor()
         }
     }
 }

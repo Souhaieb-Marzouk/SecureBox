@@ -1,6 +1,10 @@
 package io.securebox.feature.settings
 
+import android.app.Activity
+import android.net.VpnService
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,6 +40,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.model.DnsPreset
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 
@@ -44,11 +50,25 @@ fun DnsProtectionRoute(
     viewModel: ShieldViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    var permissionDenied by remember { mutableStateOf(false) }
+    val vpnPermission =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                permissionDenied = false
+                viewModel.startDnsShield()
+            } else {
+                permissionDenied = true
+            }
+        }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer =
             LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) viewModel.refreshPrivateDns()
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    viewModel.refreshPrivateDns()
+                    viewModel.refreshDnsShield()
+                }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
@@ -59,6 +79,21 @@ fun DnsProtectionRoute(
         onPreset = viewModel::setDnsPreset,
         onTest = viewModel::testDoh,
         onRefresh = viewModel::refreshPrivateDns,
+        permissionDenied = permissionDenied,
+        onDnsShieldToggle = { enabled ->
+            if (!enabled) {
+                permissionDenied = false
+                viewModel.stopDnsShield()
+            } else if (!state.firewallRunning) {
+                val intent = VpnService.prepare(context)
+                if (intent == null) {
+                    permissionDenied = false
+                    viewModel.startDnsShield()
+                } else {
+                    vpnPermission.launch(intent)
+                }
+            }
+        },
     )
 }
 
@@ -69,6 +104,8 @@ fun DnsProtectionScreen(
     onPreset: (DnsPreset) -> Unit,
     onTest: () -> Unit,
     onRefresh: () -> Unit,
+    permissionDenied: Boolean,
+    onDnsShieldToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -84,6 +121,7 @@ fun DnsProtectionScreen(
                 .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        FocusAnchor()
         TextButton(onClick = onBack) { Text(stringResource(R.string.shield_back)) }
         ScreenHeading(
             title = stringResource(R.string.shield_dns_title_screen),
@@ -105,6 +143,68 @@ fun DnsProtectionScreen(
             )
             TextButton(onClick = onRefresh) {
                 Text(text = stringResource(R.string.shield_dns_check))
+            }
+        }
+
+        SecureCard {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+                    Text(
+                        text = stringResource(R.string.shield_dns_shield_title),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        text =
+                            stringResource(
+                                if (state.dnsShieldRunning) R.string.shield_dns_shield_on else R.string.shield_dns_shield_off,
+                            ),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (state.dnsShieldRunning) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = state.dnsShieldRunning,
+                    onCheckedChange = onDnsShieldToggle,
+                    enabled = !state.firewallRunning,
+                )
+            }
+            Text(
+                text = stringResource(R.string.shield_dns_shield_body),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (state.firewallRunning) {
+                Text(
+                    text = stringResource(R.string.shield_dns_shield_firewall),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+            if (state.dnsShieldRunning) {
+                Text(
+                    text = stringResource(R.string.shield_dns_shield_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            val privateDns = state.privateDnsHost
+            if (!privateDns.isNullOrBlank()) {
+                Text(
+                    text = stringResource(R.string.shield_dns_shield_private_dns, privateDns),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary,
+                )
+            }
+            if (permissionDenied) {
+                Text(
+                    text = stringResource(R.string.shield_dns_shield_denied),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
         }
 
@@ -184,6 +284,7 @@ fun DnsProtectionScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        FocusAnchor()
     }
 }
 

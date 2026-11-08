@@ -69,6 +69,7 @@ import io.securebox.core.domain.network.ListeningPort
 import io.securebox.core.domain.network.PortScanResult
 import io.securebox.core.domain.network.TrafficRange
 import io.securebox.core.ui.component.BannerSeverity
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.component.StatusBanner
@@ -149,6 +150,7 @@ fun NetworkScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        item { FocusAnchor() }
         item {
             ScreenHeading(
                 title = stringResource(R.string.network_title),
@@ -256,6 +258,7 @@ fun NetworkScreen(
 
         item { PortsCard(state.ports, onRefresh = onRefresh) }
         item { AnomalyCard(state.anomaly) }
+        item { FocusAnchor() }
     }
 
     if (usageHelp) {

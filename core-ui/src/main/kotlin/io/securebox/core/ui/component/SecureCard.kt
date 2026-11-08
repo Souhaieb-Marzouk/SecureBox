@@ -2,6 +2,7 @@ package io.securebox.core.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,7 @@ fun SecureCard(
 ) {
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().focusable(),
         shape = RoundedCornerShape(24.dp),
         color = MaterialTheme.colorScheme.surface.copy(alpha = if (dark) 0.78f else 0.92f),
         contentColor = MaterialTheme.colorScheme.onSurface,
@@ -52,8 +53,11 @@ fun SecureCard(
                     )
                     .padding(contentPadding),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            content = content,
-        )
+        ) {
+            content()
+            // A focusable tail lets a remote reach text below the last button in this card.
+            FocusAnchor()
+        }
     }
 }
 
@@ -64,7 +68,7 @@ fun ScreenHeading(
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = modifier.fillMaxWidth().focusable(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Box(
             modifier =
                 Modifier

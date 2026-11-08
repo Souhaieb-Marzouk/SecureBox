@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.7.0` — Privacy Shield |
+| **Current release** | `v0.8.0` — DNS Shield & Protection Stats |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |

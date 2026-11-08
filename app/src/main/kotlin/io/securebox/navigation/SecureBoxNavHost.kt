@@ -15,6 +15,7 @@ import io.securebox.feature.settings.HelpScreen
 import io.securebox.feature.settings.PrivacyScreen
 import io.securebox.feature.settings.SettingsRoute
 import io.securebox.feature.settings.ShieldRoute
+import io.securebox.feature.settings.ShieldStatsRoute
 import io.securebox.feature.threatintel.ThreatIntelRoute
 import io.securebox.feature.threats.HardeningRoute
 import io.securebox.feature.threats.ThreatsRoute
@@ -61,7 +62,11 @@ fun SecureBoxNavHost(
                 onBack = { navController.popBackStack() },
                 onOpenBrowser = { navController.navigate(Routes.BROWSER) },
                 onOpenDns = { navController.navigate(Routes.DNS_PROTECTION) },
+                onOpenStats = { navController.navigate(Routes.SHIELD_STATS) },
             )
+        }
+        composable(Routes.SHIELD_STATS) {
+            ShieldStatsRoute(onBack = { navController.popBackStack() })
         }
         composable(Routes.BROWSER) {
             BrowserRoute(onBack = { navController.popBackStack() })

@@ -37,7 +37,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.model.TrackingProtectionMode
 import io.securebox.core.ui.component.ActionCard
-import io.securebox.core.ui.component.BrandMark
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -48,6 +48,7 @@ fun ShieldRoute(
     onBack: () -> Unit,
     onOpenBrowser: () -> Unit,
     onOpenDns: () -> Unit,
+    onOpenStats: () -> Unit,
     viewModel: ShieldViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -55,7 +56,10 @@ fun ShieldRoute(
     DisposableEffect(lifecycleOwner) {
         val observer =
             LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME) viewModel.refreshPrivateDns()
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    viewModel.refreshPrivateDns()
+                    viewModel.refreshDnsShield()
+                }
             }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
@@ -66,6 +70,7 @@ fun ShieldRoute(
         onBack = onBack,
         onOpenBrowser = onOpenBrowser,
         onOpenDns = onOpenDns,
+        onOpenStats = onOpenStats,
         onMode = viewModel::setTrackingProtection,
         onBlockAds = viewModel::setBlockAdsAndTrackers,
         onHideAnnoyances = viewModel::setHideAnnoyances,
@@ -80,6 +85,7 @@ fun ShieldScreen(
     onBack: () -> Unit,
     onOpenBrowser: () -> Unit,
     onOpenDns: () -> Unit,
+    onOpenStats: () -> Unit,
     onMode: (TrackingProtectionMode) -> Unit,
     onBlockAds: (Boolean) -> Unit,
     onHideAnnoyances: (Boolean) -> Unit,
@@ -96,6 +102,7 @@ fun ShieldScreen(
                 .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        FocusAnchor()
         TextButton(onClick = onBack) { Text(stringResource(R.string.shield_back)) }
         ScreenHeading(
             title = stringResource(R.string.shield_title),
@@ -176,6 +183,18 @@ fun ShieldScreen(
 
         SecureCard {
             Text(text = stringResource(R.string.shield_dns_title), style = MaterialTheme.typography.titleMedium)
+            if (state.dnsShieldRunning) {
+                Text(
+                    text =
+                        stringResource(
+                            R.string.shield_dns_shield_status,
+                            stringResource(R.string.shield_dns_shield_title),
+                            stringResource(R.string.shield_dns_shield_on),
+                        ),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
             val host = state.privateDnsHost
             Text(
                 text =
@@ -235,6 +254,13 @@ fun ShieldScreen(
             onClick = onOpenBrowser,
         )
 
+        ActionCard(
+            icon = SecureBoxIcons.Check,
+            title = stringResource(R.string.shield_stats_title),
+            description = stringResource(R.string.shield_stats_summary, state.stats.total),
+            onClick = onOpenStats,
+        )
+
         SecureCard {
             Text(text = stringResource(R.string.shield_limits_title), style = MaterialTheme.typography.titleMedium)
             Text(
@@ -243,6 +269,7 @@ fun ShieldScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        FocusAnchor()
         Spacer(modifier = Modifier.height(8.dp))
     }
 }

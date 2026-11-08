@@ -1,6 +1,7 @@
 package io.securebox.core.ui.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -41,7 +42,7 @@ fun StatusBanner(
             BannerSeverity.DANGER -> MaterialTheme.colorScheme.error
         }
     Surface(
-        modifier = modifier,
+        modifier = modifier.focusable(),
         shape = RoundedCornerShape(18.dp),
         color = accent.copy(alpha = 0.10f),
         contentColor = MaterialTheme.colorScheme.onSurface,

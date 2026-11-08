@@ -6,6 +6,12 @@
     <string name="vpn_notification_stop">Turn off</string>
     <string name="vpn_channel_name">Firewall status</string>
     <string name="vpn_channel_description">Shows when the local firewall is running.</string>
+    <string name="dns_shield_session_name">SecureBox DNS shield</string>
+    <string name="dns_shield_notification_title">SecureBox DNS shield is on</string>
+    <string name="dns_shield_notification_text">DNS queries are filtered on this device. Other app traffic is not routed through SecureBox.</string>
+    <string name="dns_shield_notification_stop">Turn off</string>
+    <string name="dns_shield_channel_name">DNS shield status</string>
+    <string name="dns_shield_channel_description">Shows when the local DNS filter is running.</string>
     <string name="feed_error_network">The threat feed could not be reached. Check your connection and try again.</string>
     <string name="feed_error_parse">The signed feed was valid but its contents could not be read.</string>
 </resources>

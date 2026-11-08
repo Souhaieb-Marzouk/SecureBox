@@ -9,6 +9,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.8.0] - 2026-11-08
+
+### Added
+
+- Protection statistics page with persistent ad/tracker/annoyance/malicious/DNS counters and reset.
+- DNS Shield: one-switch DNS-only VPN that needs no Private DNS, filters locally, and forwards over DoH.
+- Focusable card tails and top/bottom anchors so Android TV remotes can scroll text-only sections.
+
+### Changed
+
+- AdGuard is the default DNS preset for ad/tracker filtering; Cloudflare for Families remains available.
+- DNS Shield and Local firewall are mutually exclusive (one Android VPN).
+
+### Limited
+
+- YouTube in-stream ads and third-party HTTPS filtering remain impossible without root/MITM; documented in-app.
+
 ## [0.7.0] - 2026-11-08
 
 ### Added

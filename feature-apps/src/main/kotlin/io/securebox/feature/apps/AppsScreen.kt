@@ -62,6 +62,7 @@ import io.securebox.core.domain.security.FindingCode
 import io.securebox.core.domain.security.InstallSource
 import io.securebox.core.domain.security.RiskLevel
 import io.securebox.core.ui.component.BannerSeverity
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.component.PullToRefreshBox
@@ -122,6 +123,7 @@ fun AppsScreen(
             contentPadding = PaddingValues(20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+        item { FocusAnchor() }
         item {
             ScreenHeading(
                 title = stringResource(R.string.apps_title),
@@ -232,6 +234,7 @@ fun AppsScreen(
         items(visible, key = { it.app.packageName }) { report ->
             AppRow(report = report, onClick = { onSelect(report) })
         }
+        item { FocusAnchor() }
         }
     }
 
@@ -405,6 +408,7 @@ private fun AppDetailDialog(
                     .padding(bottom = 32.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            FocusAnchor()
             Text(text = report.app.label, style = MaterialTheme.typography.headlineMedium)
             Text(
                 text = stringResource(R.string.apps_detail_meta, report.app.versionName, installed),
@@ -556,6 +560,7 @@ private fun AppDetailDialog(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.apps_detail_close)) }
+            FocusAnchor()
         }
     }
 }

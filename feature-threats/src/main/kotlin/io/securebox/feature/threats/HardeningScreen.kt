@@ -30,6 +30,7 @@ import io.securebox.core.domain.security.DangerousSetting
 import io.securebox.core.domain.security.SettingId
 import io.securebox.core.domain.security.SettingSeverity
 import io.securebox.core.ui.component.BannerSeverity
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.StatusBanner
 
@@ -57,6 +58,7 @@ fun HardeningScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        item { FocusAnchor() }
         item {
             ScreenHeading(
                 title = stringResource(R.string.hardening_title),
@@ -97,6 +99,7 @@ fun HardeningScreen(
                 OutlinedButton(onClick = onRefresh) { Text(stringResource(R.string.hardening_recheck)) }
             }
         }
+        item { FocusAnchor() }
     }
 }
 

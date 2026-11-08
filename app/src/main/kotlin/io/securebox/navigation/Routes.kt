@@ -19,6 +19,7 @@ object Routes {
     const val SHIELD: String = "shield"
     const val BROWSER: String = "browser"
     const val DNS_PROTECTION: String = "dns_protection"
+    const val SHIELD_STATS: String = "shield_stats"
 }
 
 data class NavItem(

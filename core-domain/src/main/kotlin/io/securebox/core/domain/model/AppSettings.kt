@@ -37,10 +37,22 @@ public enum class TrackingProtectionMode {
 }
 
 /** DNS preset offered by the Privacy Shield; the user applies it in Android Private DNS. */
-public enum class DnsPreset {
-    CLOUDFLARE_FAMILIES,
-    ADGUARD,
-    QUAD9,
+public enum class DnsPreset(
+    public val dohUrl: String,
+    public val dotHost: String,
+) {
+    CLOUDFLARE_FAMILIES(
+        dohUrl = "https://family.cloudflare-dns.com/dns-query",
+        dotHost = "family.cloudflare-dns.com",
+    ),
+    ADGUARD(
+        dohUrl = "https://dns.adguard-dns.com/dns-query",
+        dotHost = "dns.adguard-dns.com",
+    ),
+    QUAD9(
+        dohUrl = "https://dns.quad9.net/dns-query",
+        dotHost = "dns.quad9.net",
+    ),
 }
 
 /** Global firewall presets for the local VPN (implemented in Milestone 2). */
@@ -75,7 +87,7 @@ public data class AppSettings(
     val blockAdsAndTrackers: Boolean = true,
     val hideAnnoyances: Boolean = true,
     val safeBrowsing: Boolean = true,
-    val dnsPreset: DnsPreset = DnsPreset.CLOUDFLARE_FAMILIES,
+    val dnsPreset: DnsPreset = DnsPreset.ADGUARD,
 ) {
     public companion object {
         public const val DEFAULT_UPDATE_INTERVAL_HOURS: Long = 12L

@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.securebox.core.ui.component.BrandMark
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.theme.SecureBoxColors
@@ -42,6 +43,7 @@ fun HelpScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        item { FocusAnchor() }
         item {
             TextButton(onClick = onBack) {
                 Text(text = stringResource(R.string.help_back))
@@ -167,6 +169,7 @@ fun HelpScreen(
                 )
             }
         }
+        item { FocusAnchor() }
     }
 }
 

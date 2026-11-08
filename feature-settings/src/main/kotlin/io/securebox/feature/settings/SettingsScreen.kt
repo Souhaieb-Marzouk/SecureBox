@@ -3,6 +3,7 @@ package io.securebox.feature.settings
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -37,6 +38,7 @@ import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ThemeMode
 import io.securebox.core.domain.security.IntegrityIssue
 import io.securebox.core.ui.component.BrandMark
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.icon.SecureBoxIcons
@@ -94,6 +96,7 @@ fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 20.dp),
     ) {
+        item { FocusAnchor() }
         item {
             ScreenHeading(
                 title = stringResource(R.string.settings_title),
@@ -399,6 +402,7 @@ fun SettingsScreen(
                 )
             }
         }
+        item { FocusAnchor() }
     }
 }
 
@@ -413,7 +417,10 @@ private fun SettingsSection(
     hint: String,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = Modifier.focusable(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         SectionTitle(text = title)
         Text(text = hint, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Surface(
@@ -422,6 +429,7 @@ private fun SettingsSection(
         ) {
             Column(modifier = Modifier.padding(12.dp), content = content)
         }
+        FocusAnchor()
     }
 }
 

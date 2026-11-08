@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.FeatureFlags
 import io.securebox.core.ui.component.BannerSeverity
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.component.StatusBanner
@@ -60,6 +61,7 @@ fun ThreatIntelScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
+        item { FocusAnchor() }
         item {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 ScreenHeading(
@@ -198,5 +200,6 @@ fun ThreatIntelScreen(
         item {
             OutlinedButton(onClick = onBack) { Text(stringResource(R.string.threat_intel_back)) }
         }
+        item { FocusAnchor() }
     }
 }

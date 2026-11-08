@@ -52,6 +52,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.model.TrackingProtectionMode
+import io.securebox.core.domain.network.DnsBlockKind
 import io.securebox.core.ui.icon.SecureBoxIcons
 import io.securebox.core.ui.theme.SecureBoxColors
 import java.io.ByteArrayInputStream
@@ -59,13 +60,31 @@ import java.util.Locale
 
 private const val HOME_URL = "https://duckduckgo.com/"
 
+private data class SessionCounts(
+    val ads: Long = 0,
+    val trackers: Long = 0,
+    val annoyances: Long = 0,
+    val malicious: Long = 0,
+)
+
+private enum class BlockKind {
+    AD,
+    TRACKER,
+    ANNOYANCE,
+    MALICIOUS,
+}
+
 @Composable
 fun BrowserRoute(
     onBack: () -> Unit,
     viewModel: ShieldViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    BrowserScreen(appSettings = state.settings, onBack = onBack)
+    BrowserScreen(
+        appSettings = state.settings,
+        onBack = onBack,
+        onStats = viewModel::recordBrowserSession,
+    )
 }
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -73,16 +92,28 @@ fun BrowserRoute(
 fun BrowserScreen(
     appSettings: io.securebox.core.domain.model.AppSettings,
     onBack: () -> Unit,
+    onStats: (ads: Long, trackers: Long, annoyances: Long, malicious: Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val currentSettings = rememberUpdatedState(appSettings)
+    val session = remember { mutableStateOf(SessionCounts()) }
     var address by rememberSaveable { mutableStateOf(HOME_URL) }
     var blockedCount by rememberSaveable { mutableIntStateOf(0) }
     var blockedUrl by remember { mutableStateOf<String?>(null) }
     var webView by remember { mutableStateOf<WebView?>(null) }
     var canGoBack by remember { mutableStateOf(false) }
+
+    fun record(kind: BlockKind) {
+        session.value =
+            when (kind) {
+                BlockKind.AD -> session.value.copy(ads = session.value.ads + 1)
+                BlockKind.TRACKER -> session.value.copy(trackers = session.value.trackers + 1)
+                BlockKind.ANNOYANCE -> session.value.copy(annoyances = session.value.annoyances + 1)
+                BlockKind.MALICIOUS -> session.value.copy(malicious = session.value.malicious + 1)
+            }
+    }
 
     fun normalize(input: String): String {
         val value = input.trim()
@@ -107,6 +138,7 @@ fun BrowserScreen(
         if (current.safeBrowsing &&
             (SafeBrowsingStore.isBlocked(context, normalized) || SafeBrowsingStore.isBlocked(context, target))
         ) {
+            record(BlockKind.MALICIOUS)
             blockedUrl = target
             return
         }
@@ -126,6 +158,8 @@ fun BrowserScreen(
 
     DisposableEffect(Unit) {
         onDispose {
+            val counts = session.value
+            onStats(counts.ads, counts.trackers, counts.annoyances, counts.malicious)
             val high = currentSettings.value.trackingProtection == TrackingProtectionMode.HIGH
             if (high) {
                 CookieManager.getInstance().removeAllCookies(null)
@@ -211,15 +245,22 @@ fun BrowserScreen(
                                     val current = currentSettings.value
                                     val resource = request.url.toString()
                                     if (current.safeBrowsing && SafeBrowsingStore.isBlocked(ctx, resource)) {
-                                        view.post { blockedCount += 1 }
+                                        view.post {
+                                            record(BlockKind.MALICIOUS)
+                                            blockedCount += 1
+                                        }
                                         return WebResourceResponse(
                                             "text/plain",
                                             "utf-8",
                                             ByteArrayInputStream(ByteArray(0)),
                                         )
                                     }
-                                    if (current.blockAdsAndTrackers && BrowserFilters.isBlockedHost(request.url.host)) {
-                                        view.post { blockedCount += 1 }
+                                    val kind = BrowserFilters.blockKind(request.url.host)
+                                    if (current.blockAdsAndTrackers && kind != null) {
+                                        view.post {
+                                            record(if (kind == DnsBlockKind.AD) BlockKind.AD else BlockKind.TRACKER)
+                                            blockedCount += 1
+                                        }
                                         return WebResourceResponse(
                                             "text/plain",
                                             "utf-8",
@@ -246,7 +287,10 @@ fun BrowserScreen(
                                         (SafeBrowsingStore.isBlocked(ctx, original) ||
                                             SafeBrowsingStore.isBlocked(ctx, target))
                                     ) {
-                                        view.post { blockedUrl = target }
+                                        view.post {
+                                            record(BlockKind.MALICIOUS)
+                                            blockedUrl = target
+                                        }
                                         return true
                                     }
                                     if (target != original) {
@@ -273,6 +317,7 @@ fun BrowserScreen(
                                     url?.let { address = it }
                                     if (currentSettings.value.hideAnnoyances) {
                                         view.evaluateJavascript(BrowserFilters.cosmeticScript, null)
+                                        view.post { record(BlockKind.ANNOYANCE) }
                                     }
                                 }
                             }

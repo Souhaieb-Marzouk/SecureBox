@@ -40,6 +40,7 @@ import io.securebox.core.domain.model.DeviceMode
 import io.securebox.core.domain.model.ScoreGrade
 import io.securebox.core.ui.component.ActionCard
 import io.securebox.core.ui.component.BrandMark
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.GradientDot
 import io.securebox.core.ui.component.ScoreGauge
 import io.securebox.core.ui.component.ScoreGradeLabels
@@ -94,6 +95,7 @@ fun DashboardScreen(
                 .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
+        FocusAnchor()
         ScreenHeading(
             title = stringResource(R.string.dashboard_title),
             subtitle = stringResource(R.string.dashboard_subtitle),
@@ -251,6 +253,7 @@ fun DashboardScreen(
             onClick = onOpenHelp,
         )
 
+        FocusAnchor()
         Spacer(modifier = Modifier.height(8.dp))
     }
 }

@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.securebox.core.domain.security.AppRiskReport
 import io.securebox.core.domain.security.RiskLevel
 import io.securebox.core.ui.component.BannerSeverity
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 import io.securebox.core.ui.component.StatusBanner
@@ -65,6 +66,7 @@ fun ThreatsScreen(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        item { FocusAnchor() }
         item {
             ScreenHeading(
                 title = stringResource(R.string.threats_title),
@@ -198,6 +200,7 @@ fun ThreatsScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        item { FocusAnchor() }
     }
 }
 

@@ -6,6 +6,12 @@
     <string name="vpn_notification_stop">Désactiver</string>
     <string name="vpn_channel_name">État du pare-feu</string>
     <string name="vpn_channel_description">Indique quand le pare-feu local est actif.</string>
+    <string name="dns_shield_session_name">Bouclier DNS SecureBox</string>
+    <string name="dns_shield_notification_title">Le bouclier DNS SecureBox est actif</string>
+    <string name="dns_shield_notification_text">Les requêtes DNS sont filtrées sur cet appareil. Le reste du trafic des applications ne passe pas par SecureBox.</string>
+    <string name="dns_shield_notification_stop">Désactiver</string>
+    <string name="dns_shield_channel_name">État du bouclier DNS</string>
+    <string name="dns_shield_channel_description">Indique quand le filtre DNS local est actif.</string>
     <string name="feed_error_network">Le flux de menaces est injoignable. Vérifiez votre connexion et réessayez.</string>
     <string name="feed_error_parse">Le flux signé est valide mais son contenu est illisible.</string>
 </resources>

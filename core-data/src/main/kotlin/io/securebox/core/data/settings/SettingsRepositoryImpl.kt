@@ -135,7 +135,7 @@ class SettingsRepositoryImpl
                 blockAdsAndTrackers = this[Keys.BLOCK_ADS] ?: true,
                 hideAnnoyances = this[Keys.HIDE_ANNOYANCES] ?: true,
                 safeBrowsing = this[Keys.SAFE_BROWSING] ?: true,
-                dnsPreset = enumOrDefault(this[Keys.DNS_PRESET], DnsPreset.CLOUDFLARE_FAMILIES),
+                dnsPreset = enumOrDefault(this[Keys.DNS_PRESET], DnsPreset.ADGUARD),
             )
 
         private inline fun <reified T : Enum<T>> enumOrDefault(

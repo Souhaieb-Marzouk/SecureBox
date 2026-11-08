@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.securebox.core.ui.component.FocusAnchor
 import io.securebox.core.ui.component.ScreenHeading
 import io.securebox.core.ui.component.SecureCard
 
@@ -40,6 +41,7 @@ fun PrivacyScreen(
                 .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        FocusAnchor()
         ScreenHeading(
             title = stringResource(R.string.privacy_title),
             subtitle = stringResource(R.string.privacy_subtitle),
@@ -61,5 +63,6 @@ fun PrivacyScreen(
                 Text(text = stringResource(R.string.privacy_back))
             }
         }
+        FocusAnchor()
     }
 }

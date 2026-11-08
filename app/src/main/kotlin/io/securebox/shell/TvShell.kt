@@ -69,7 +69,8 @@ fun TvShell(
                 currentRoute == Routes.HELP ||
                 currentRoute == Routes.SHIELD ||
                 currentRoute == Routes.BROWSER ||
-                currentRoute == Routes.DNS_PROTECTION
+                currentRoute == Routes.DNS_PROTECTION ||
+                currentRoute == Routes.SHIELD_STATS
             ) {
                 Routes.SETTINGS
             } else {
