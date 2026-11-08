@@ -22,6 +22,8 @@
     <string name="dashboard_quick_apps_body">See what each app can access.</string>
     <string name="dashboard_quick_help">How to use</string>
     <string name="dashboard_quick_help_body">Open the simple guide.</string>
+    <string name="dashboard_shield_title">Privacy shield</string>
+    <string name="dashboard_shield_body">Block ads and trackers, hide annoyances, set up encrypted DNS.</string>
 
     <string name="dashboard_needs_attention">Needs attention</string>
     <string name="dashboard_all_clear">All clear</string>

@@ -53,8 +53,8 @@ android {
         applicationId = "io.securebox"
         minSdk = 26
         targetSdk = 34
-        versionCode = 12
-        versionName = "0.6.2"
+        versionCode = 13
+        versionName = "0.7.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }

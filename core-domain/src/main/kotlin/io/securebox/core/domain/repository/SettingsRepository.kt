@@ -3,8 +3,10 @@ package io.securebox.core.domain.repository
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.AppSettings
 import io.securebox.core.domain.model.DeviceMode
+import io.securebox.core.domain.model.DnsPreset
 import io.securebox.core.domain.model.FirewallPreset
 import io.securebox.core.domain.model.ThemeMode
+import io.securebox.core.domain.model.TrackingProtectionMode
 import kotlinx.coroutines.flow.Flow
 
 /** Single source of truth for user configuration. Persisted in DataStore, never uploaded. */
@@ -31,6 +33,16 @@ public interface SettingsRepository {
     public suspend fun setThreatIntelAutoUpdate(enabled: Boolean)
 
     public suspend fun setScheduledScansEnabled(enabled: Boolean)
+
+    public suspend fun setTrackingProtection(mode: TrackingProtectionMode)
+
+    public suspend fun setBlockAdsAndTrackers(enabled: Boolean)
+
+    public suspend fun setHideAnnoyances(enabled: Boolean)
+
+    public suspend fun setSafeBrowsing(enabled: Boolean)
+
+    public suspend fun setDnsPreset(preset: DnsPreset)
 
     public suspend fun recordPermissionSnapshot(
         usageAccessGranted: Boolean,

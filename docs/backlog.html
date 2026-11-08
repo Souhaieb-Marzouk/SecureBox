@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.6.2</b></span>
+      <span>Baseline <b>v0.7.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,50 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-079",
+    "p": "P1",
+    "type": "docs",
+    "area": "Shield",
+    "milestone": "v0.7.0",
+    "status": "done",
+    "title": "Document Shield limits honestly, especially YouTube and system-wide HTTPS",
+    "desc": "In-app limits card and docs/PRIVACY_SHIELD.md state that YouTube in-stream ads cannot be removed by DNS or an embedded browser, DNS ad blocking requires the user to apply Private DNS, and HTTPS filtering inside other apps would require root/MITM. No fake one-tap system-wide adblock.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-078",
+    "p": "P1",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v0.7.0",
+    "status": "done",
+    "title": "Local SHA-256 hash-prefix Safe Browsing",
+    "desc": "Browser checks navigations and subresources against a bundled prefix list generated from OpenPhish and Google Safe Browsing test pages. Only 8-hex SHA-256 prefixes are stored; full URLs are never bundled or sent. WebView platform Safe Browsing is also enabled.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-077",
+    "p": "P1",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v0.7.0",
+    "status": "done",
+    "title": "Encrypted DNS presets, current Private DNS status and DoH test",
+    "desc": "DNS screen offers AdGuard DNS (ads/trackers), Cloudflare for Families (malware/adult) and Quad9 (threats), shows the active Private DNS hostname, copies the DoT hostname, opens Android Private DNS settings, and performs a real wire-format DNS-over-HTTPS test with latency and resolved address. Explains that system-wide Android DNS is DoT.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-076",
+    "p": "P1",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v0.7.0",
+    "status": "done",
+    "title": "Private browser with ad, tracker and annoyance filtering",
+    "desc": "New Privacy Shield hub and WebView browser. Standard mode blocks known ad/tracker hosts and third-party cookies; High mode also strips tracking parameters and clears cookies on exit. Cosmetic CSS hides common cookie notices, social widgets, app banners and ad slots. Live blocked counter and HTTPS-only navigation.",
+    "doneAt": "2026-11-08"
+  },
   {
     "id": "SB-075",
     "p": "P1",
@@ -962,6 +1006,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-08", t: "v0.7.0: Privacy Shield with private browser ad/tracker/annoyance filtering, Standard/High tracking modes, AdGuard/Cloudflare/Quad9 DNS presets with DoH test and Private DNS guidance, and local SHA-256 hash-prefix Safe Browsing." },
   { d: "2026-11-08", t: "v0.6.2: Apps now lists only currently granted permissions, re-audits on resume/Refresh, scores Criticality from permissions only, recommends keep/reduce/uninstall, and classifies apps as built-in, Play Store, other store or manual APK." },
   { d: "2026-11-08", t: "v0.6.1: fixed dark-theme default text colour, shortened and wrapped EN/FR labels, made filter/range chips scrollable, and added a working TV Usage access fallback with generic Settings." },
   { d: "2026-11-07", t: "v0.6.0: Aurora redesign with a new 2.5D shield mark, adaptive launcher icon, TV banner, glass cards, gradient score ring, floating phone navigation, cinematic TV sidebar, a four-action dashboard and a plain-language How to use guide." },
@@ -1113,7 +1158,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.6.2";
+  el("footVersion").textContent = "v0.7.0";
 }
 
 function renderLog() {

@@ -50,6 +50,7 @@ fun SettingsRoute(
     onOpenPrivacy: () -> Unit,
     onOpenThreatIntel: () -> Unit,
     onOpenHelp: () -> Unit,
+    onOpenShield: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -64,6 +65,7 @@ fun SettingsRoute(
         onOpenPrivacy = onOpenPrivacy,
         onOpenThreatIntel = onOpenThreatIntel,
         onOpenHelp = onOpenHelp,
+        onOpenShield = onOpenShield,
     )
 }
 
@@ -79,6 +81,7 @@ fun SettingsScreen(
     onOpenPrivacy: () -> Unit,
     onOpenThreatIntel: () -> Unit,
     onOpenHelp: () -> Unit,
+    onOpenShield: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -115,6 +118,42 @@ fun SettingsScreen(
                         )
                         Text(
                             text = stringResource(R.string.settings_help_body),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Icon(
+                        imageVector = SecureBoxIcons.ChevronRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+        }
+
+        item {
+            SecureCard(modifier = Modifier.clickable(onClick = onOpenShield)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                ) {
+                    Icon(
+                        imageVector = SecureBoxIcons.Globe,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(30.dp),
+                    )
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(3.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_shield_title),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Text(
+                            text = stringResource(R.string.settings_shield_body),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

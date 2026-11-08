@@ -12,8 +12,10 @@ import androidx.datastore.preferences.preferencesDataStore
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.AppSettings
 import io.securebox.core.domain.model.DeviceMode
+import io.securebox.core.domain.model.DnsPreset
 import io.securebox.core.domain.model.FirewallPreset
 import io.securebox.core.domain.model.ThemeMode
+import io.securebox.core.domain.model.TrackingProtectionMode
 import io.securebox.core.domain.repository.SettingsRepository
 import java.io.IOException
 import javax.inject.Inject
@@ -80,6 +82,26 @@ class SettingsRepositoryImpl
             dataStore.edit { it[Keys.SCHEDULED_SCANS] = enabled }
         }
 
+        override suspend fun setTrackingProtection(mode: TrackingProtectionMode) {
+            dataStore.edit { it[Keys.TRACKING_PROTECTION] = mode.name }
+        }
+
+        override suspend fun setBlockAdsAndTrackers(enabled: Boolean) {
+            dataStore.edit { it[Keys.BLOCK_ADS] = enabled }
+        }
+
+        override suspend fun setHideAnnoyances(enabled: Boolean) {
+            dataStore.edit { it[Keys.HIDE_ANNOYANCES] = enabled }
+        }
+
+        override suspend fun setSafeBrowsing(enabled: Boolean) {
+            dataStore.edit { it[Keys.SAFE_BROWSING] = enabled }
+        }
+
+        override suspend fun setDnsPreset(preset: DnsPreset) {
+            dataStore.edit { it[Keys.DNS_PRESET] = preset.name }
+        }
+
         override suspend fun recordPermissionSnapshot(
             usageAccessGranted: Boolean,
             notificationsGranted: Boolean,
@@ -108,6 +130,12 @@ class SettingsRepositoryImpl
                 usageAccessGranted = this[Keys.USAGE_ACCESS] ?: false,
                 notificationsGranted = this[Keys.NOTIFICATIONS] ?: false,
                 vpnPrepared = this[Keys.VPN_PREPARED] ?: false,
+                trackingProtection =
+                    enumOrDefault(this[Keys.TRACKING_PROTECTION], TrackingProtectionMode.STANDARD),
+                blockAdsAndTrackers = this[Keys.BLOCK_ADS] ?: true,
+                hideAnnoyances = this[Keys.HIDE_ANNOYANCES] ?: true,
+                safeBrowsing = this[Keys.SAFE_BROWSING] ?: true,
+                dnsPreset = enumOrDefault(this[Keys.DNS_PRESET], DnsPreset.CLOUDFLARE_FAMILIES),
             )
 
         private inline fun <reified T : Enum<T>> enumOrDefault(
@@ -126,6 +154,11 @@ class SettingsRepositoryImpl
             val THREAT_INTEL_ENABLED = booleanPreferencesKey("threat_intel_enabled")
             val THREAT_INTEL_AUTO_UPDATE = booleanPreferencesKey("threat_intel_auto_update")
             val SCHEDULED_SCANS = booleanPreferencesKey("scheduled_scans_enabled")
+            val TRACKING_PROTECTION = stringPreferencesKey("tracking_protection")
+            val BLOCK_ADS = booleanPreferencesKey("block_ads_and_trackers")
+            val HIDE_ANNOYANCES = booleanPreferencesKey("hide_annoyances")
+            val SAFE_BROWSING = booleanPreferencesKey("safe_browsing")
+            val DNS_PRESET = stringPreferencesKey("dns_preset")
             val UPDATE_INTERVAL = longPreferencesKey("update_check_interval_hours")
             val USAGE_ACCESS = booleanPreferencesKey("usage_access_granted")
             val NOTIFICATIONS = booleanPreferencesKey("notifications_granted")

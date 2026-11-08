@@ -9,6 +9,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.7.0] - 2026-11-08
+
+### Added
+
+- Privacy Shield hub with Standard/High tracking protection.
+- Private browser with ad/tracker host blocking, cosmetic filtering, tracking-parameter stripping and cookie clearing.
+- DNS protection presets for AdGuard, Cloudflare for Families and Quad9, with Private DNS status, hostname copy and DoH test.
+- Local SHA-256 hash-prefix Safe Browsing for navigations and subresources.
+- Dashboard and Settings entries for Privacy Shield.
+
+### Changed
+
+- AppSettings persists tracking mode, ad/tracker blocking, annoyance hiding, Safe Browsing and DNS preset.
+
+### Limited
+
+- YouTube in-stream ads and HTTPS filtering inside third-party apps are not possible without root/MITM; documented in-app and in the release notes.
+
 ## [0.6.2] - 2026-11-08
 
 ### Changed

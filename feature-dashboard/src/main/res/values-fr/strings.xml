@@ -22,6 +22,8 @@
     <string name="dashboard_quick_apps_body">Voir ce à quoi elles ont accès.</string>
     <string name="dashboard_quick_help">Comment faire</string>
     <string name="dashboard_quick_help_body">Ouvrir le guide simple.</string>
+    <string name="dashboard_shield_title">Bouclier de confidentialité</string>
+    <string name="dashboard_shield_body">Bloquez publicités et pisteurs, masquez les nuisances, configurez un DNS chiffré.</string>
 
     <string name="dashboard_needs_attention">À corriger</string>
     <string name="dashboard_all_clear">Tout est clair</string>

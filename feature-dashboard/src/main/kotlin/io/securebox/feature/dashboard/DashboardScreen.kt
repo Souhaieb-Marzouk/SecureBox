@@ -55,6 +55,7 @@ fun DashboardRoute(
     onOpenSettings: () -> Unit,
     onOpenApps: () -> Unit,
     onOpenHelp: () -> Unit,
+    onOpenShield: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -65,6 +66,7 @@ fun DashboardRoute(
         onOpenSettings = onOpenSettings,
         onOpenApps = onOpenApps,
         onOpenHelp = onOpenHelp,
+        onOpenShield = onOpenShield,
     )
 }
 
@@ -76,6 +78,7 @@ fun DashboardScreen(
     onOpenSettings: () -> Unit,
     onOpenApps: () -> Unit,
     onOpenHelp: () -> Unit,
+    onOpenShield: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val suggestions = state.score.factors.filterNot { it.satisfied }
@@ -191,6 +194,13 @@ fun DashboardScreen(
                 modifier = Modifier.weight(1f).heightIn(min = if (wide) 190.dp else 148.dp),
             )
         }
+
+        ActionCard(
+            icon = SecureBoxIcons.Globe,
+            title = stringResource(R.string.dashboard_shield_title),
+            description = stringResource(R.string.dashboard_shield_body),
+            onClick = onOpenShield,
+        )
 
         Text(
             text = stringResource(if (healthy) R.string.dashboard_all_clear else R.string.dashboard_needs_attention),

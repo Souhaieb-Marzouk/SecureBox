@@ -30,6 +30,19 @@ public enum class ThemeMode {
     SYSTEM,
 }
 
+/** How aggressively the private browser blocks tracking. */
+public enum class TrackingProtectionMode {
+    STANDARD,
+    HIGH,
+}
+
+/** DNS preset offered by the Privacy Shield; the user applies it in Android Private DNS. */
+public enum class DnsPreset {
+    CLOUDFLARE_FAMILIES,
+    ADGUARD,
+    QUAD9,
+}
+
 /** Global firewall presets for the local VPN (implemented in Milestone 2). */
 public enum class FirewallPreset {
     ALLOW_ALL,
@@ -58,6 +71,11 @@ public data class AppSettings(
     val notificationsGranted: Boolean = false,
     val vpnPrepared: Boolean = false,
     val notificationsOptOut: Boolean = false,
+    val trackingProtection: TrackingProtectionMode = TrackingProtectionMode.STANDARD,
+    val blockAdsAndTrackers: Boolean = true,
+    val hideAnnoyances: Boolean = true,
+    val safeBrowsing: Boolean = true,
+    val dnsPreset: DnsPreset = DnsPreset.CLOUDFLARE_FAMILIES,
 ) {
     public companion object {
         public const val DEFAULT_UPDATE_INTERVAL_HOURS: Long = 12L

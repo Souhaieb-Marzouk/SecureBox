@@ -63,7 +63,10 @@ fun PhoneShell(
             (route == Routes.SETTINGS &&
                 (currentRoute == Routes.HARDENING ||
                     currentRoute == Routes.THREAT_INTEL ||
-                    currentRoute == Routes.HELP))
+                    currentRoute == Routes.HELP ||
+                    currentRoute == Routes.SHIELD ||
+                    currentRoute == Routes.BROWSER ||
+                    currentRoute == Routes.DNS_PROTECTION))
 
     val content: @Composable () -> Unit = {
         Column(modifier = Modifier.fillMaxSize()) {
