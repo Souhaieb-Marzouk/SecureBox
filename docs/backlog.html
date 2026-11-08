@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.6.1</b></span>
+      <span>Baseline <b>v0.6.2</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-075",
+    "p": "P1",
+    "type": "issue",
+    "area": "Apps",
+    "milestone": "v0.6.2",
+    "status": "done",
+    "title": "App list did not distinguish built-in, Play Store, other-store and manual APKs",
+    "desc": "Added InstallSource.OTHER_STORE and installer classification for Play Store, Amazon, Samsung, Huawei, Xiaomi, OPPO, vivo, F-Droid, Aurora, APKPure, Aptoide and APKMirror. Each row has a coloured source badge, the detail shows the source, and the filter row has All/Risky/Built-in/Play Store/Other stores/Manual (.apk).",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-074",
+    "p": "P1",
+    "type": "issue",
+    "area": "Apps",
+    "milestone": "v0.6.2",
+    "status": "done",
+    "title": "Criticality must depend only on permissions, with a clear recommendation",
+    "desc": "RiskScorer now scores the granted permission set only (strongest permission + breadth + dangerous combinations); findings are labelled extra context. Every app gets KEEP, REDUCE_PERMISSIONS or UNINSTALL, with a system-app \"don't touch\" path that mentions Disable, a short row label and a full detail card.",
+    "doneAt": "2026-11-08"
+  },
+  {
+    "id": "SB-073",
+    "p": "P1",
+    "type": "issue",
+    "area": "Apps",
+    "milestone": "v0.6.2",
+    "status": "done",
+    "title": "Permissions list showed requested permissions instead of currently granted ones",
+    "desc": "AppSecurityInfo.permissions now contains only effective grants: PackageManager.checkPermission plus AppOps for overlay/usage, enabled accessibility services, enabled notification listeners and active device admins. Returning to Apps or pressing Refresh re-audits; the open detail updates in place.",
+    "doneAt": "2026-11-08"
+  },
   {
     "id": "SB-072",
     "p": "P1",
@@ -929,6 +962,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-08", t: "v0.6.2: Apps now lists only currently granted permissions, re-audits on resume/Refresh, scores Criticality from permissions only, recommends keep/reduce/uninstall, and classifies apps as built-in, Play Store, other store or manual APK." },
   { d: "2026-11-08", t: "v0.6.1: fixed dark-theme default text colour, shortened and wrapped EN/FR labels, made filter/range chips scrollable, and added a working TV Usage access fallback with generic Settings." },
   { d: "2026-11-07", t: "v0.6.0: Aurora redesign with a new 2.5D shield mark, adaptive launcher icon, TV banner, glass cards, gradient score ring, floating phone navigation, cinematic TV sidebar, a four-action dashboard and a plain-language How to use guide." },
   { d: "2026-11-07", t: "v0.5.2: Apps tab now explains scores and provides system-settings actions; Live bandwidth lists every app via NetworkStatsManager (including Ethernet); Open ports/Upload anomalies explain themselves; rooted/test-key TV boxes are advisory instead of tampered; installed version/build read from PackageManager." },
@@ -1079,7 +1113,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.6.1";
+  el("footVersion").textContent = "v0.6.2";
 }
 
 function renderLog() {

@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.securebox.core.domain.security.AppRiskReport
 import io.securebox.core.domain.security.SecurityRepository
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +16,10 @@ import kotlinx.coroutines.launch
 enum class AppsFilter {
     ALL,
     RISKY,
-    SIDELOADED,
+    SYSTEM,
+    PLAY_STORE,
+    OTHER_STORE,
+    MANUAL,
 }
 
 data class AppsUiState(
@@ -35,33 +39,39 @@ class AppsViewModel
     ) : ViewModel() {
         private val _state = MutableStateFlow(AppsUiState())
         val state: StateFlow<AppsUiState> = _state.asStateFlow()
+        private var loadJob: Job? = null
 
         init {
             load()
         }
 
         fun load() {
-            viewModelScope.launch {
-                _state.update { it.copy(loading = true) }
-                val cached = runCatching { securityRepository.storedReports() }.getOrDefault(emptyList())
-                if (cached.isNotEmpty()) {
-                    _state.update { it.copy(reports = cached.sortedBy { report -> report.score }) }
+            if (loadJob?.isActive == true) return
+            loadJob =
+                viewModelScope.launch {
+                    _state.update { it.copy(loading = true) }
+                    val selectedPackage = _state.value.selected?.app?.packageName
+                    val reports =
+                        runCatching {
+                            securityRepository.auditAll { done, total ->
+                                _state.update { it.copy(analyzed = done, total = total) }
+                            }
+                        }.getOrDefault(emptyList())
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            reports = reports,
+                            analyzed = reports.size,
+                            total = reports.size,
+                            selected =
+                                if (selectedPackage == null) {
+                                    it.selected
+                                } else {
+                                    reports.firstOrNull { report -> report.app.packageName == selectedPackage }
+                                },
+                        )
+                    }
                 }
-                val reports =
-                    runCatching {
-                        securityRepository.auditAll { done, total ->
-                            _state.update { it.copy(analyzed = done, total = total) }
-                        }
-                    }.getOrDefault(emptyList())
-                _state.update {
-                    it.copy(
-                        loading = false,
-                        reports = reports,
-                        analyzed = reports.size,
-                        total = reports.size,
-                    )
-                }
-            }
         }
 
         fun setFilter(filter: AppsFilter) {

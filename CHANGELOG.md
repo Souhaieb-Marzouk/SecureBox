@@ -9,6 +9,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.6.2] - 2026-11-08
+
+### Changed
+
+- Apps tab now lists only currently granted permissions, including effective AppOps/accessibility/notification/admin capabilities.
+- App score and Criticality are based only on granted permissions; risk signals are context only.
+- Each app has a recommendation: leave alone, reduce permissions, consider uninstall, or no action.
+- Apps are classified as built-in, Play Store, other store or manual APK, with badges and filters.
+- Returning to Apps auto-refreshes; Refresh also appears in the detail sheet.
+
 ## [0.6.1] - 2026-11-08
 
 ### Fixed

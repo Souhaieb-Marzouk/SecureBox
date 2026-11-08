@@ -36,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -44,13 +45,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.securebox.core.domain.security.AppRecommendation
 import io.securebox.core.domain.security.AppRiskReport
 import io.securebox.core.domain.security.Finding
 import io.securebox.core.domain.security.FindingCode
@@ -69,6 +74,20 @@ import kotlinx.coroutines.withContext
 @Composable
 fun AppsRoute(viewModel: AppsViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer =
+            LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    // Returning from Android's permission settings must re-read granted permissions.
+                    viewModel.load()
+                }
+            }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
     AppsScreen(
         state = state,
         onFilter = viewModel::setFilter,
@@ -90,7 +109,10 @@ fun AppsScreen(
             when (state.filter) {
                 AppsFilter.ALL -> true
                 AppsFilter.RISKY -> report.level.ordinal >= RiskLevel.MEDIUM.ordinal
-                AppsFilter.SIDELOADED -> report.app.source == InstallSource.SIDELOADED
+                AppsFilter.SYSTEM -> report.app.source == InstallSource.SYSTEM
+                AppsFilter.PLAY_STORE -> report.app.source == InstallSource.PLAY_STORE
+                AppsFilter.OTHER_STORE -> report.app.source == InstallSource.OTHER_STORE
+                AppsFilter.MANUAL -> report.app.source == InstallSource.SIDELOADED
             }
         }
 
@@ -120,7 +142,7 @@ fun AppsScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (state.reports.isNotEmpty()) {
-                    val attention = state.reports.count { it.level == RiskLevel.HIGH || it.level == RiskLevel.CRITICAL }
+                    val attention = state.reports.count { it.level.ordinal >= RiskLevel.MEDIUM.ordinal }
                     Text(
                         text = stringResource(R.string.apps_summary, state.reports.size, attention),
                         style = MaterialTheme.typography.titleSmall,
@@ -146,9 +168,30 @@ fun AppsScreen(
                 }
                 item {
                     FilterChip(
-                        selected = state.filter == AppsFilter.SIDELOADED,
-                        onClick = { onFilter(AppsFilter.SIDELOADED) },
-                        label = { Text(stringResource(R.string.apps_filter_sideloaded)) },
+                        selected = state.filter == AppsFilter.SYSTEM,
+                        onClick = { onFilter(AppsFilter.SYSTEM) },
+                        label = { Text(stringResource(R.string.apps_filter_system)) },
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.PLAY_STORE,
+                        onClick = { onFilter(AppsFilter.PLAY_STORE) },
+                        label = { Text(stringResource(R.string.apps_filter_play)) },
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.OTHER_STORE,
+                        onClick = { onFilter(AppsFilter.OTHER_STORE) },
+                        label = { Text(stringResource(R.string.apps_filter_other_store)) },
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = state.filter == AppsFilter.MANUAL,
+                        onClick = { onFilter(AppsFilter.MANUAL) },
+                        label = { Text(stringResource(R.string.apps_filter_manual)) },
                     )
                 }
             }
@@ -193,7 +236,7 @@ fun AppsScreen(
     }
 
     state.selected?.let { report ->
-        AppDetailDialog(report = report, onDismiss = { onSelect(null) })
+        AppDetailDialog(report = report, onDismiss = { onSelect(null) }, onRefresh = onRefresh)
     }
 }
 
@@ -222,13 +265,89 @@ private fun AppRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
+                SourceBadge(source = report.app.source)
                 Text(
-                    text = sourceLabel(report.app.source),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    text = stringResource(recommendationShortRes(report)),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = recommendationColor(report),
                 )
             }
             RiskBadge(report.level, report.score)
+        }
+    }
+}
+
+@Composable
+private fun SourceBadge(source: InstallSource) {
+    val color =
+        when (source) {
+            InstallSource.SYSTEM -> MaterialTheme.colorScheme.secondary
+            InstallSource.PLAY_STORE -> MaterialTheme.colorScheme.primary
+            InstallSource.OTHER_STORE -> MaterialTheme.colorScheme.tertiary
+            InstallSource.SIDELOADED -> MaterialTheme.colorScheme.error
+            InstallSource.UNKNOWN -> MaterialTheme.colorScheme.onSurfaceVariant
+        }
+    Surface(
+        shape = RoundedCornerShape(50),
+        color = color.copy(alpha = 0.12f),
+        border = BorderStroke(1.dp, color.copy(alpha = 0.22f)),
+    ) {
+        Text(
+            text = sourceLabel(source),
+            style = MaterialTheme.typography.labelSmall,
+            color = color,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+        )
+    }
+}
+
+@Composable
+private fun recommendationColor(report: AppRiskReport) =
+    when (report.recommendation) {
+        AppRecommendation.UNINSTALL -> MaterialTheme.colorScheme.error
+        AppRecommendation.REDUCE_PERMISSIONS -> MaterialTheme.colorScheme.tertiary
+        AppRecommendation.KEEP -> MaterialTheme.colorScheme.primary
+    }
+
+private fun recommendationShortRes(report: AppRiskReport): Int =
+    when (report.recommendation) {
+        AppRecommendation.KEEP ->
+            if (report.app.isSystem) {
+                R.string.apps_recommend_short_system
+            } else {
+                R.string.apps_recommend_short_keep
+            }
+
+        AppRecommendation.REDUCE_PERMISSIONS -> R.string.apps_recommend_short_reduce
+        AppRecommendation.UNINSTALL -> R.string.apps_recommend_short_uninstall
+    }
+
+@Composable
+private fun RecommendationCard(report: AppRiskReport) {
+    val color = recommendationColor(report)
+    Surface(
+        shape = RoundedCornerShape(18.dp),
+        color = color.copy(alpha = 0.10f),
+        border = BorderStroke(1.dp, color.copy(alpha = 0.30f)),
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.apps_recommendation_label),
+                style = MaterialTheme.typography.labelSmall,
+                color = color,
+            )
+            Text(
+                text = stringResource(recommendationTitleRes(report)),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                text = stringResource(recommendationBodyRes(report)),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }
@@ -269,6 +388,7 @@ private fun RiskBadge(
 private fun AppDetailDialog(
     report: AppRiskReport,
     onDismiss: () -> Unit,
+    onRefresh: () -> Unit,
 ) {
     val context = LocalContext.current
     val installed =
@@ -292,9 +412,15 @@ private fun AppDetailDialog(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
+                text = stringResource(R.string.apps_detail_source, sourceLabel(report.app.source)),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
                 text = stringResource(R.string.apps_detail_rating, report.score, riskLabel(report.level)),
                 style = MaterialTheme.typography.titleMedium,
             )
+            RecommendationCard(report = report)
             Text(
                 text = stringResource(R.string.apps_detail_what),
                 style = MaterialTheme.typography.titleSmall,
@@ -307,6 +433,11 @@ private fun AppDetailDialog(
             Text(
                 text = stringResource(R.string.apps_detail_findings),
                 style = MaterialTheme.typography.titleSmall,
+            )
+            Text(
+                text = stringResource(R.string.apps_detail_findings_note),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             if (report.findings.isEmpty()) {
                 Text(
@@ -344,7 +475,7 @@ private fun AppDetailDialog(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
-                sortedPermissions.take(10).forEach { permission ->
+                sortedPermissions.forEach { permission ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Box(
                             modifier =
@@ -359,19 +490,15 @@ private fun AppDetailDialog(
                         )
                     }
                 }
-                if (sortedPermissions.size > 10) {
-                    Text(
-                        text = stringResource(R.string.apps_permissions_more, sortedPermissions.size - 10),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
             Text(
                 text = stringResource(R.string.apps_detail_permissions_note),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            TextButton(onClick = onRefresh) {
+                Text(text = stringResource(R.string.apps_refresh))
+            }
 
             Text(
                 text = stringResource(R.string.apps_detail_actions),
@@ -474,11 +601,38 @@ private fun sourceLabel(source: InstallSource): String =
     stringResource(
         when (source) {
             InstallSource.PLAY_STORE -> R.string.apps_source_play
+            InstallSource.OTHER_STORE -> R.string.apps_source_other_store
             InstallSource.SYSTEM -> R.string.apps_source_system
             InstallSource.SIDELOADED -> R.string.apps_source_sideloaded
             InstallSource.UNKNOWN -> R.string.apps_source_unknown
         },
     )
+
+private fun recommendationTitleRes(report: AppRiskReport): Int =
+    when (report.recommendation) {
+        AppRecommendation.KEEP ->
+            if (report.app.isSystem) {
+                R.string.apps_recommend_system_title
+            } else {
+                R.string.apps_recommend_keep_title
+            }
+
+        AppRecommendation.REDUCE_PERMISSIONS -> R.string.apps_recommend_reduce_title
+        AppRecommendation.UNINSTALL -> R.string.apps_recommend_uninstall_title
+    }
+
+private fun recommendationBodyRes(report: AppRiskReport): Int =
+    when (report.recommendation) {
+        AppRecommendation.KEEP ->
+            if (report.app.isSystem) {
+                R.string.apps_recommend_system_body
+            } else {
+                R.string.apps_recommend_keep_body
+            }
+
+        AppRecommendation.REDUCE_PERMISSIONS -> R.string.apps_recommend_reduce_body
+        AppRecommendation.UNINSTALL -> R.string.apps_recommend_uninstall_body
+    }
 
 @Composable
 private fun riskLabel(level: RiskLevel): String =
@@ -517,6 +671,7 @@ private fun permissionWeight(permission: String): Int {
     return when {
         simple.contains("SMS") || simple.contains("CALL_LOG") -> 100
         simple.contains("ACCESSIBILITY") || simple.contains("DEVICE_ADMIN") -> 95
+        simple.contains("NOTIFICATION_LISTENER") -> 90
         simple.contains("SYSTEM_ALERT_WINDOW") -> 90
         simple.contains("CONTACTS") || simple.contains("CAMERA") || simple.contains("RECORD_AUDIO") -> 80
         simple.contains("LOCATION") -> 70
@@ -544,6 +699,7 @@ private fun permissionLabel(permission: String): String {
         "PACKAGE_USAGE_STATS" -> stringResource(R.string.perm_usage)
         "SYSTEM_ALERT_WINDOW" -> stringResource(R.string.perm_overlay)
         "BIND_ACCESSIBILITY_SERVICE" -> stringResource(R.string.perm_accessibility)
+        "BIND_NOTIFICATION_LISTENER_SERVICE" -> stringResource(R.string.perm_notification_listener)
         "BIND_DEVICE_ADMIN" -> stringResource(R.string.perm_admin)
         "REQUEST_INSTALL_PACKAGES" -> stringResource(R.string.perm_install)
         "QUERY_ALL_PACKAGES" -> stringResource(R.string.perm_query_all)

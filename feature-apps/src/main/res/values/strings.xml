@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="apps_title">Apps &amp; permissions</string>
-    <string name="apps_subtitle">Every installed app, what it can access, and how risky it looks — computed on this device.</string>
+    <string name="apps_subtitle">Every installed app, the permissions it currently has, and where it came from.</string>
     <string name="apps_filter_all">All apps</string>
     <string name="apps_filter_risky">Risky</string>
-    <string name="apps_filter_sideloaded">Sideloaded</string>
+    <string name="apps_filter_system">Built-in</string>
+    <string name="apps_filter_play">Play Store</string>
+    <string name="apps_filter_other_store">Other stores</string>
+    <string name="apps_filter_manual">Manual (.apk)</string>
     <string name="apps_loading">Analyzing installed apps…</string>
     <string name="apps_progress">Analyzed %1$d of %2$d apps…</string>
     <string name="apps_count">%1$d apps</string>
@@ -12,31 +15,46 @@
     <string name="apps_empty">No apps match this filter.</string>
 
     <string name="apps_source_play">Play Store</string>
-    <string name="apps_source_system">System</string>
-    <string name="apps_source_sideloaded">Sideloaded</string>
+    <string name="apps_source_other_store">Other store</string>
+    <string name="apps_source_system">Built-in</string>
+    <string name="apps_source_sideloaded">Manual (.apk)</string>
     <string name="apps_source_unknown">Unknown source</string>
 
     <string name="apps_detail_meta">Version %1$s · installed %2$s</string>
-    <string name="apps_detail_rating">Risk score %1$d/100 · %2$s</string>
-    <string name="apps_detail_findings">Risk signals</string>
+    <string name="apps_detail_source">Source: %1$s</string>
+    <string name="apps_detail_rating">Permission risk %1$d/100 · %2$s</string>
+    <string name="apps_detail_findings">Risk signals (extra context)</string>
+    <string name="apps_detail_findings_note">These signals do not change the permission score.</string>
     <string name="apps_detail_no_findings">No risk signals found.</string>
     <string name="apps_detail_close">Close</string>
     <string name="apps_score_badge">%1$d/100</string>
 
     <string name="apps_how_title">How to read this</string>
-    <string name="apps_how_body">Each app gets a risk score from 0 to 100. 0 means strong risk signals (red); 100 means none were found (green). A score is a prompt to review, not proof of malware. Tap an app to see the reasons and the system settings you can change.</string>
-    <string name="apps_legend">85–100 Safe · 70–84 Low · 50–69 Medium · 30–49 High · 0–29 Critical</string>
-    <string name="apps_summary">%1$d apps · %2$d need attention</string>
+    <string name="apps_how_body">Each app gets a permission score from 0 to 100. 100 means it currently has no sensitive permissions; lower means it can access more. The score uses only permissions the app has now. Risk signals are extra context and never change the score. Tap an app to see what it has and what you can change.</string>
+    <string name="apps_legend">Permission score: 85–100 Safe · 70–84 Low · 50–69 Medium · 30–49 High · 0–29 Critical</string>
+    <string name="apps_summary">%1$d apps · %2$d with sensitive access</string>
     <string name="apps_detail_what">What this means</string>
-    <string name="apps_detail_mean_safe">No risk signals were found. Keep the app updated and install from the Play Store when possible.</string>
-    <string name="apps_detail_mean_low">A few minor signals were found. They are common in legitimate apps, but review the list below.</string>
-    <string name="apps_detail_mean_medium">Some permissions or components are worth reviewing. Check whether this app really needs them.</string>
-    <string name="apps_detail_mean_high">This app can access sensitive data or control the device in ways that deserve attention. Review it now.</string>
-    <string name="apps_detail_mean_critical">This app shows signals commonly used by malware or spyware. Review its permissions and consider removing it.</string>
-    <string name="apps_detail_permissions_title">Permissions requested (%1$d)</string>
-    <string name="apps_detail_permissions_note">The number of permissions is not a score. The most sensitive ones are listed first; Android only lets you change them in system settings.</string>
-    <string name="apps_detail_no_permissions">No runtime permissions are listed for this app.</string>
-    <string name="apps_permissions_more">+%1$d more in app settings</string>
+    <string name="apps_detail_mean_safe">No sensitive permissions are currently granted. This app cannot access messages, contacts, location, camera, microphone or screen control.</string>
+    <string name="apps_detail_mean_low">A few low-risk permissions are granted. This is common and usually fine; check the list if you are unsure.</string>
+    <string name="apps_detail_mean_medium">This app currently holds several sensitive permissions. Review whether it really needs each one.</string>
+    <string name="apps_detail_mean_high">This app holds high-risk access such as SMS, call history, screen control, display-over-other-apps or device admin.</string>
+    <string name="apps_detail_mean_critical">This app combines multiple high-risk permissions. Treat it as dangerous unless you completely trust it.</string>
+    <string name="apps_detail_permissions_title">Permissions this app currently has (%1$d)</string>
+    <string name="apps_detail_permissions_note">Only currently granted permissions are listed. Turn one off in Android settings, then press Refresh; the list and score update.</string>
+    <string name="apps_detail_no_permissions">No sensitive permissions are currently granted. Normal permissions such as internet may still be present.</string>
+    <string name="apps_recommendation_label">RECOMMENDATION</string>
+    <string name="apps_recommend_system_title">Don\'t touch this app</string>
+    <string name="apps_recommend_system_body">This is built-in system software. Uninstalling or changing it can break calls, Wi-Fi, updates or the launcher. If the system offers Disable and you don\'t use the app, disabling is safer than uninstalling; otherwise leave it alone.</string>
+    <string name="apps_recommend_keep_title">No action needed</string>
+    <string name="apps_recommend_keep_body">This app currently has no sensitive permissions granted. Leave it as it is.</string>
+    <string name="apps_recommend_reduce_title">Reduce its permissions</string>
+    <string name="apps_recommend_reduce_body">This app has access it may not need. Turn off the permissions below in system settings; the score and list update when you press Refresh.</string>
+    <string name="apps_recommend_uninstall_title">Consider uninstalling this app</string>
+    <string name="apps_recommend_uninstall_body">Its current permission set is high risk. Uninstall it if you don\'t need it. If you do, turn off the sensitive permissions below instead. SecureBox never uninstalls apps for you.</string>
+    <string name="apps_recommend_short_keep">No action</string>
+    <string name="apps_recommend_short_system">Leave alone</string>
+    <string name="apps_recommend_short_reduce">Reduce permissions</string>
+    <string name="apps_recommend_short_uninstall">Consider uninstall</string>
     <string name="apps_detail_actions">What you can do</string>
     <string name="apps_action_open_settings">Open app settings</string>
     <string name="apps_action_uninstall">Uninstall this app</string>
@@ -44,7 +62,7 @@
     <string name="apps_action_overlay">Display over other apps</string>
     <string name="apps_action_usage">Usage access settings</string>
     <string name="apps_action_admin">Device admin settings</string>
-    <string name="apps_action_note">SecureBox cannot change another app\'s permissions directly. These buttons open the exact system screen; turn the access off there, or uninstall the app to remove all of it.</string>
+    <string name="apps_action_note">SecureBox cannot change another app\'s permissions directly. These buttons open the exact system screen; turn the access off there, or uninstall the app to remove all of it. Return here and press Refresh to update the list and score.</string>
 
     <string name="perm_camera">Camera</string>
     <string name="perm_microphone">Microphone</string>
@@ -56,6 +74,7 @@
     <string name="perm_storage">Files and media</string>
     <string name="perm_notifications">Notifications</string>
     <string name="perm_usage">Usage access</string>
+    <string name="perm_notification_listener">Read notifications</string>
     <string name="perm_overlay">Display over other apps</string>
     <string name="perm_accessibility">Accessibility</string>
     <string name="perm_admin">Device administrator</string>

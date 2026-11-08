@@ -1,16 +1,22 @@
 package io.securebox.core.data.security
 
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.AppOpsManager
 import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.view.accessibility.AccessibilityManager
+import androidx.core.app.NotificationManagerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.securebox.core.domain.security.AppRecommendation
 import io.securebox.core.domain.security.AppRiskReport
 import io.securebox.core.domain.security.AppSecurityInfo
 import io.securebox.core.domain.security.Finding
@@ -60,7 +66,8 @@ class AndroidSecurityRepository
                         val source =
                             when {
                                 system -> InstallSource.SYSTEM
-                                installer == PLAY_STORE -> InstallSource.PLAY_STORE
+                                installer in PLAY_STORE_PACKAGES -> InstallSource.PLAY_STORE
+                                installer in OTHER_STORE_PACKAGES -> InstallSource.OTHER_STORE
                                 else -> InstallSource.SIDELOADED
                             }
                         AppSecurityInfo(
@@ -73,7 +80,7 @@ class AndroidSecurityRepository
                             installer = installer,
                             firstInstallTimeMillis = pkg.firstInstallTime,
                             lastUpdateTimeMillis = pkg.lastUpdateTime,
-                            permissions = pkg.requestedPermissions?.toList().orEmpty(),
+                            permissions = grantedPermissions(pkg, app),
                         )
                     }.sortedBy { it.label.lowercase() }
             }
@@ -238,6 +245,86 @@ class AndroidSecurityRepository
                     .any { it.serviceInfo?.packageName == packageName }
             }.getOrDefault(false)
 
+        private fun grantedPermissions(
+            pkg: PackageInfo,
+            app: ApplicationInfo,
+        ): List<String> {
+            val declared = pkg.requestedPermissions?.toList().orEmpty()
+            val simple = declared.map { it.substringAfterLast('.') }.toSet()
+            val granted =
+                declared
+                    .filter {
+                        runCatching {
+                            packageManager.checkPermission(it, pkg.packageName) == PackageManager.PERMISSION_GRANTED
+                        }.getOrDefault(false)
+                    }.toMutableSet()
+
+            // AppOps-backed capabilities are not reflected by checkPermission on every OEM build.
+            if (appOpAllowed(AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, app.uid, pkg.packageName)) {
+                granted += "SYSTEM_ALERT_WINDOW"
+            } else {
+                granted -= "SYSTEM_ALERT_WINDOW"
+            }
+            if (appOpAllowed(AppOpsManager.OPSTR_GET_USAGE_STATS, app.uid, pkg.packageName)) {
+                granted += "PACKAGE_USAGE_STATS"
+            } else {
+                granted -= "PACKAGE_USAGE_STATS"
+            }
+            if ("REQUEST_INSTALL_PACKAGES" in simple) {
+                // The permission itself is normal and granted at install time. The separate
+                // "install unknown apps" toggle is a user preference, not a permission the app
+                // holds, so it must not remove the permission from this list.
+                granted += "REQUEST_INSTALL_PACKAGES"
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && "MANAGE_EXTERNAL_STORAGE" in simple) {
+                if (appOpAllowed(MANAGE_EXTERNAL_STORAGE_OP, app.uid, pkg.packageName)) {
+                    granted += "MANAGE_EXTERNAL_STORAGE"
+                } else {
+                    granted -= "MANAGE_EXTERNAL_STORAGE"
+                }
+            }
+
+            // Service-based capabilities: declare-and-enabled is what matters, not the manifest
+            // permission string (which is often held by the system, not the app).
+            if (hasEnabledAccessibilityService(pkg.packageName)) {
+                granted += "BIND_ACCESSIBILITY_SERVICE"
+            }
+            if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(pkg.packageName)) {
+                granted += "BIND_NOTIFICATION_LISTENER_SERVICE"
+            }
+            val devicePolicy = context.getSystemService(DevicePolicyManager::class.java)
+            if (devicePolicy?.activeAdmins?.any { it.packageName == pkg.packageName } == true) {
+                granted += "BIND_DEVICE_ADMIN"
+            }
+
+            return granted.sorted()
+        }
+
+        private fun appOpAllowed(
+            op: String,
+            uid: Int,
+            packageName: String,
+        ): Boolean =
+            runCatching {
+                val appOps = context.getSystemService(AppOpsManager::class.java) ?: return false
+                val mode =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        appOps.unsafeCheckOpNoThrow(op, uid, packageName)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        appOps.checkOpNoThrow(op, uid, packageName)
+                    }
+                mode == AppOpsManager.MODE_ALLOWED
+            }.getOrDefault(false)
+
+        private fun hasEnabledAccessibilityService(packageName: String): Boolean =
+            runCatching {
+                val manager = context.getSystemService(AccessibilityManager::class.java) ?: return false
+                manager
+                    .getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+                    .any { it.resolveInfo?.serviceInfo?.packageName == packageName }
+            }.getOrDefault(false)
+
         private fun installerOf(packageName: String): String? =
             runCatching {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -261,6 +348,7 @@ class AndroidSecurityRepository
                 put("updated", report.app.lastUpdateTimeMillis)
                 put("score", report.score)
                 put("level", report.level.name)
+                put("recommendation", report.recommendation.name)
                 put("permissions", JSONArray(report.app.permissions))
                 put(
                     "findings",
@@ -313,6 +401,9 @@ class AndroidSecurityRepository
                 score = json.optInt("score", 100),
                 level = runCatching { RiskLevel.valueOf(json.optString("level")) }.getOrDefault(RiskLevel.SAFE),
                 findings = findings,
+                recommendation =
+                    runCatching { AppRecommendation.valueOf(json.optString("recommendation")) }
+                        .getOrDefault(AppRecommendation.KEEP),
             )
         }
 
@@ -342,9 +433,26 @@ class AndroidSecurityRepository
         }
 
         private companion object {
-            const val PLAY_STORE: String = "com.android.vending"
+            val PLAY_STORE_PACKAGES: Set<String> = setOf("com.android.vending")
+            val OTHER_STORE_PACKAGES: Set<String> =
+                setOf(
+                    "com.amazon.venezia",
+                    "com.huawei.appmarket",
+                    "com.sec.android.app.samsungapps",
+                    "com.xiaomi.mipicks",
+                    "com.oppo.market",
+                    "com.heytap.market",
+                    "com.vivo.appstore",
+                    "com.bbk.appstore",
+                    "org.fdroid.fdroid",
+                    "com.aurora.store",
+                    "com.apkpure.aegon",
+                    "cm.aptoide.pt",
+                    "com.apkmirror.helper.prod",
+                )
             const val ACCESSIBILITY_SERVICE: String = "android.accessibilityservice.AccessibilityService"
             const val NOTIFICATION_LISTENER_SERVICE: String = "android.service.notification.NotificationListenerService"
+            const val MANAGE_EXTERNAL_STORAGE_OP: String = "android:manage_external_storage"
             const val MAX_STORED_REPORTS: Int = 80
         }
     }

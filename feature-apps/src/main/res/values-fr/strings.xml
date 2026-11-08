@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="apps_title">Applications et autorisations</string>
-    <string name="apps_subtitle">Chaque application installée, ce à quoi elle a accès et son niveau de risque — calculé sur cet appareil.</string>
+    <string name="apps_subtitle">Chaque application installée, les autorisations qu\'elle possède réellement et sa provenance.</string>
     <string name="apps_filter_all">Toutes</string>
     <string name="apps_filter_risky">À risque</string>
-    <string name="apps_filter_sideloaded">Manuelles</string>
+    <string name="apps_filter_system">Préinstallées</string>
+    <string name="apps_filter_play">Play Store</string>
+    <string name="apps_filter_other_store">Autres stores</string>
+    <string name="apps_filter_manual">Manuelles (.apk)</string>
     <string name="apps_loading">Analyse des applications installées…</string>
     <string name="apps_progress">%1$d applications analysées sur %2$d…</string>
     <string name="apps_count">%1$d applications</string>
@@ -12,31 +15,46 @@
     <string name="apps_empty">Aucune application ne correspond à ce filtre.</string>
 
     <string name="apps_source_play">Play Store</string>
-    <string name="apps_source_system">Système</string>
-    <string name="apps_source_sideloaded">Installée manuellement</string>
+    <string name="apps_source_other_store">Autre store</string>
+    <string name="apps_source_system">Préinstallée</string>
+    <string name="apps_source_sideloaded">Manuelle (.apk)</string>
     <string name="apps_source_unknown">Source inconnue</string>
 
     <string name="apps_detail_meta">Version %1$s · installée le %2$s</string>
-    <string name="apps_detail_rating">Score de risque %1$d/100 · %2$s</string>
-    <string name="apps_detail_findings">Signaux de risque</string>
+    <string name="apps_detail_source">Source : %1$s</string>
+    <string name="apps_detail_rating">Risque des autorisations %1$d/100 · %2$s</string>
+    <string name="apps_detail_findings">Signaux de risque (contexte)</string>
+    <string name="apps_detail_findings_note">Ces signaux ne modifient pas le score des autorisations.</string>
     <string name="apps_detail_no_findings">Aucun signal de risque détecté.</string>
     <string name="apps_detail_close">Fermer</string>
     <string name="apps_score_badge">%1$d/100</string>
 
     <string name="apps_how_title">Comment lire ceci</string>
-    <string name="apps_how_body">Chaque application reçoit un score de risque de 0 à 100. 0 signale des indices forts (rouge) ; 100 signifie qu\'aucun indice n\'a été trouvé (vert). Un score invite à vérifier, ce n\'est pas une preuve de malware. Touchez une application pour voir les raisons et les réglages système que vous pouvez modifier.</string>
-    <string name="apps_legend">85–100 Sûre · 70–84 Faible · 50–69 Moyen · 30–49 Élevé · 0–29 Critique</string>
-    <string name="apps_summary">%1$d applications · %2$d à examiner</string>
+    <string name="apps_how_body">Chaque application reçoit un score d\'autorisations de 0 à 100. 100 signifie qu\'elle n\'a actuellement aucune autorisation sensible ; plus le score est bas, plus elle peut accéder à des données. Le score ne tient compte que des autorisations qu\'elle possède maintenant. Les signaux de risque sont un contexte supplémentaire et ne changent jamais le score. Touchez une application pour voir ce qu\'elle a et ce que vous pouvez modifier.</string>
+    <string name="apps_legend">Score des autorisations : 85–100 Sûre · 70–84 Faible · 50–69 Moyen · 30–49 Élevé · 0–29 Critique</string>
+    <string name="apps_summary">%1$d applications · %2$d avec accès sensible</string>
     <string name="apps_detail_what">Ce que cela signifie</string>
-    <string name="apps_detail_mean_safe">Aucun signal de risque détecté. Gardez l\'application à jour et installez-la depuis le Play Store lorsque c\'est possible.</string>
-    <string name="apps_detail_mean_low">Quelques signaux mineurs ont été détectés. Ils sont courants dans les applications légitimes, mais vérifiez la liste ci-dessous.</string>
-    <string name="apps_detail_mean_medium">Certaines autorisations ou certains composants méritent d\'être vérifiés. Demandez-vous si cette application en a vraiment besoin.</string>
-    <string name="apps_detail_mean_high">Cette application peut accéder à des données sensibles ou contrôler l\'appareil d\'une façon qui mérite votre attention. Vérifiez-la maintenant.</string>
-    <string name="apps_detail_mean_critical">Cette application présente des signaux souvent utilisés par des malwares ou des logiciels espions. Vérifiez ses autorisations et envisagez de la désinstaller.</string>
-    <string name="apps_detail_permissions_title">Autorisations demandées (%1$d)</string>
-    <string name="apps_detail_permissions_note">Le nombre d\'autorisations n\'est pas un score. Les plus sensibles sont listées en premier ; Android ne permet de les modifier que dans les réglages système.</string>
-    <string name="apps_detail_no_permissions">Aucune autorisation d\'exécution n\'est listée pour cette application.</string>
-    <string name="apps_permissions_more">+%1$d autres dans les réglages de l\'application</string>
+    <string name="apps_detail_mean_safe">Aucune autorisation sensible n\'est actuellement accordée. Cette application ne peut pas accéder aux messages, aux contacts, à la position, à la caméra, au micro ni au contrôle de l\'écran.</string>
+    <string name="apps_detail_mean_low">Quelques autorisations à faible risque sont accordées. C\'est courant et généralement sans danger ; vérifiez la liste en cas de doute.</string>
+    <string name="apps_detail_mean_medium">Cette application possède actuellement plusieurs autorisations sensibles. Vérifiez si elle a vraiment besoin de chacune.</string>
+    <string name="apps_detail_mean_high">Cette application possède un accès à haut risque : SMS, historique d\'appels, contrôle de l\'écran, affichage par-dessus les autres applications ou administrateur de l\'appareil.</string>
+    <string name="apps_detail_mean_critical">Cette application cumule plusieurs autorisations à haut risque. Considérez-la comme dangereuse sauf si vous lui faites entièrement confiance.</string>
+    <string name="apps_detail_permissions_title">Autorisations actives (%1$d)</string>
+    <string name="apps_detail_permissions_note">Seules les autorisations actuellement accordées sont listées. Désactivez-en une dans les réglages Android, puis appuyez sur Actualiser ; la liste et le score seront mis à jour.</string>
+    <string name="apps_detail_no_permissions">Aucune autorisation sensible n\'est actuellement accordée. Des autorisations normales comme internet peuvent rester présentes.</string>
+    <string name="apps_recommendation_label">RECOMMANDATION</string>
+    <string name="apps_recommend_system_title">Ne touchez pas à cette application</string>
+    <string name="apps_recommend_system_body">Cette application fait partie du système. La désinstaller ou la modifier peut casser les appels, le Wi-Fi, les mises à jour ou le lanceur. Si le système propose « Désactiver » et que vous ne l\'utilisez pas, désactivez-la plutôt que de la désinstaller ; sinon, laissez-la tranquille.</string>
+    <string name="apps_recommend_keep_title">Aucune action nécessaire</string>
+    <string name="apps_recommend_keep_body">Cette application n\'a actuellement aucune autorisation sensible accordée. Laissez-la telle quelle.</string>
+    <string name="apps_recommend_reduce_title">Réduisez ses autorisations</string>
+    <string name="apps_recommend_reduce_body">Cette application a un accès dont elle n\'a peut-être pas besoin. Désactivez les autorisations ci-dessous dans les réglages système ; le score et la liste seront mis à jour après Actualiser.</string>
+    <string name="apps_recommend_uninstall_title">Envisagez de la désinstaller</string>
+    <string name="apps_recommend_uninstall_body">Ses autorisations actuelles présentent un risque élevé. Désinstallez-la si vous n\'en avez pas besoin. Sinon, désactivez plutôt les autorisations sensibles ci-dessous. SecureBox ne désinstalle jamais d\'application à votre place.</string>
+    <string name="apps_recommend_short_keep">Aucune action</string>
+    <string name="apps_recommend_short_system">Laisser</string>
+    <string name="apps_recommend_short_reduce">Réduire</string>
+    <string name="apps_recommend_short_uninstall">Désinstaller ?</string>
     <string name="apps_detail_actions">Ce que vous pouvez faire</string>
     <string name="apps_action_open_settings">Ouvrir les réglages de l\'application</string>
     <string name="apps_action_uninstall">Désinstaller cette application</string>
@@ -44,7 +62,7 @@
     <string name="apps_action_overlay">Affichage par-dessus les autres applications</string>
     <string name="apps_action_usage">Réglages de l\'accès à l\'usage</string>
     <string name="apps_action_admin">Réglages d\'administrateur</string>
-    <string name="apps_action_note">SecureBox ne peut pas modifier directement les autorisations d\'une autre application. Ces boutons ouvrent l\'écran système exact ; désactivez l\'accès à cet endroit, ou désinstallez l\'application pour tout retirer.</string>
+    <string name="apps_action_note">SecureBox ne peut pas modifier directement les autorisations d\'une autre application. Ces boutons ouvrent l\'écran système exact ; désactivez l\'accès à cet endroit, ou désinstallez l\'application pour tout retirer. Revenez ici et appuyez sur Actualiser pour mettre à jour la liste et le score.</string>
 
     <string name="perm_camera">Caméra</string>
     <string name="perm_microphone">Microphone</string>
@@ -56,6 +74,7 @@
     <string name="perm_storage">Fichiers et médias</string>
     <string name="perm_notifications">Notifications</string>
     <string name="perm_usage">Accès à l\'usage</string>
+    <string name="perm_notification_listener">Lire les notifications</string>
     <string name="perm_overlay">Affichage par-dessus les autres applications</string>
     <string name="perm_accessibility">Accessibilité</string>
     <string name="perm_admin">Administrateur de l\'appareil</string>

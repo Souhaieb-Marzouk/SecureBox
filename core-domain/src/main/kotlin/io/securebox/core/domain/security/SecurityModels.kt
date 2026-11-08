@@ -11,9 +11,17 @@ public enum class RiskLevel {
 
 public enum class InstallSource {
     PLAY_STORE,
+    OTHER_STORE,
     SYSTEM,
     SIDELOADED,
     UNKNOWN,
+}
+
+/** What the app should do about this app, based on its currently granted permissions. */
+public enum class AppRecommendation {
+    KEEP,
+    REDUCE_PERMISSIONS,
+    UNINSTALL,
 }
 
 /** Stable codes so the UI can localise every finding. */
@@ -58,6 +66,7 @@ public data class AppSecurityInfo(
     val installer: String?,
     val firstInstallTimeMillis: Long,
     val lastUpdateTimeMillis: Long,
+    /** Permissions the app currently holds, not the permissions it merely declares. */
     val permissions: List<String>,
 )
 
@@ -66,6 +75,7 @@ public data class AppRiskReport(
     val score: Int,
     val level: RiskLevel,
     val findings: List<Finding>,
+    val recommendation: AppRecommendation = AppRecommendation.KEEP,
 )
 
 public data class ScanSummary(
