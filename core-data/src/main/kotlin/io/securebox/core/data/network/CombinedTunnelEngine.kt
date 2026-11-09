@@ -48,6 +48,7 @@ class CombinedTunnelEngine(
     private val dnsFilterEnabled = AtomicBoolean(true)
     private val pendingDnsBlocks = AtomicLong()
     private val packetCount = AtomicLong()
+    private val protectWarned = AtomicBoolean()
     private val tcpFlows = ConcurrentHashMap<FlowKey, TcpFlow>()
     private val udpFlows = ConcurrentHashMap<FlowKey, UdpFlow>()
     private val uidResolver = UidResolver(vpn)
@@ -161,6 +162,10 @@ class CombinedTunnelEngine(
             return
         }
         if ((flags and SYN) != 0) Log.i(TAG, "tcp syn :$dstPort")
+        if ((flags and RST) != 0) {
+            tcpFlows.remove(key)?.onPacket(seq, ack, flags, payload)
+            return
+        }
         val flow = tcpFlows[key] ?: TcpFlow(key, srcIp, dstIp, srcPort, dstPort).also { tcpFlows[key] = it }
         if (flow.isClosed()) {
             tcpFlows.remove(key)
@@ -227,7 +232,7 @@ class CombinedTunnelEngine(
         val socket = DatagramSocket()
         return runCatching {
             if (!vpn.protect(socket)) {
-                Log.w(TAG, "dns fallback protect returned false; binding underlying network")
+                logProtectFallback()
                 bindUnderlying(socket)
             }
             socket.soTimeout = 3_000
@@ -246,6 +251,12 @@ class CombinedTunnelEngine(
         if (blocked.isEmpty()) return false
         val uid = uidResolver.resolve(key)
         return uid >= 0 && uid in blocked
+    }
+
+    private fun logProtectFallback() {
+        if (protectWarned.compareAndSet(false, true)) {
+            Log.w(TAG, "protect returned false; using the underlying network")
+        }
     }
 
     /** bindSocket() fallback when protect() returns false on an OEM build. */
@@ -283,9 +294,6 @@ class CombinedTunnelEngine(
         mss: Int? = null,
     ) {
         val packet = buildTcpPacket(srcIp, dstIp, srcPort, dstPort, seq, ack, flags, payload, mss)
-        if ((flags and SYN) != 0) {
-            Log.i(TAG, "tcp synack hex=${packet.toHex()}")
-        }
         write(packet)
     }
 
@@ -499,8 +507,6 @@ class CombinedTunnelEngine(
     private fun ipText(bytes: ByteArray): String =
         (bytes.indices).joinToString(".") { (bytes[it].toInt() and 0xff).toString() }
 
-    private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it.toInt() and 0xff) }
-
     private data class FlowKey(
         val srcIp: String,
         val srcPort: Int,
@@ -526,8 +532,6 @@ class CombinedTunnelEngine(
         private var synAcked = false
         private var connecting = false
         private var closed = false
-        private var debugPackets = 0
-        private var loggedRemoteData = false
         @Volatile var lastActivity: Long = System.currentTimeMillis()
 
         fun onPacket(
@@ -537,10 +541,6 @@ class CombinedTunnelEngine(
             payload: ByteArray,
         ) {
             lastActivity = System.currentTimeMillis()
-            if (debugPackets < 6) {
-                debugPackets++
-                Log.i(TAG, "tcp flags=$flags seq=$seq ack=$ack len=${payload.size} expected=$appSeq")
-            }
             if ((flags and RST) != 0) {
                 close()
                 return
@@ -589,7 +589,7 @@ class CombinedTunnelEngine(
                 val created = Socket()
                 runCatching {
                     if (!vpn.protect(created)) {
-                        Log.w(TAG, "protect returned false; binding underlying network")
+                        logProtectFallback()
                         if (!bindUnderlying(created)) Log.w(TAG, "underlying bind failed; trying connect")
                     }
                     created.connect(InetSocketAddress(target, dstPort), 10_000)
@@ -629,10 +629,6 @@ class CombinedTunnelEngine(
                         return
                     }
                     if (read == 0) continue
-                    if (!loggedRemoteData) {
-                        loggedRemoteData = true
-                        Log.i(TAG, "tcp remote data len=$read seq=$serverSeq ack=$appSeq")
-                    }
                     awaitWindow()
                     sendTcp(dstIp, srcIp, dstPort, srcPort, serverSeq, appSeq, PSH or ACK, buffer.copyOf(read))
                     serverSeq = (serverSeq + read) and 0xffffffff
@@ -687,7 +683,7 @@ class CombinedTunnelEngine(
             if (target != null) {
                 runCatching {
                     if (!vpn.protect(socket)) {
-                        Log.w(TAG, "udp protect returned false; binding underlying network")
+                        logProtectFallback()
                         bindUnderlying(socket)
                     }
                     socket.connect(InetSocketAddress(target, dstPort))

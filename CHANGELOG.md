@@ -9,6 +9,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.5] - 2026-11-09
+
+### Changed
+
+- Confirmed working combined firewall + DNS forwarding on a physical phone.
+- Removed the temporary SYN-ACK hex and per-packet TCP logs.
+- Rate-limited the `protect()` fallback warning to one line.
+- Unsolicited TCP RSTs no longer create throwaway flow objects.
+
+### Known
+
+- IPv4-only tunnel; IPv6 is not filtered in this build.
+- `192.168.8.1:7` connection-refused entries in the diagnostic log came from an external device/app probing the router, not SecureBox.
+
 ## [0.9.4] - 2026-11-09
 
 ### Diagnostics
