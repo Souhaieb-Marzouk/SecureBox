@@ -9,6 +9,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.7] - 2026-11-09
+
+### Fixed
+
+- Settings firewall card stacks its status below the description instead of squeezing the body at 200% font.
+- DNS Shield keeps its persisted switch state across app upgrade/reboot and restarts the VPN when the DNS screen opens if the service is missing.
+- Boot receiver restarts the combined VPN when either protection is enabled.
+- Quick off/on recovery retries tunnel establishment and ignores SecureBox’s own VPN during teardown, avoiding the false “Another VPN is active” state.
+
 ## [0.9.6] - 2026-11-09
 
 ### Added

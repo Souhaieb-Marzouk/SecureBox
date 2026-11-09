@@ -98,7 +98,7 @@ class SecureBoxVpnService : VpnService() {
                         return@collectLatest
                     }
                     if (engine == null || lastPreset != settings.dnsPreset.name) {
-                        if (!establish(settings)) {
+                        if (!establishWithRetry(settings)) {
                             stopSelf()
                             return@collectLatest
                         }
@@ -139,6 +139,26 @@ class SecureBoxVpnService : VpnService() {
         firewallRepository.setServiceRunning(false)
         scope.cancel()
         super.onDestroy()
+    }
+
+    private suspend fun establishWithRetry(settings: AppSettings): Boolean {
+        awaitNetwork()
+        repeat(5) { attempt ->
+            if (establish(settings)) return true
+            if (attempt < 4) kotlinx.coroutines.delay(2_000)
+        }
+        return false
+    }
+
+    private suspend fun awaitNetwork() {
+        val connectivity = getSystemService(android.net.ConnectivityManager::class.java) ?: return
+        repeat(20) {
+            val capabilities = connectivity.getNetworkCapabilities(connectivity.activeNetwork)
+            if (capabilities?.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
+                return
+            }
+            kotlinx.coroutines.delay(1_000)
+        }
     }
 
     private fun establish(settings: AppSettings): Boolean {

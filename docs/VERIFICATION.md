@@ -48,3 +48,15 @@ Universal APK SHA-256: `e568bdd12d4576f8b38ccf73f3999839bc21e5ddf7823db6645c0ece
 - Long-duration/large downloads and mobile-data handover.
 - Multi-user/work-profile behavior.
 - TalkBack and 200% font-scale accessibility walkthrough.
+
+## v0.9.7 — regression fixes (2026-11-09)
+
+Build: **SecureBox 0.9.7 (versionCode 22)**
+Universal APK SHA-256: `cbb6df745d90fb6c8915af4ebe77c66769b75f9ce8744d999213bcc4e7de54a3`
+
+- Settings firewall card now stacks the status below the description for 200% font (code fix; user recheck pending).
+- DNS Shield switch reflects the persisted setting and restarts the VPN when the DNS screen opens if the service is missing.
+- Quick off/on toggle retries tunnel establishment and no longer reports SecureBox’s own VPN as “another VPN”.
+- Opening the app after reboot restores the enabled VPN when the process starts.
+- Boot receiver starts the service on a normal boot, but ColorOS may mark the package stopped; opening the app is the reliable fallback.
+- Device test: DNS Shield off/on persisted, service restarted, no false VPN conflict.

@@ -3,20 +3,37 @@ package io.securebox
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
+import io.securebox.core.data.network.SecureBoxVpnService
+import io.securebox.core.domain.network.FirewallRepository
+import io.securebox.core.domain.repository.SettingsRepository
 import io.securebox.work.AnomalyCheckWorker
 import io.securebox.work.ScanWorker
 import io.securebox.work.ThreatFeedWorker
 import io.securebox.work.UpdateCheckWorker
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @HiltAndroidApp
 class SecureBoxApp : Application() {
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
+    @Inject
+    lateinit var firewallRepository: FirewallRepository
+
     override fun onCreate() {
         super.onCreate()
         createAlertChannel()
@@ -24,6 +41,23 @@ class SecureBoxApp : Application() {
         scheduleWeeklyScan()
         scheduleUpdateChecks()
         scheduleThreatFeed()
+        restoreNetworkProtection()
+    }
+
+    /** A process start (including opening the app after reboot) restores the enabled VPN. */
+    private fun restoreNetworkProtection() {
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            runCatching {
+                val settings = settingsRepository.settings.first()
+                val firewall = firewallRepository.state.first()
+                if (!settings.dnsShieldEnabled && !firewall.enabled) return@launch
+                if (SecureBoxVpnService.isRunning) return@launch
+                ContextCompat.startForegroundService(
+                    this@SecureBoxApp,
+                    Intent(this@SecureBoxApp, SecureBoxVpnService::class.java),
+                )
+            }
+        }
     }
 
     /**

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.9.6` — Combined Firewall + DNS |
+| **Current release** | `v0.9.7` — Combined Firewall + DNS |
 | **Verified on** | Physical Android phone and Android TV box |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |

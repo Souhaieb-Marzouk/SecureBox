@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.VpnService
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -41,6 +42,7 @@ class FirewallRepositoryImpl
 
         private val runtime = MutableStateFlow(Runtime())
         private val unknownPackages = MutableStateFlow<Set<String>>(emptySet())
+        @Volatile private var ownVpnStoppedAt = 0L
 
         override val state: Flow<FirewallState> =
             combine(dataStore.data, runtime, unknownPackages) { preferences, runtime, unknown ->
@@ -124,6 +126,7 @@ class FirewallRepositoryImpl
         }
 
         override suspend fun stopService() {
+            ownVpnStoppedAt = SystemClock.elapsedRealtime()
             context.stopService(Intent(context, SecureBoxVpnService::class.java))
             SecureBoxVpnService.isRunning = false
             runtime.update { it.copy(running = false) }
@@ -132,10 +135,14 @@ class FirewallRepositoryImpl
         override suspend fun unknownPackages(): Set<String> = registry.unknownPackages()
 
         override fun setServiceRunning(running: Boolean) {
+            if (!running) ownVpnStoppedAt = SystemClock.elapsedRealtime()
             runtime.update { it.copy(running = running, otherVpnActive = if (running) false else it.otherVpnActive) }
         }
 
         private fun hasForeignVpn(): Boolean {
+            // The kernel/ConnectivityService can keep the old VPN network visible for a moment after
+            // stopService(). Do not report SecureBox as a foreign VPN while that teardown completes.
+            if (SystemClock.elapsedRealtime() - ownVpnStoppedAt < 5_000) return false
             val connectivity = context.getSystemService(ConnectivityManager::class.java) ?: return false
             return connectivity.allNetworks.any { network ->
                 connectivity.getNetworkCapabilities(network)?.hasTransport(NetworkCapabilities.TRANSPORT_VPN) == true

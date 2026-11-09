@@ -252,15 +252,13 @@ fun SettingsScreen(
 
         item {
             SecureCard {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(text = stringResource(R.string.settings_firewall_title), style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            text = stringResource(R.string.settings_firewall_body),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(text = stringResource(R.string.settings_firewall_title), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        text = stringResource(R.string.settings_firewall_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                     Text(
                         text = stringResource(R.string.settings_firewall_status),
                         style = MaterialTheme.typography.labelLarge,

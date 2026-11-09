@@ -48,7 +48,12 @@ class ShieldViewModel
         init {
             viewModelScope.launch {
                 settingsRepository.settings.collect { settings ->
-                    _state.update { it.copy(settings = settings) }
+                    _state.update {
+                        it.copy(
+                            settings = settings,
+                            dnsShieldRunning = settings.dnsShieldEnabled,
+                        )
+                    }
                 }
             }
             viewModelScope.launch {
@@ -73,9 +78,21 @@ class ShieldViewModel
         fun refreshDnsShield() {
             _state.update {
                 it.copy(
-                    dnsShieldRunning = it.settings.dnsShieldEnabled && SecureBoxVpnService.isRunning,
+                    dnsShieldRunning = it.settings.dnsShieldEnabled,
                     firewallRunning = it.firewallEnabled,
                 )
+            }
+        }
+
+        /** Restart the VPN if the persisted DNS/firewall setting is on but the service died. */
+        fun ensureNetworkService() {
+            val state = _state.value
+            if (!state.settings.dnsShieldEnabled && !state.firewallEnabled) return
+            if (SecureBoxVpnService.isRunning) return
+            viewModelScope.launch {
+                runCatching {
+                    context.startForegroundService(Intent(context, SecureBoxVpnService::class.java))
+                }
             }
         }
 
