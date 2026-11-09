@@ -45,10 +45,12 @@ class CombinedTunnelEngine(
     private val writeLock = ReentrantLock()
     private val running = AtomicBoolean(true)
     private val blockedUids = AtomicReference<Set<Int>>(emptySet())
+    private val dynamicDnsDomains = AtomicReference<Set<String>>(emptySet())
     private val dnsFilterEnabled = AtomicBoolean(true)
     private val pendingDnsBlocks = AtomicLong()
     private val packetCount = AtomicLong()
     private val protectWarned = AtomicBoolean()
+    private val dnsFlushScheduled = AtomicBoolean()
     private val tcpFlows = ConcurrentHashMap<FlowKey, TcpFlow>()
     private val udpFlows = ConcurrentHashMap<FlowKey, UdpFlow>()
     private val uidResolver = UidResolver(vpn)
@@ -57,9 +59,15 @@ class CombinedTunnelEngine(
     fun update(
         blocked: Set<Int>,
         dnsFilter: Boolean,
+        feedDomains: Set<String> = emptySet(),
     ) {
         blockedUids.set(blocked)
         dnsFilterEnabled.set(dnsFilter)
+        dynamicDnsDomains.set(feedDomains.map { it.lowercase().trim() }.filter { it.isNotEmpty() }.toSet())
+    }
+
+    fun updateFeedDomains(domains: Set<String>) {
+        dynamicDnsDomains.set(domains.map { it.lowercase().trim() }.filter { it.isNotEmpty() }.toSet())
     }
 
     fun start() {
@@ -211,7 +219,7 @@ class CombinedTunnelEngine(
     ) {
         val name = parseQuestionName(query)
         val response =
-            if (dnsFilterEnabled.get() && DnsBlocklist.isBlocked(name)) {
+            if (dnsFilterEnabled.get() && DnsBlocklist.isBlocked(name, dynamicDnsDomains.get())) {
                 recordDnsBlock()
                 buildDnsError(query, 3)
             } else {
@@ -448,7 +456,17 @@ class CombinedTunnelEngine(
 
     private fun recordDnsBlock() {
         val count = pendingDnsBlocks.incrementAndGet()
-        if (count % 10L == 0L) flushDnsStats()
+        if (count % 10L == 0L) {
+            flushDnsStats()
+            return
+        }
+        if (dnsFlushScheduled.compareAndSet(false, true)) {
+            scope.launch {
+                kotlinx.coroutines.delay(1_000)
+                dnsFlushScheduled.set(false)
+                flushDnsStats()
+            }
+        }
     }
 
     private fun flushDnsStats() {

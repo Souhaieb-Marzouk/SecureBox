@@ -16,6 +16,7 @@ import io.securebox.core.data.R
 import io.securebox.core.domain.model.AppSettings
 import io.securebox.core.domain.network.FirewallRepository
 import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.security.ThreatFeedRepository
 import io.securebox.core.domain.shield.ShieldStatsRepository
 import java.net.Inet4Address
 import java.net.InetAddress
@@ -53,11 +54,16 @@ class SecureBoxVpnService : VpnService() {
     @Inject
     lateinit var statsRepository: ShieldStatsRepository
 
+    @Inject
+    lateinit var threatFeedRepository: ThreatFeedRepository
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var tunnel: ParcelFileDescriptor? = null
     private var engine: CombinedTunnelEngine? = null
     private var stateJob: Job? = null
+    private var feedJob: Job? = null
     private var lastPreset: String? = null
+    @Volatile private var feedDomains: Set<String> = emptySet()
 
     override fun onCreate() {
         super.onCreate()
@@ -100,7 +106,17 @@ class SecureBoxVpnService : VpnService() {
                     engine?.update(
                         blocked = uids(firewall.effectiveBlockedPackages),
                         dnsFilter = settings.dnsShieldEnabled,
+                        feedDomains = feedDomains,
                     )
+                }
+            }
+        feedJob?.cancel()
+        feedJob =
+            scope.launch {
+                while (true) {
+                    feedDomains = runCatching { threatFeedRepository.activeFeed()?.domains?.toSet() }.getOrNull() ?: emptySet()
+                    engine?.updateFeedDomains(feedDomains)
+                    kotlinx.coroutines.delay(15 * 60 * 1000L)
                 }
             }
         return START_STICKY
@@ -117,6 +133,7 @@ class SecureBoxVpnService : VpnService() {
 
     override fun onDestroy() {
         stateJob?.cancel()
+        feedJob?.cancel()
         closeEngine()
         isRunning = false
         firewallRepository.setServiceRunning(false)

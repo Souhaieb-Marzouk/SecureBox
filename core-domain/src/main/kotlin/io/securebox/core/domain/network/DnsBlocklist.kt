@@ -80,6 +80,22 @@ public object DnsBlocklist {
 
     public fun isBlocked(host: String?): Boolean = kind(host) != null
 
+    /**
+     * Also checks domains supplied by the signed threat feed. Feed domains are normalized by the
+     * caller; matching is exact or suffix-based, like the built-in lists.
+     */
+    public fun isBlocked(
+        host: String?,
+        extraDomains: Set<String>,
+    ): Boolean {
+        if (isBlocked(host)) return true
+        val value = host?.lowercase()?.trim() ?: return false
+        return extraDomains.any { blocked ->
+            val normalized = blocked.lowercase().trim()
+            normalized.isNotEmpty() && (value == normalized || value.endsWith(".$normalized"))
+        }
+    }
+
     private fun matches(
         host: String,
         set: Set<String>,

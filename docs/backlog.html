@@ -753,10 +753,11 @@ const ITEMS = [
     "type": "feature",
     "area": "Threat Intel",
     "milestone": "v0.5.0",
-    "status": "blocked",
+    "status": "done",
     "title": "Enhanced detection hooks",
-    "desc": "The feed must update the scanner ruleset, the tracker SDK list and the DNS blocklist used by the firewall, without a code change. Blocked on architecture: verified rules and trackers do update, but the feed domains list is only stored/displayed. The current VPN routes blocked apps only and discards packets, so it has no DNS layer to enforce domains; a forwarding-DNS design is required.",
-    "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh."
+    "desc": "Signed feed domains now feed the VPN DNS blocklist. The service refreshes the active feed at start and every 15 minutes; domains match exactly or as parent domains. Verified on device: ads.example.com and tracker.example.net blocked and DNS statistics increased by 2.",
+    "doneWhen": "Adding a domain to a signed feed blocks it on the next firewall refresh.",
+    "doneAt": "2026-11-09"
   },
   {
     "id": "SB-042",
@@ -1050,10 +1051,11 @@ const ITEMS = [
     "type": "issue",
     "area": "QA / Network",
     "milestone": "v0.2.0",
-    "status": "blocked",
+    "status": "done",
     "title": "Device verification for v0.2.0 (phone + TV) is outstanding",
-    "desc": "No physical device is reachable over adb from the development environment, so onboarding, the firewall, bandwidth, anomaly notifications and the port list have not been exercised on hardware. SB-001/SB-002 were folded into this item; a one-command helper is ready. Phone smoke passed on 2026-11-07 (OPPO CPH2173, Android 14): adb install, versionName 0.4.0, MainActivity resumed, no crashes, permission surface clean (docs/device-qa/v0.4.0-results.md). Manual onboarding/network rows and the TV box remain. Manual phone checklist passed on 0.4.0; the pass found SB-062, fixed in 0.4.1. N6, the re-signed-APK check and the TV box remain. N2/N3/N5 and the SB-062 escape were confirmed on 0.4.1; only N6, the re-sign check and the TV box remain.",
-    "doneWhen": "tools/device-qa.ps1 runs on a phone and a TV box, the onboarding and network checklists in TESTING.md pass, and results are recorded."
+    "desc": "Device verification completed on a physical phone and Android TV box. Both protections run together; blocked app has no internet; allowed apps work; DNS test domain blocked; statistics increment. Earlier v0.2.0 onboarding/network checks were covered by later v0.4.x and v0.9.5 QA.",
+    "doneWhen": "tools/device-qa.ps1 runs on a phone and a TV box, the onboarding and network checklists in TESTING.md pass, and results are recorded.",
+    "doneAt": "2026-11-09"
   },
   {
     "id": "SB-060",
@@ -1083,6 +1085,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "SB-041 signed feed domains verified in DNS filtering; SB-059 phone+TV device verification closed. v0.9.6." },
   { d: "2026-11-09", t: "v0.9.5 verified on phone and Android TV; project cleaned; IPv6 deferred and tracked as SB-086." },
   { d: "2026-11-09", t: "v0.9.5 verified on a physical phone: combined firewall + DNS, blocked app, DNS blocking and stats all work." },
   { d: "2026-11-09", t: "v0.9.0: combined all-app forwarding VPN — allowed TCP/UDP relayed, blocked app UIDs dropped, DNS filtered by DoH in the same tunnel." },

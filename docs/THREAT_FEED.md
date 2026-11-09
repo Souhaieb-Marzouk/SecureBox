@@ -36,9 +36,9 @@ update. The feed is **optional**: the app ships with a bundled ruleset and works
 - `severity` is `SAFE`, `LOW`, `MEDIUM`, `HIGH` or `CRITICAL`.
 - `allRequired` mirrors the scanner's rule semantics.
 - `trackers` are added to the existing tracker-prefix list.
-- `domains` are stored and shown in the status card. **They are not used by the firewall yet**: the
-  current VPN only routes blocked apps and discards packets, so there is no DNS layer to filter on.
-  Domain blocking needs the forwarding DNS design tracked separately.
+- `domains` are enforced by the combined VPN DNS filter. The service refreshes the active feed at
+  start and every 15 minutes; entries match exactly or as parent domains. Feed domains only apply
+  while DNS Shield is enabled, and the current tunnel is IPv4-only.
 
 ## Key management
 

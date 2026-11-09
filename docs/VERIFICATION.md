@@ -31,8 +31,20 @@ The same build passed on a physical Android TV box with both controls enabled:
 - **DNS block test** — ad/tracker domain blocked.
 - **Protection statistics** — DNS counter increments.
 
+## v0.9.6 — signed feed domains on phone (2026-11-09)
+
+Build: **SecureBox 0.9.6 (versionCode 21)**
+Universal APK SHA-256: `e568bdd12d4576f8b38ccf73f3999839bc21e5ddf7823db6645c0ece98d2030b`
+
+- Threat Intelligence feed v1 active (2 domains).
+- Local firewall and DNS Shield both on.
+- `ads.example.com` and `tracker.example.net` returned `unknown host`.
+- DNS block statistics rose from **563 to 565** — one per feed domain.
+- DNS statistics now flush within about one second instead of waiting for a batch of ten.
+
 ### Not tested
 
 - IPv6 (deferred by request; the current tunnel is IPv4-only).
 - Long-duration/large downloads and mobile-data handover.
 - Multi-user/work-profile behavior.
+- TalkBack and 200% font-scale accessibility walkthrough.

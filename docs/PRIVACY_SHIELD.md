@@ -32,8 +32,9 @@ engine** instead of two mutually exclusive services:
 - Allowed apps’ **TCP and UDP flows are forwarded on-device** through protected sockets.
 - Apps selected in **Local firewall** are identified by UID; their TCP connections are reset and
   their UDP packets are dropped.
-- DNS is answered locally: the query is checked against the ad/tracker list, then forwarded over
-  **DNS-over-HTTPS** to AdGuard, Cloudflare for Families or Quad9.
+- DNS is answered locally: the query is checked against the ad/tracker list and the active signed
+  threat-feed domains, then forwarded over **DNS-over-HTTPS** to AdGuard, Cloudflare for Families or
+  Quad9.
 - **Local firewall and DNS protection can be enabled at the same time.** They are two controls on
   the same VPN, not two VPNs.
 

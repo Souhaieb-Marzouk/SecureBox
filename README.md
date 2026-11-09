@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.9.5` — Combined Firewall + DNS |
+| **Current release** | `v0.9.6` — Combined Firewall + DNS |
 | **Verified on** | Physical Android phone and Android TV box |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
@@ -18,7 +18,7 @@
 
 Older versions had a local firewall **or** DNS protection because Android allows one VPN. v0.9.5 combines them in one on-device forwarding engine:
 
-- **DNS protection** — queries are checked against the local ad/tracker list and forwarded over DNS-over-HTTPS to AdGuard, Cloudflare for Families or Quad9.
+- **DNS protection** — queries are checked against the local ad/tracker list and the active signed threat-feed domains, then forwarded over DNS-over-HTTPS to AdGuard, Cloudflare for Families or Quad9.
 - **Local firewall** — selected apps are matched by UID; their TCP connections are reset and their UDP packets are dropped.
 - **Both can run at the same time.** The service stays alive while either control is enabled.
 

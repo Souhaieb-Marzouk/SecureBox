@@ -10,7 +10,7 @@ This document covers automated tests, manual verification and the checks require
 ./gradlew testDebugUnitTest test
 ```
 
-Current suite: **52 tests, 0 failures**.
+Current suite: **55 tests, 0 failures** (52 domain + 3 core-data).
 
 | Area | Examples |
 |---|---|
