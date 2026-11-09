@@ -47,8 +47,8 @@ This is a real change from 0.8:
   intercepted.
 - SecureBox is therefore in the data path for allowed apps, like any local VPN firewall. The
   notification and the DNS screen say this explicitly.
-- The engine handles IPv4 TCP/UDP. IPv6 is routed into the tunnel and dropped, so apps fall back to
-  IPv4; this can make some IPv6-only destinations unreachable.
+- The engine handles IPv4 TCP/UDP. The v0.9.5 tunnel is IPv4-only: IPv6 is not routed into the VPN,
+  so IPv6 traffic is not filtered. This is a documented limitation, not a silent bypass claim.
 - Per-app blocking needs UID attribution. On Android 10+ this uses
   `ConnectivityManager.getConnectionOwnerUid`; on older boxes it falls back to `/proc/net`. When the
   UID cannot be determined, SecureBox allows the flow rather than breaking an unknown app. This is a
@@ -115,8 +115,8 @@ an API key and sends URL prefixes to Google.
   blocks ad/tracker domains, not every ad served from a first-party domain.
 - **Filtering HTTPS inside other apps** requires root, a modified client or a MITM proxy. SecureBox
   does not MITM user traffic.
-- The forwarding engine is IPv4-first. IPv6 packets are dropped so they cannot bypass the firewall;
-  apps normally fall back to IPv4.
+- The forwarding engine is IPv4-only in v0.9.5. IPv6 is not routed into the VPN, so it is not
+  filtered; this is tracked as deferred work.
 - Per-app blocking requires a readable UID. If the device refuses UID attribution, the flow is
   allowed; the firewall cannot guarantee blocking on that firmware.
 - Cookie notices and popups vary by site. Cosmetic rules cover common patterns and are deliberately

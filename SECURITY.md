@@ -4,9 +4,9 @@
 
 | Version | Supported |
 |---|---|
-| 0.5.x | ✅ |
-| 0.4.x | ✅ (fixes only) |
-| < 0.4 | ❌ |
+| 0.9.x | ✅ |
+| 0.8.x | ✅ (fixes only) |
+| < 0.8 | ❌ |
 
 Only the latest published release receives security fixes. Update through the in-app updater or from the Releases page. Release manifests are signed with Ed25519 (`SHA256SUMS.sig`); the threat feed uses a separate Ed25519 key documented in `docs/THREAT_FEED.md`.
 
@@ -53,10 +53,20 @@ At startup, SecureBox computes the SHA-256 of its own signing certificate and co
 
 ### Local data
 
-- Settings and the update cache live in app-private storage.
+- Settings, scan results and protection statistics live in app-private storage.
 - `android:allowBackup="false"` — no cloud backup of app data.
 - `android:usesCleartextTraffic="false"` — no HTTP fallback.
 - The FileProvider exposes one directory (`cacheDir/updates`), read-only, per-URI.
+
+### Combined VPN data path
+
+- The Local firewall and DNS protection share one on-device `VpnService`.
+- Allowed traffic is relayed through `VpnService.protect()` sockets or bound to a non-VPN network if
+  the OEM returns `false`; it is not sent to a SecureBox server.
+- TLS is not intercepted. No root or MITM proxy is used.
+- Blocked app flows are matched by UID; unknown UIDs are allowed rather than breaking an app.
+- The DNS resolver is DoH; a plaintext fallback is used only if DoH fails.
+- IPv6 is not filtered in the current release; this is documented in the UI and release notes.
 
 ### Secrets
 

@@ -6,13 +6,10 @@
 |---|---|---|
 | JDK | 17 or 21 | AGP 8.5 requires 17+; CI uses Temurin 17 |
 | Android SDK | Platform 34, Build-Tools 34.0.0 | `ANDROID_HOME` or `local.properties` |
-| Android NDK | 27.2.12479018 (r27c) | Builds the native firewall pump; CI installs it |
-| CMake | 3.22.1 | Ships with the SDK; used instead of ndk-build |
 | Gradle | 8.9 (wrapper included) | Do not use an older Gradle |
 | Kotlin | 2.0.21 | Provided by the version catalog |
 
-The native `securebox_pump` library is built with CMake and the NDK. Without the NDK the build
-fails; install both through `sdkmanager` (see below).
+The unused native packet pump has been removed from the source tree. The NDK and CMake are **not required**.
 
 ## Setup
 
@@ -30,7 +27,7 @@ sdk.dir=/absolute/path/to/Android/Sdk
 Install the SDK packages:
 
 ```bash
-sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools" "ndk;27.2.12479018" "cmake;3.22.1"
+sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 ```
 
 ## Debug build

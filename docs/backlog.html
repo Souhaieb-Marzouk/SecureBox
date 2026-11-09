@@ -187,6 +187,17 @@
 /* DATA_START */
 const ITEMS = [
   {
+    "id": "SB-086",
+    "p": "P2",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "Future",
+    "status": "open",
+    "title": "IPv6 filtering in the combined VPN",
+    "desc": "The current combined tunnel forwards IPv4 only; IPv6 is not routed into the VPN and therefore is not filtered. Implement IPv6 TCP/UDP forwarding or an explicit AAAA/route strategy, then verify phone and TV. Deferred by the user on 2026-11-09.",
+    "doneAt": null
+  },
+  {
     "id": "SB-085",
     "p": "P0",
     "type": "test",
@@ -194,7 +205,7 @@ const ITEMS = [
     "milestone": "v0.9.5",
     "status": "done",
     "title": "On-device verification of combined firewall and DNS",
-    "desc": "Physical phone test with both switches enabled in one VPN: internet works; a selected blocked app has no internet; a non-blocked app works; an ad/tracker domain is blocked; DNS statistics increment. IPv6 remains deferred; Android TV and long-transfer testing remain.",
+    "desc": "Physical phone and Android TV box test with both switches enabled in one VPN: internet works; a selected blocked app has no internet; non-blocked apps work; an ad/tracker domain is blocked; DNS statistics increment. IPv6 remains deferred; long-transfer testing remains.",
     "doneAt": "2026-11-09"
   },
   {
@@ -1072,6 +1083,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "v0.9.5 verified on phone and Android TV; project cleaned; IPv6 deferred and tracked as SB-086." },
   { d: "2026-11-09", t: "v0.9.5 verified on a physical phone: combined firewall + DNS, blocked app, DNS blocking and stats all work." },
   { d: "2026-11-09", t: "v0.9.0: combined all-app forwarding VPN — allowed TCP/UDP relayed, blocked app UIDs dropped, DNS filtered by DoH in the same tunnel." },
   { d: "2026-11-08", t: "v0.8.0: protection statistics page, one-switch DNS Shield VPN with no Private DNS, and TV focus anchors so remote users can scroll text-only sections." },

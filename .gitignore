@@ -31,5 +31,3 @@ secrets/
 # Logs produced by local runs (telemetry-free, user-exportable only)
 *.log
 
-# Device QA screenshot
-/securebox-device.png

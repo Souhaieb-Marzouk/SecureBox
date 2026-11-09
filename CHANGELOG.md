@@ -18,6 +18,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Rate-limited the `protect()` fallback warning to one line.
 - Unsolicited TCP RSTs no longer create throwaway flow objects.
 
+### Verified
+
+- Physical Android phone and Android TV box: both switches at once, blocked-app enforcement, DNS blocking and statistics.
+
 ### Known
 
 - IPv4-only tunnel; IPv6 is not filtered in this build.

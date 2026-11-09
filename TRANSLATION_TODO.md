@@ -6,7 +6,7 @@ maintained alongside them.
 
 ## Outstanding review items
 
-**None.** The v0.4.0 French review closed every row that was previously listed here:
+**None.** The English/French review closed every row that was previously listed here:
 
 | Decision | Result |
 |---|---|

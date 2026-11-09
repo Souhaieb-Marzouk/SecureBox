@@ -33,12 +33,13 @@ attribution), not advertising or profiling.
 
 **Disclosure shown in the app and the persistent notification:**
 
-> SecureBox inspects traffic locally on your device. Nothing is sent to us.
+> SecureBox runs a local VPN to filter DNS and block selected apps. Allowed traffic is relayed on your device; it is not sent to a SecureBox server, not stored, and TLS is not intercepted.
 
-The VPN is a local firewall: blocked apps are routed into the tunnel and their packets are
-discarded. SecureBox does **not** forward traffic, does **not** operate a remote VPN server, and
-does **not** collect browsing data. The service declares `foregroundServiceType="specialUse"` with
-the subtype "Local on-device firewall VPN" and is started only after the system VPN consent dialog.
+The VPN is local: it filters DNS and can drop selected apps. Allowed TCP/UDP is forwarded on-device
+through protected sockets. SecureBox does **not** operate a remote VPN server and does **not**
+collect browsing data or MITM TLS. The service declares `foregroundServiceType="specialUse"` with
+the subtype "Local on-device firewall and DNS filtering VPN" and starts only after the system VPN
+consent dialog.
 
 ### `PACKAGE_USAGE_STATS` (special access)
 

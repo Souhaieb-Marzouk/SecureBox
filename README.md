@@ -2,80 +2,89 @@
 
 **SecureBox** is a privacy-first security app for **Android phones, tablets and Android TV boxes**. It gives you plain-language, on-device visibility into what apps are doing on your network, what they are allowed to do, and whether anything looks dangerous — with **zero telemetry** and no cloud account.
 
-> One purchase covers one phone **and** one TV box. The app is free and open source (Apache 2.0); the Threat Intelligence add-on is free during the v0.5 trial.
-
 | | |
 |---|---|
-| **Current release** | `v0.9.5` — Combined Firewall + DNS (working) |
+| **Current release** | `v0.9.5` — Combined Firewall + DNS |
+| **Verified on** | Physical Android phone and Android TV box |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
-| **Devices** | Phone / tablet (`LAUNCHER`) and Android TV (`LEANBACK_LAUNCHER`) |
-| **Network** | Only the GitHub update check and the optional signed threat feed |
+| **Devices** | Phone/tablet (`LAUNCHER`) and Android TV (`LEANBACK_LAUNCHER`) |
+| **License** | Apache 2.0 |
 
----
+## What it does
 
-## Why another security app?
+### One VPN, two protections
 
-Most "phone cleaners" and "security boosters" are advertising vehicles: they upload app lists, ship analytics SDKs, and show scary numbers that mean nothing. SecureBox takes the opposite approach:
+Older versions had a local firewall **or** DNS protection because Android allows one VPN. v0.9.5 combines them in one on-device forwarding engine:
 
-- **Everything is computed on the device.** Scanning, traffic analysis and threat matching never leave the phone or TV box.
-- **The only outbound calls are pull-only.** A GitHub release check, and (from v0.5) the signed Threat Intelligence feed.
-- **Every number is explained.** Each screen has a one-sentence "what this does", and every technical term has an inline "What is this?" chip.
-- **One codebase, two shells.** A touch-first bottom-navigation shell for phones and a D-pad-first 10-foot shell for TV boxes, selected automatically and overridable at any time.
+- **DNS protection** — queries are checked against the local ad/tracker list and forwarded over DNS-over-HTTPS to AdGuard, Cloudflare for Families or Quad9.
+- **Local firewall** — selected apps are matched by UID; their TCP connections are reset and their UDP packets are dropped.
+- **Both can run at the same time.** The service stays alive while either control is enabled.
 
-## What works today (v0.9.5)
+Allowed traffic is relayed on-device through `VpnService.protect()` sockets (with an underlying-network binding fallback for OEM builds where `protect()` returns `false`). It is never sent to a SecureBox server, is not stored, and TLS is not intercepted.
 
-- **First-run onboarding**: language selection (EN/FR), automatic TV/phone detection with manual override, and plain-language permission explainers.
-- **Two UI shells**: `PhoneShell` (bottom bar on phones, navigation rail on tablets) and `TvShell` (sidebar + large focus rings), sharing one navigation graph.
-- **Device integrity (RASP)**: debugger, emulator, root and signature checks, with updates locked on a tampered build.
-- **Device hardening**: one screen for developer options, USB debugging, accessibility, admins, user certificates and install-unknown-apps, each with a Fix shortcut.
-- **App security scan**: signature rules, tracker SDKs, dangerous permission combos, exported components, accessibility services, device admins and hidden launchers — all on-device.
-- **Per-app risk score**: 0–100 with plain-language reasons, All / Risky / Sideloaded filters, and a bottom-sheet detail view.
-- **Sideload awareness**: Play Store / System / Sideloaded badges with installer details.
-- **Automatic scans**: weekly and post-boot scans, controlled by a user preference, plus a notification when risky apps are found.
-- **Signed threat feed**: optional Ed25519-verified rules and tracker updates, manual or daily, with a status screen and offline-safe failure.
-- **Per-app bandwidth**: live rates plus 24 h / 7 d / 30 d history, sorted by consumption, with a block switch on every row.
-- **Upload anomaly detector**: 7-day hourly baseline, 3× / 100 MB per hour thresholds, hourly checks and actionable notifications.
-- **Local firewall**: block any app's internet through the combined on-device VPN, Allow all / Block unknown apps presets, persistent notification and conflicting-VPN detection.
-- **Open port monitor**: listening TCP/UDP sockets attributed to apps, with internet-facing flags and an honest "unavailable" state when Android restricts `/proc/net`.
-- **Self-update system**: GitHub Releases API, 12-hour cache, semantic version comparison, SHA-256 verification against the published `SHA256SUMS`, FileProvider hand-off to the system installer, and graceful handling of GitHub rate limits.
-- **Security score**: a transparent 0–100 score with weighted, documented factors, now aware of available updates.
-- **APK self-integrity check**: the app verifies its own signing certificate at startup.
-- **Settings**: language, device mode (with re-detection), theme, Threat Intelligence (signed feed with manual and daily updates), update check, privacy policy, about.
-- **Docs & policies**: `PRIVACY.md`, `SECURITY.md`, `BUILDING.md`, `TESTING.md`.
-- **CI/CD**: GitHub Actions builds, tests, lints, signs and hashes APKs on tag push and uploads them as workflow artifacts; the GitHub Release itself is published manually.
+### Protection statistics
 
-## Roadmap
+**Privacy shield → Protection statistics** shows:
 
-| Milestone | Version | Scope |
-|---|---|---|
-| 1 | **v0.1.0** | Foundation, onboarding, two shells, complete self-update system |
-| 2 | v0.2.0 | Per-app bandwidth, anomaly detection, local VPN firewall, open-port monitor |
-| 3 | v0.3.0 | Malware scanner, permission & tracker auditor, sideload checker, component detector |
-| 4 | v0.4.0 | RASP, dangerous-settings checker, hardening wizards, scheduled scans |
-| 5 | **v0.5.1** | Threat Intelligence add-on: signed feed, Ed25519 verification, free trial |
-| 6 | v1.0.0 | Localization review, accessibility/TalkBack pass, performance, real-device QA |
+- Ads blocked
+- Trackers blocked
+- Pages cleaned of cookie/popup clutter
+- Dangerous links blocked
+- DNS queries blocked locally
 
-The live, prioritized work list is kept in **[docs/backlog.html](docs/backlog.html)** (P0–P3, features and open issues). It is updated in the same commit as every change.
+Counters are stored in the app's DataStore and can be reset.
+
+### Android TV
+
+Every scroll container has focusable top/bottom anchors, and cards/banners/headings are focus stops, so a D-pad can reach text-only sections. Verified on a physical TV box.
+
+### Private browser
+
+Blocks ad/tracker hosts, hides common annoyances, removes tracking parameters in High mode, and checks navigations/subresources against a local SHA-256 prefix list. No browsing history is stored or uploaded.
+
+### Device security
+
+- RASP checks (debugger, emulator, root, signature)
+- App security scan and per-app risk score
+- Sideload awareness
+- Dangerous-settings hardening
+- Per-app bandwidth and upload anomaly detection
+- Open-port monitor (honest “unavailable” state when `/proc/net` is restricted)
+- Signed, optional Threat Intelligence feed
+- Signed GitHub self-update with SHA-256 verification before installing
+
+## Network privacy
+
+SecureBox has **no analytics, no advertising SDKs and no crash-reporting servers**.
+
+Outbound traffic is limited to:
+
+1. The GitHub release check.
+2. The optional signed Threat Intelligence feed.
+3. The DNS-over-HTTPS provider you select, when DNS protection is enabled.
+4. Pages you open in the private browser.
+
+The VPN is local. There is no SecureBox VPN server.
 
 ## Install
 
 1. Open the [Releases page](https://github.com/Souhaieb-Marzouk/SecureBox/releases).
-2. Download `securebox-universal-release.apk` (works on every device) or the ABI-specific APK for a smaller download.
-3. Verify the download if you want to be certain:
+2. Download `securebox-universal-release.apk`, or the smaller ABI-specific APK.
+3. Verify it if you want:
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
 ```
 
-4. Allow installation from the browser/file manager when Android asks. SecureBox never installs anything silently; every update opens the standard installer dialog.
+4. Accept the Android VPN prompt when enabling the firewall/DNS protection.
 
-> **TV boxes:** sideload with `adb install securebox-universal-release.apk`, or use a USB stick and a file manager. The app registers a `LEANBACK_LAUNCHER` entry so it appears on the TV home screen.
+TV boxes: sideload with `adb install securebox-universal-release.apk`, or use a USB stick and a file manager.
 
 ## Build from source
 
-See **[BUILDING.md](BUILDING.md)**. Quick start:
+Requirements: **JDK 17 or 21**, Android SDK Platform 34 and Build-Tools 34.0.0, Gradle 8.9 (wrapper included). The unused native packet pump has been removed from the source tree, so the NDK and CMake are no longer required.
 
 ```bash
 git clone https://github.com/Souhaieb-Marzouk/SecureBox.git
@@ -83,55 +92,42 @@ cd SecureBox
 ./gradlew assembleDebug
 ```
 
-A signed release build requires a keystore and four secrets — never committed to the repository:
+Signed-release instructions are in **[BUILDING.md](BUILDING.md)**.
 
-| Variable | Purpose |
+## Documentation
+
+| Document | Contents |
 |---|---|
-| `SECUREBOX_KEYSTORE_PATH` | Path to the `.jks` / `.p12` keystore |
-| `SECUREBOX_KEYSTORE_PASSWORD` | Keystore password |
-| `SECUREBOX_KEY_ALIAS` | Key alias (`securebox`) |
-| `SECUREBOX_KEY_PASSWORD` | Key password |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Modules, layers and the combined VPN data plane |
+| [docs/PRIVACY_SHIELD.md](docs/PRIVACY_SHIELD.md) | Browser, DNS provider, firewall and privacy model |
+| [docs/FIREWALL_EDGE_CASES.md](docs/FIREWALL_EDGE_CASES.md) | VPN conflicts, Private DNS and per-app edge cases |
+| [docs/VERIFICATION.md](docs/VERIFICATION.md) | Physical phone and TV verification record |
+| [docs/backlog.html](docs/backlog.html) | Prioritized work list |
+| [PRIVACY.md](PRIVACY.md) | Privacy policy |
+| [SECURITY.md](SECURITY.md) | Security policy and supported versions |
+| [TESTING.md](TESTING.md) | Automated and manual test checklist |
+| [CHANGELOG.md](CHANGELOG.md) | Release history |
 
-## Architecture
+## Known limits
 
-SecureBox uses **MVVM + Clean Architecture** across a Gradle multi-module project:
+- **IPv4-only tunnel.** IPv6 forwarding is deferred; IPv6 traffic is not filtered in this build.
+- Per-app blocking depends on UID attribution. If the UID cannot be resolved, the flow is allowed rather than breaking an unknown app.
+- Apps using their own DoH/DoT resolver can bypass DNS filtering.
+- HTTPS inside other apps is not intercepted; no root or MITM.
+- YouTube in-stream ads cannot be removed by DNS or the embedded browser.
+- Some OEM builds return `false` from `VpnService.protect()`; SecureBox binds those sockets to a non-VPN network and continues.
 
-```
-app/                  Wires everything: Hilt, navigation, the two shells
-core-domain/          Pure Kotlin: models, SemVer, SHA-256, security score, repository interfaces
-core-data/            DataStore settings, device detection, runtime permissions, signature check
-core-network/         GitHub API client, release parsing, cached update checks, APK downloader + installer
-core-ui/              Design system: theme, typography, custom icons, shared components
-core-tv-ui/           TV-only components: focus rings, sidebar scaffold, 10-foot type scale
-feature-onboarding/   Three-step first-run wizard
-feature-dashboard/    Security score and quick actions
-feature-network/      Network: bandwidth, anomaly alerts, VPN firewall, port monitor
-feature-apps/         App risk auditing, permissions, trackers and sideload detection
-feature-threats/      On-device scanning, results and scheduled scans
-feature-settings/     Settings and privacy policy
-feature-threatintel/  Signed threat feed, status and daily updates
-feature-update/       Update UI, ViewModel and Markdown release notes
-```
+## Roadmap
 
-Details and dependency rules: **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
-
-## Security & privacy
-
-- No analytics, no ad SDKs, no crash-reporting servers.
-- All scanning and traffic analysis is local.
-- Downloads are installed only after their SHA-256 matches the published checksum; a mismatch deletes the file and raises an alert.
-- The APK verifies its own signing certificate at startup; a re-signed build shows a warning banner.
-- The FileProvider is scoped to `cacheDir/updates` and nothing else.
-- No Accessibility Service or Device Admin usage in v1.
-
-Read **[PRIVACY.md](PRIVACY.md)** and **[SECURITY.md](SECURITY.md)**.
-
-## Contributing
-
-Issues and pull requests are welcome. Every commit follows Conventional Commits, and every pull request must pass `./gradlew verifyNoHardcodedStrings testDebugUnitTest lintDebug`. User-facing strings must be added to both `values/strings.xml` and `values-fr/strings.xml`.
+| Milestone | Status |
+|---|---|
+| Combined firewall + DNS forwarding | **Done — v0.9.5, verified phone + TV** |
+| Android TV focus/scroll | **Done** |
+| Protection statistics | **Done** |
+| IPv6 forwarding | Deferred by request |
+| Long-duration/mobile-data handover QA | Planned |
+| Localization/accessibility pass | Planned |
 
 ## License
 
-Apache License 2.0 — see [LICENSE](LICENSE).
-
-SecureBox is an independent project. It is not affiliated with Google, Android TV, or GitHub.
+Apache License 2.0. See [LICENSE](LICENSE).

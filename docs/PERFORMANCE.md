@@ -20,7 +20,8 @@ unlocked, three consecutive cold starts via `adb shell am start -W`:
 | armeabi-v7a | 2.89 MB |
 | x86_64 | 2.89 MB |
 
-**Budget: universal under 40 MB.** The app is far below it; the native pump adds ~120 KB.
+**Budget: universal under 40 MB.** The app is far below it. The old native packet pump was removed
+in v0.9.5; the combined VPN forwarding engine is Kotlin-only.
 
 ## What keeps startup fast
 

@@ -2,8 +2,8 @@
 
 SecureBox 0.9 uses one all-app `VpnService`. Allowed IPv4 TCP/UDP flows are forwarded through
 protected sockets; blocked apps’ TCP connections are reset and their UDP packets are dropped; DNS is
-intercepted and forwarded over DoH. This document records how the combined engine behaves in the
-situations that usually surprise users.
+intercepted and forwarded over DoH. The tunnel is IPv4-only in v0.9.5; IPv6 is not filtered. This
+document records how the combined engine behaves in the situations that usually surprise users.
 
 ## Private DNS (DNS over TLS)
 

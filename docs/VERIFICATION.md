@@ -21,8 +21,18 @@ Tested with both controls enabled at the same time in one VPN:
 - Repeated `192.168.8.1:7` connection-refused entries in the diagnostic log are an external
   device/app probing the router’s echo port, not SecureBox traffic.
 
+## v0.9.5 — Android TV box (2026-11-09)
+
+The same build passed on a physical Android TV box with both controls enabled:
+
+- **Local firewall + DNS Shield together** — internet works.
+- **Blocked app** — no internet.
+- **Allowed apps** — still work.
+- **DNS block test** — ad/tracker domain blocked.
+- **Protection statistics** — DNS counter increments.
+
 ### Not tested
 
 - IPv6 (deferred by request; the current tunnel is IPv4-only).
-- Android TV box with both controls.
 - Long-duration/large downloads and mobile-data handover.
+- Multi-user/work-profile behavior.
