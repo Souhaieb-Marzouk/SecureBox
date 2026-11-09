@@ -96,6 +96,9 @@ A release is not published until:
 
 See [docs/VERIFICATION.md](VERIFICATION.md) for the v0.9.5 phone and TV record.
 
+For the remaining accessibility and v1.0.0 work, follow the step-by-step
+[docs/QA_v1.0.0.md](docs/QA_v1.0.0.md) guide.
+
 ## Known gaps
 
 - IPv6 forwarding is not implemented; the tunnel is IPv4-only.
