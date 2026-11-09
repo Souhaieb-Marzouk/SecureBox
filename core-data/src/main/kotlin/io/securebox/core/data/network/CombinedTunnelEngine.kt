@@ -552,10 +552,12 @@ class CombinedTunnelEngine(
                 val created = Socket()
                 runCatching {
                     if (!vpn.protect(created)) error("protect failed")
-                    created.tcpNoDelay = true
                     created.connect(InetSocketAddress(target, dstPort), 10_000)
-                }.onFailure {
-                    Log.w(TAG, "tcp connect failed :$dstPort")
+                    // TCP_NODELAY is only valid after the socket is connected; setting it before
+                    // connect() throws immediately on Android and made every TCP SYN fail.
+                    created.tcpNoDelay = true
+                }.onFailure { error ->
+                    Log.w(TAG, "tcp connect failed :$dstPort", error)
                     runCatching {
                         sendTcp(dstIp, srcIp, dstPort, srcPort, 0, appSeq, RST or ACK)
                     }

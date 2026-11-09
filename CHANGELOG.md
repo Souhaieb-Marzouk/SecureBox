@@ -9,6 +9,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.2] - 2026-11-09
+
+### Fixed
+
+- Outbound TCP failed immediately because `tcpNoDelay` was set before `Socket.connect()`. It is now set after connect.
+- Added the captured exception to the `SecureBoxTunnel` connect-failure log.
+
 ## [0.9.1] - 2026-11-09
 
 ### Fixed / diagnostic
