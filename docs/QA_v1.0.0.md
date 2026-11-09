@@ -5,8 +5,35 @@ This is the working checklist for the last two P3 items:
 - **SB-046 — Accessibility pass**
 - **SB-048 — End-to-end QA and v1.0.0 release**
 
-Build under test: **SecureBox 0.9.6 (versionCode 21)**.
+Build under test: **SecureBox 0.9.7 (versionCode 22)**.
 Record the build/version for every result.
+
+## v0.9.7 retest — the two previous failures
+
+The v0.9.6 run passed every other row. Recheck only these first:
+
+1. **Settings at largest font**
+   - Settings → Display & brightness → Font → largest → Apply.
+   - Open **Settings → Protection**.
+   - The firewall card must show the description at full width, with **Configure in Network** on its own line below it.
+   - No 1–4-word columns.
+
+2. **Reboot**
+   - Enable both protections.
+   - Reboot.
+   - The DNS Shield switch must still show **On** (persisted setting).
+   - Open SecureBox. The app restores the enabled VPN at process start.
+   - If you want automatic VPN start without opening the app, enable Android **Settings → Network → VPN → Always-on VPN → SecureBox**. ColorOS may otherwise keep the app stopped at boot.
+   - Confirm internet works and both protections are active.
+
+3. **Quick off/on**
+   - Turn both protections off; confirm internet.
+   - Turn both on again.
+   - Confirm no “Another VPN is active” banner, both switches stay on, and internet works.
+   - The service retries establishment for a few seconds after a quick toggle.
+
+After these pass, re-run the two affected checklist rows and publish v1.0.0.
+
 
 ## 1. Connect and identify the phone
 
