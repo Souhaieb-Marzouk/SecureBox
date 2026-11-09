@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.9.0` — Combined Firewall + DNS |
+| **Current release** | `v0.9.1` — Combined Firewall + DNS (diagnostic beta) |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |

@@ -6,6 +6,7 @@ import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.system.OsConstants
+import android.util.Log
 import io.securebox.core.domain.network.DnsBlocklist
 import io.securebox.core.domain.shield.ShieldStatsRepository
 import java.io.FileInputStream
@@ -46,6 +47,7 @@ class CombinedTunnelEngine(
     private val blockedUids = AtomicReference<Set<Int>>(emptySet())
     private val dnsFilterEnabled = AtomicBoolean(true)
     private val pendingDnsBlocks = AtomicLong()
+    private val packetCount = AtomicLong()
     private val tcpFlows = ConcurrentHashMap<FlowKey, TcpFlow>()
     private val udpFlows = ConcurrentHashMap<FlowKey, UdpFlow>()
     private val uidResolver = UidResolver(vpn)
@@ -70,8 +72,8 @@ class CombinedTunnelEngine(
                         handlePacket(buffer, read)
                     }
                 }
-            } catch (_: Exception) {
-                // Tunnel closed.
+            } catch (error: Exception) {
+                Log.w(TAG, "tun reader stopped", error)
             }
         }
         thread(name = "securebox-tunnel-cleanup", isDaemon = true) {
@@ -126,6 +128,9 @@ class CombinedTunnelEngine(
         val protocol = buffer[9].toInt() and 0xff
         val srcIp = buffer.copyOfRange(12, 16)
         val dstIp = buffer.copyOfRange(16, 20)
+        if (packetCount.incrementAndGet() <= 10) {
+            Log.i(TAG, "packet proto=$protocol ${ipText(srcIp)} -> ${ipText(dstIp)}")
+        }
         when (protocol) {
             PROTO_TCP -> handleTcp(buffer, ihl, totalLength, srcIp, dstIp)
             PROTO_UDP -> handleUdp(buffer, ihl, totalLength, srcIp, dstIp)
@@ -155,6 +160,7 @@ class CombinedTunnelEngine(
             if ((flags and SYN) != 0) sendRst(srcIp, dstIp, srcPort, dstPort, ack, seq + 1)
             return
         }
+        if ((flags and SYN) != 0) Log.i(TAG, "tcp syn :$dstPort")
         val flow = tcpFlows[key] ?: TcpFlow(key, srcIp, dstIp, srcPort, dstPort).also { tcpFlows[key] = it }
         if (flow.isClosed()) {
             tcpFlows.remove(key)
@@ -204,11 +210,32 @@ class CombinedTunnelEngine(
                 recordDnsBlock()
                 buildDnsError(query, 3)
             } else {
-                doh.forward(query) ?: buildDnsError(query, 2)
+                doh.forward(query) ?: fallbackDns(query) ?: buildDnsError(query, 2)
             }
+        Log.i(TAG, "dns query len=${query.size} response=${response.size}")
         if (response.isNotEmpty()) {
             writeUdp(dstIp, srcIp, dstPort, srcPort, response)
         }
+    }
+
+    /**
+     * Last-resort resolver when DoH is unreachable. Protected plaintext DNS prevents a broken DoH
+     * path from making the whole tunnel look offline. Local blocklist filtering already ran.
+     */
+    private fun fallbackDns(query: ByteArray): ByteArray? {
+        val target = runCatching { InetAddress.getByName("1.1.1.1") }.getOrNull() ?: return null
+        val socket = DatagramSocket()
+        return runCatching {
+            if (!vpn.protect(socket)) error("protect failed")
+            socket.soTimeout = 3_000
+            socket.send(DatagramPacket(query, query.size, target, 53))
+            val buffer = ByteArray(4_096)
+            val response = DatagramPacket(buffer, buffer.size)
+            socket.receive(response)
+            buffer.copyOf(response.length)
+        }.onFailure { Log.w(TAG, "plain DNS fallback failed") }
+            .getOrNull()
+            .also { socket.close() }
     }
 
     private fun isBlocked(key: FlowKey): Boolean {
@@ -375,8 +402,8 @@ class CombinedTunnelEngine(
         writeLock.lock()
         try {
             output.write(packet)
-        } catch (_: Exception) {
-            // Tunnel closed.
+        } catch (error: Exception) {
+            Log.w(TAG, "tun write failed", error)
         } finally {
             writeLock.unlock()
         }
@@ -528,6 +555,7 @@ class CombinedTunnelEngine(
                     created.tcpNoDelay = true
                     created.connect(InetSocketAddress(target, dstPort), 10_000)
                 }.onFailure {
+                    Log.w(TAG, "tcp connect failed :$dstPort")
                     runCatching {
                         sendTcp(dstIp, srcIp, dstPort, srcPort, 0, appSeq, RST or ACK)
                     }
@@ -542,6 +570,7 @@ class CombinedTunnelEngine(
                     synAcked = true
                     sendTcp(dstIp, srcIp, dstPort, srcPort, serverIsn, appSeq, SYN or ACK, mss = MSS)
                 }
+                Log.i(TAG, "tcp connected :$dstPort")
                 readRemote(created)
             }
         }
@@ -699,5 +728,6 @@ class CombinedTunnelEngine(
         const val RST = 0x04
         const val PSH = 0x08
         const val ACK = 0x10
+        const val TAG = "SecureBoxTunnel"
     }
 }

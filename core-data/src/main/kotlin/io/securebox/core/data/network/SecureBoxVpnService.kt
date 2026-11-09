@@ -8,6 +8,7 @@ import android.content.pm.ServiceInfo
 import android.net.VpnService
 import android.os.Build
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -136,11 +137,8 @@ class SecureBoxVpnService : VpnService() {
                 Builder()
                     .setSession(getString(R.string.vpn_session_name))
                     .addAddress("10.111.0.1", 32)
-                    .addAddress("fd00:111::1", 128)
                     .addRoute("0.0.0.0", 0)
-                    // IPv6 is routed into the tunnel so apps cannot bypass filtering; the current
-                    // forwarder handles IPv4 and drops IPv6, causing apps to fall back to IPv4.
-                    .addRoute("::", 0)
+                    .addRoute("10.111.0.2", 32)
                     .addDnsServer("10.111.0.2")
                     .setBlocking(true)
                     .setMtu(1500)
@@ -152,6 +150,7 @@ class SecureBoxVpnService : VpnService() {
             engine = created
             lastPreset = settings.dnsPreset.name
             created.start()
+            Log.i("SecureBoxTunnel", "vpn established with ${addresses.size} DoH address(es)")
             return true
         }
     }

@@ -9,6 +9,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.1] - 2026-11-09
+
+### Fixed / diagnostic
+
+- IPv4-only tunnel for the first device test: IPv6 is no longer blackholed while the forwarding engine is validated.
+- Protected plaintext DNS fallback when DoH is unreachable, so a broken DoH path does not look like a total outage.
+- Explicit route for the VPN DNS server.
+- `SecureBoxTunnel` logcat diagnostics for packet arrival, TCP connect success/failure and DNS replies.
+
 ## [0.9.0] - 2026-11-09
 
 ### Added
