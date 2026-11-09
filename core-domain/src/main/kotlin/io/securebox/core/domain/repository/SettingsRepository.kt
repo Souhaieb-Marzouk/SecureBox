@@ -46,6 +46,11 @@ public interface SettingsRepository {
 
     public suspend fun setDnsShieldEnabled(enabled: Boolean)
 
+    public suspend fun setVpnBypass(
+        packageName: String,
+        enabled: Boolean,
+    )
+
     public suspend fun recordPermissionSnapshot(
         usageAccessGranted: Boolean,
         notificationsGranted: Boolean,

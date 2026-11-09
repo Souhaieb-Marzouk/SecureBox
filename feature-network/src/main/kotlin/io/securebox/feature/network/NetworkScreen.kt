@@ -14,6 +14,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -256,7 +257,7 @@ fun NetworkScreen(
             }
         }
 
-        item { PortsCard(state.ports, onRefresh = onRefresh) }
+        item { PortsCard(state.ports, onRefresh = onRefresh, onBlock = { packageName -> onToggleBlock(packageName, true) }) }
         item { AnomalyCard(state.anomaly) }
         item { FocusAnchor() }
     }
@@ -500,7 +501,10 @@ private fun AppIcon(
 private fun PortsCard(
     ports: PortScanResult,
     onRefresh: () -> Unit,
+    onBlock: (String) -> Unit,
 ) {
+    var selectedPort by remember { mutableStateOf<ListeningPort?>(null) }
+    val selected = selectedPort
     SecureCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -533,16 +537,84 @@ private fun PortsCard(
             }
 
             else -> {
-                ports.ports.take(8).forEach { port -> PortRow(port) }
+                ports.ports.take(8).forEach { port -> PortRow(port, onClick = { selectedPort = port }) }
             }
         }
+    }
+
+    if (selected != null) {
+        PortDetailsDialog(
+            port = selected,
+            onDismiss = { selectedPort = null },
+            onBlock = {
+                selected.packageName?.let(onBlock)
+                selectedPort = null
+            },
+        )
     }
 }
 
 @Composable
-private fun PortRow(port: ListeningPort) {
+private fun PortDetailsDialog(
+    port: ListeningPort,
+    onDismiss: () -> Unit,
+    onBlock: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.network_ports_details_title, port.protocol.name, port.port)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = stringResource(
+                        R.string.network_ports_details_scope,
+                        stringResource(
+                            if (port.exposed) R.string.network_ports_exposed else R.string.network_ports_local,
+                        ),
+                    ),
+                )
+                Text(text = stringResource(R.string.network_ports_details_uid, port.uid))
+                port.packageName?.let { packageName ->
+                    Text(text = stringResource(R.string.network_ports_details_package, packageName))
+                } ?: Text(
+                    text = stringResource(R.string.network_ports_details_no_package),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (port.packageName == null && port.uid < 10_000) {
+                    Text(
+                        text = stringResource(R.string.network_ports_details_system),
+                        color = MaterialTheme.colorScheme.tertiary,
+                    )
+                }
+                if (port.protocol == ListeningPort.Protocol.UDP && port.port == 68) {
+                    Text(
+                        text = stringResource(R.string.network_ports_dhcp),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                Text(
+                    text = stringResource(R.string.network_ports_details_note),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        },
+        confirmButton = {
+            if (port.packageName != null) {
+                TextButton(onClick = onBlock) {
+                    Text(stringResource(R.string.network_ports_block_app))
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.network_ports_close)) }
+        },
+    )
+}
+
+@Composable
+private fun PortRow(port: ListeningPort, onClick: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {

@@ -55,6 +55,13 @@
     <string name="apps_recommend_short_system">Leave alone</string>
     <string name="apps_recommend_short_reduce">Reduce permissions</string>
     <string name="apps_recommend_short_uninstall">Consider uninstall</string>
+    <string name="apps_badge_blocked">Internet blocked</string>
+    <string name="apps_badge_bypassed">VPN bypass</string>
+    <string name="apps_network_title">Network access</string>
+    <string name="apps_block_internet">Block internet</string>
+    <string name="apps_block_internet_body">Drops this app\'s TCP connections and UDP traffic while the Local firewall is on.</string>
+    <string name="apps_bypass_vpn">Bypass SecureBox VPN</string>
+    <string name="apps_bypass_vpn_body">Uses the normal network outside the SecureBox tunnel. DNS filtering and the firewall do not apply to this app. Use it only for players or apps that crash inside the tunnel.</string>
     <string name="apps_detail_actions">What you can do</string>
     <string name="apps_action_open_settings">Open app settings</string>
     <string name="apps_action_uninstall">Uninstall this app</string>

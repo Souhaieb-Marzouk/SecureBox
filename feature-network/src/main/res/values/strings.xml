@@ -38,6 +38,16 @@
     <string name="network_ports_rescan">Rescan</string>
     <string name="network_ports_exposed">Internet-facing</string>
     <string name="network_ports_local">Local only</string>
+    <string name="network_ports_dhcp">DHCP client — normal system service</string>
+    <string name="network_ports_details_title">%1$s port %2$d</string>
+    <string name="network_ports_details_scope">Scope: %1$s</string>
+    <string name="network_ports_details_uid">UID: %1$d</string>
+    <string name="network_ports_details_package">Package: %1$s</string>
+    <string name="network_ports_details_no_package">No installed package could be attributed to this UID.</string>
+    <string name="network_ports_details_note">Android does not let SecureBox close another app\'s socket without root. Blocking the app\'s internet is the supported action.</string>
+    <string name="network_ports_details_system">This is a system UID. Blocking it may disrupt networking.</string>
+    <string name="network_ports_block_app">Block this app</string>
+    <string name="network_ports_close">Close</string>
     <string name="network_port_label">%1$s %2$d</string>
 
     <string name="network_anomaly_title">Upload anomalies</string>

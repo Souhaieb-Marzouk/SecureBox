@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v1.0.1</b></span>
+      <span>Baseline <b>v1.0.2</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -173,7 +173,7 @@
   </section>
 
   <footer>
-    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v1.0.1</span>.</div>
+    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v1.0.2</span>.</div>
   </footer>
 </div>
 
@@ -186,6 +186,39 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-090",
+    "p": "P2",
+    "type": "feature",
+    "area": "Network",
+    "milestone": "v1.0.2",
+    "status": "done",
+    "title": "Open-port details, app block action and DHCP filtering",
+    "desc": "Port rows open a detail dialog with UID/package/scope and a Block this app action where attribution exists. UDP 68 is filtered as the normal DHCP client. Android cannot close another app socket without root; blocking its internet is the supported action.",
+    "doneAt": "2026-11-09"
+  },
+  {
+    "id": "SB-089",
+    "p": "P1",
+    "type": "feature",
+    "area": "Apps",
+    "milestone": "v1.0.2",
+    "status": "done",
+    "title": "Block internet directly from the Apps tab",
+    "desc": "App detail has Block internet and Bypass SecureBox VPN switches. The controls are mutually exclusive, persist immediately and are reflected as Internet-blocked / VPN-bypass badges in the Apps list.",
+    "doneAt": "2026-11-09"
+  },
+  {
+    "id": "SB-088",
+    "p": "P1",
+    "type": "feature",
+    "area": "Shield",
+    "milestone": "v1.0.2",
+    "status": "done",
+    "title": "Per-app bypass outside the SecureBox VPN",
+    "desc": "Apps -> app detail now has Bypass SecureBox VPN. It uses VpnService.Builder.addDisallowedApplication, rebuilds the tunnel when the list changes, and shows a VPN-bypass badge. Bypassed apps are deliberately not DNS-filtered or firewalled.",
+    "doneAt": "2026-11-09"
+  },
   {
     "id": "SB-087",
     "p": "P3",
@@ -1098,6 +1131,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "v1.0.2: per-app VPN bypass for IPTV, block-internet in Apps, port details/block action and DHCP 68 filtering." },
   { d: "2026-11-09", t: "v1.0.1: About now credits Souhaieb Marzouk and includes copyright, license, package, technical and GitHub links." },
   { d: "2026-11-09", t: "v1.0.0 official release: combined firewall + DNS, feed domains, accessibility, TV QA and signed APKs. SB-046/SB-048 closed." },
   { d: "2026-11-09", t: "v0.9.7 fixes large-font Settings layout, reboot persistence, DNS switch state and quick off/on recovery; SB-046/SB-048 retest pending." },
@@ -1261,7 +1295,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v1.0.1";
+  el("footVersion").textContent = "v1.0.2";
 }
 
 function renderLog() {

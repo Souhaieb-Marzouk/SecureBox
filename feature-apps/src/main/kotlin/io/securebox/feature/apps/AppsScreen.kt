@@ -33,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -94,6 +95,8 @@ fun AppsRoute(viewModel: AppsViewModel = hiltViewModel()) {
         onFilter = viewModel::setFilter,
         onSelect = viewModel::select,
         onRefresh = viewModel::load,
+        onBlock = viewModel::setBlocked,
+        onBypass = viewModel::setBypass,
     )
 }
 
@@ -103,6 +106,8 @@ fun AppsScreen(
     onFilter: (AppsFilter) -> Unit,
     onSelect: (AppRiskReport?) -> Unit,
     onRefresh: () -> Unit,
+    onBlock: (String, Boolean) -> Unit,
+    onBypass: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val visible =
@@ -232,20 +237,35 @@ fun AppsScreen(
             }
         }
         items(visible, key = { it.app.packageName }) { report ->
-            AppRow(report = report, onClick = { onSelect(report) })
+            AppRow(
+                report = report,
+                blocked = report.app.packageName in state.blockedPackages,
+                bypassed = report.app.packageName in state.bypassPackages,
+                onClick = { onSelect(report) },
+            )
         }
         item { FocusAnchor() }
         }
     }
 
     state.selected?.let { report ->
-        AppDetailDialog(report = report, onDismiss = { onSelect(null) }, onRefresh = onRefresh)
+        AppDetailDialog(
+            report = report,
+            blocked = report.app.packageName in state.blockedPackages,
+            bypassed = report.app.packageName in state.bypassPackages,
+            onBlock = { onBlock(report.app.packageName, it) },
+            onBypass = { onBypass(report.app.packageName, it) },
+            onDismiss = { onSelect(null) },
+            onRefresh = onRefresh,
+        )
     }
 }
 
 @Composable
 private fun AppRow(
     report: AppRiskReport,
+    blocked: Boolean,
+    bypassed: Boolean,
     onClick: () -> Unit,
 ) {
     Surface(
@@ -269,6 +289,13 @@ private fun AppRow(
                     overflow = TextOverflow.Ellipsis,
                 )
                 SourceBadge(source = report.app.source)
+                if (blocked || bypassed) {
+                    Text(
+                        text = stringResource(if (blocked) R.string.apps_badge_blocked else R.string.apps_badge_bypassed),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (blocked) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary,
+                    )
+                }
                 Text(
                     text = stringResource(recommendationShortRes(report)),
                     style = MaterialTheme.typography.labelSmall,
@@ -390,6 +417,10 @@ private fun RiskBadge(
 @Composable
 private fun AppDetailDialog(
     report: AppRiskReport,
+    blocked: Boolean,
+    bypassed: Boolean,
+    onBlock: (Boolean) -> Unit,
+    onBypass: (Boolean) -> Unit,
     onDismiss: () -> Unit,
     onRefresh: () -> Unit,
 ) {
@@ -500,6 +531,47 @@ private fun AppDetailDialog(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+
+            Text(
+                text = stringResource(R.string.apps_network_title),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = stringResource(R.string.apps_block_internet), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = stringResource(R.string.apps_block_internet_body),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = blocked,
+                    onCheckedChange = onBlock,
+                    enabled = !bypassed && report.app.packageName != context.packageName,
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = stringResource(R.string.apps_bypass_vpn), style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = stringResource(R.string.apps_bypass_vpn_body),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Switch(
+                    checked = bypassed,
+                    onCheckedChange = onBypass,
+                    enabled = report.app.packageName != context.packageName,
+                )
+            }
             TextButton(onClick = onRefresh) {
                 Text(text = stringResource(R.string.apps_refresh))
             }

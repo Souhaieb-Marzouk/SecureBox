@@ -69,6 +69,9 @@ class AndroidPortRepository
 
             val port = local.substringAfterLast(':').toIntOrNull(16) ?: return null
             if (port <= 0) return null
+            // Port 68 is the DHCP client, not a listening service. Listing it as internet-facing
+            // alarms users without giving them anything actionable.
+            if (protocol == ListeningPort.Protocol.UDP && port == 68) return null
 
             val address = local.substringBeforeLast(':')
             val loopback = address == IPV4_LOOPBACK || address == IPV6_LOOPBACK

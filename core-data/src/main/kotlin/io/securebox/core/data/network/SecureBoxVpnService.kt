@@ -63,6 +63,7 @@ class SecureBoxVpnService : VpnService() {
     private var stateJob: Job? = null
     private var feedJob: Job? = null
     private var lastPreset: String? = null
+    private var lastBypass: Set<String> = emptySet()
     @Volatile private var feedDomains: Set<String> = emptySet()
 
     override fun onCreate() {
@@ -97,7 +98,10 @@ class SecureBoxVpnService : VpnService() {
                         stopSelf()
                         return@collectLatest
                     }
-                    if (engine == null || lastPreset != settings.dnsPreset.name) {
+                    if (engine == null ||
+                        lastPreset != settings.dnsPreset.name ||
+                        lastBypass != settings.vpnBypassPackages
+                    ) {
                         if (!establishWithRetry(settings)) {
                             stopSelf()
                             return@collectLatest
@@ -180,12 +184,19 @@ class SecureBoxVpnService : VpnService() {
                     .setBlocking(true)
                     .setMtu(1500)
 
+            // Apps explicitly bypassed keep the normal network. They are not DNS-filtered or
+            // firewalled, which is the escape hatch for players that crash inside the tunnel.
+            for (packageName in settings.vpnBypassPackages) {
+                runCatching { builder.addDisallowedApplication(packageName) }
+            }
+
             val descriptor = runCatching { builder.establish() }.getOrNull() ?: return false
             val doh = DohWireClient(this, settings.dnsPreset.dohUrl, host, addresses)
             val created = CombinedTunnelEngine(this, descriptor, doh, statsRepository, scope)
             tunnel = descriptor
             engine = created
             lastPreset = settings.dnsPreset.name
+            lastBypass = settings.vpnBypassPackages
             created.start()
             Log.i("SecureBoxTunnel", "vpn established with ${addresses.size} DoH address(es)")
             return true
@@ -204,6 +215,7 @@ class SecureBoxVpnService : VpnService() {
         runCatching { tunnel?.close() }
         tunnel = null
         lastPreset = null
+        lastBypass = emptySet()
     }
 
     private fun startInForeground() {

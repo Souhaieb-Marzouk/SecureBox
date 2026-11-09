@@ -55,6 +55,13 @@
     <string name="apps_recommend_short_system">Laisser</string>
     <string name="apps_recommend_short_reduce">Réduire</string>
     <string name="apps_recommend_short_uninstall">Désinstaller ?</string>
+    <string name="apps_badge_blocked">Internet bloqué</string>
+    <string name="apps_badge_bypassed">VPN contourné</string>
+    <string name="apps_network_title">Accès réseau</string>
+    <string name="apps_block_internet">Bloquer Internet</string>
+    <string name="apps_block_internet_body">Coupe les connexions TCP et le trafic UDP de cette application lorsque le pare-feu local est actif.</string>
+    <string name="apps_bypass_vpn">Contourner le VPN SecureBox</string>
+    <string name="apps_bypass_vpn_body">Utilise le réseau normal hors du tunnel SecureBox. Le filtrage DNS et le pare-feu ne s’appliquent pas à cette application. À réserver aux lecteurs ou applications qui plantent dans le tunnel.</string>
     <string name="apps_detail_actions">Ce que vous pouvez faire</string>
     <string name="apps_action_open_settings">Ouvrir les réglages de l\'application</string>
     <string name="apps_action_uninstall">Désinstaller cette application</string>

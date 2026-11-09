@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import io.securebox.core.domain.model.AppLanguage
 import io.securebox.core.domain.model.AppSettings
@@ -106,6 +107,17 @@ class SettingsRepositoryImpl
             dataStore.edit { it[Keys.DNS_SHIELD_ENABLED] = enabled }
         }
 
+        override suspend fun setVpnBypass(
+            packageName: String,
+            enabled: Boolean,
+        ) {
+            dataStore.edit { preferences ->
+                val current = preferences[Keys.VPN_BYPASS]?.toMutableSet() ?: mutableSetOf()
+                if (enabled) current.add(packageName) else current.remove(packageName)
+                preferences[Keys.VPN_BYPASS] = current
+            }
+        }
+
         override suspend fun recordPermissionSnapshot(
             usageAccessGranted: Boolean,
             notificationsGranted: Boolean,
@@ -141,6 +153,7 @@ class SettingsRepositoryImpl
                 safeBrowsing = this[Keys.SAFE_BROWSING] ?: true,
                 dnsPreset = enumOrDefault(this[Keys.DNS_PRESET], DnsPreset.ADGUARD),
                 dnsShieldEnabled = this[Keys.DNS_SHIELD_ENABLED] ?: false,
+                vpnBypassPackages = this[Keys.VPN_BYPASS] ?: emptySet(),
             )
 
         private inline fun <reified T : Enum<T>> enumOrDefault(
@@ -165,6 +178,7 @@ class SettingsRepositoryImpl
             val SAFE_BROWSING = booleanPreferencesKey("safe_browsing")
             val DNS_PRESET = stringPreferencesKey("dns_preset")
             val DNS_SHIELD_ENABLED = booleanPreferencesKey("dns_shield_enabled")
+            val VPN_BYPASS = stringSetPreferencesKey("vpn_bypass_packages")
             val UPDATE_INTERVAL = longPreferencesKey("update_check_interval_hours")
             val USAGE_ACCESS = booleanPreferencesKey("usage_access_granted")
             val NOTIFICATIONS = booleanPreferencesKey("notifications_granted")

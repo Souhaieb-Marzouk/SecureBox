@@ -78,3 +78,12 @@ Universal APK SHA-256: `cbb6df745d90fb6c8915af4ebe77c66769b75f9ce8744d999213bcc4
 - About credits Souhaieb Marzouk, includes copyright/all-rights-reserved, Apache 2.0 license, package name, technology credits, GitHub source/releases/issues/privacy/license links and Android trademark disclaimer.
 - Localized EN/FR; card layout remains large-font safe.
 - Build and signed APK verified; no protection behavior changed.
+## v1.0.2 — per-app bypass and network controls (2026-11-09)
+
+- Version: **1.0.2 (versionCode 25)**.
+- Universal APK SHA-256: `a0deedd25bd5d5083a859cb454cdef70c48fbac10545131f3d14e8bea5dd7608`
+- Apps → app detail adds **Block internet** and **Bypass SecureBox VPN**; list shows Internet-blocked / VPN-bypass badges.
+- Bypass uses `addDisallowedApplication` and rebuilds the tunnel; bypassed apps are deliberately outside DNS filtering and the firewall.
+- Open-port rows are clickable with UID/package/scope and a Block-this-app action. UDP 68 (DHCP client) is filtered out.
+- Built and signed; the phone was disconnected for the final install test.
+- The IPTV/box reboot is bypassed with the new control; the underlying driver/kernel reboot remains outside app control.

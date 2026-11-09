@@ -3,6 +3,8 @@ package io.securebox.feature.apps
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.securebox.core.domain.network.FirewallRepository
+import io.securebox.core.domain.repository.SettingsRepository
 import io.securebox.core.domain.security.AppRiskReport
 import io.securebox.core.domain.security.SecurityRepository
 import javax.inject.Inject
@@ -10,6 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -29,6 +32,8 @@ data class AppsUiState(
     val analyzed: Int = 0,
     val total: Int = 0,
     val selected: AppRiskReport? = null,
+    val blockedPackages: Set<String> = emptySet(),
+    val bypassPackages: Set<String> = emptySet(),
 )
 
 @HiltViewModel
@@ -36,6 +41,8 @@ class AppsViewModel
     @Inject
     constructor(
         private val securityRepository: SecurityRepository,
+        private val firewallRepository: FirewallRepository,
+        private val settingsRepository: SettingsRepository,
     ) : ViewModel() {
         private val _state = MutableStateFlow(AppsUiState())
         val state: StateFlow<AppsUiState> = _state.asStateFlow()
@@ -43,6 +50,13 @@ class AppsViewModel
 
         init {
             load()
+            viewModelScope.launch {
+                combine(firewallRepository.state, settingsRepository.settings) { firewall, settings ->
+                    firewall.blockedPackages to settings.vpnBypassPackages
+                }.collect { (blocked, bypassed) ->
+                    _state.update { it.copy(blockedPackages = blocked, bypassPackages = bypassed) }
+                }
+            }
         }
 
         fun load() {
@@ -80,5 +94,33 @@ class AppsViewModel
 
         fun select(report: AppRiskReport?) {
             _state.update { it.copy(selected = report) }
+        }
+
+        fun setBlocked(
+            packageName: String,
+            blocked: Boolean,
+        ) {
+            viewModelScope.launch {
+                if (blocked) {
+                    settingsRepository.setVpnBypass(packageName, false)
+                    firewallRepository.setBlocked(packageName, true)
+                } else {
+                    firewallRepository.setBlocked(packageName, false)
+                }
+            }
+        }
+
+        fun setBypass(
+            packageName: String,
+            bypass: Boolean,
+        ) {
+            viewModelScope.launch {
+                if (bypass) {
+                    firewallRepository.setBlocked(packageName, false)
+                    settingsRepository.setVpnBypass(packageName, true)
+                } else {
+                    settingsRepository.setVpnBypass(packageName, false)
+                }
+            }
         }
     }

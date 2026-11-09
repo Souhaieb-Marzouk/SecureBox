@@ -9,6 +9,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [1.0.2] - 2026-11-09
+
+### Added
+
+- Per-app **Bypass SecureBox VPN** control in Apps → app detail, with a VPN-bypass badge in the list.
+- **Block internet** switch directly in Apps → app detail, with an Internet-blocked badge.
+- Clickable open-port rows with UID, package, scope and a **Block this app** action.
+- DHCP client port 68 is filtered out of the open-port list instead of being shown as an internet-facing service.
+
+### Notes
+
+- Bypassed apps use the normal network and are not DNS-filtered or firewalled.
+- Android cannot close another app's socket without root; blocking internet is the supported action.
+- The IPTV/box reboot workaround is the bypass control; the underlying driver/kernel reboot is outside normal app control.
+
 ## [1.0.1] - 2026-11-09
 
 ### Added
