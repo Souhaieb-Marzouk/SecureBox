@@ -9,6 +9,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.4] - 2026-11-09
+
+### Diagnostics
+
+- DoH sockets bind to a non-VPN network when `protect()` returns false.
+- First TCP packets per flow log flags, sequence, acknowledgement and payload length.
+- SYN-ACK bytes are logged in hex so the TCP header/checksum can be validated.
+- First remote TCP payload is logged.
+
 ## [0.9.3] - 2026-11-09
 
 ### Fixed

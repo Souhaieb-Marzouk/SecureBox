@@ -283,6 +283,9 @@ class CombinedTunnelEngine(
         mss: Int? = null,
     ) {
         val packet = buildTcpPacket(srcIp, dstIp, srcPort, dstPort, seq, ack, flags, payload, mss)
+        if ((flags and SYN) != 0) {
+            Log.i(TAG, "tcp synack hex=${packet.toHex()}")
+        }
         write(packet)
     }
 
@@ -496,6 +499,8 @@ class CombinedTunnelEngine(
     private fun ipText(bytes: ByteArray): String =
         (bytes.indices).joinToString(".") { (bytes[it].toInt() and 0xff).toString() }
 
+    private fun ByteArray.toHex(): String = joinToString("") { "%02x".format(it.toInt() and 0xff) }
+
     private data class FlowKey(
         val srcIp: String,
         val srcPort: Int,
@@ -521,6 +526,8 @@ class CombinedTunnelEngine(
         private var synAcked = false
         private var connecting = false
         private var closed = false
+        private var debugPackets = 0
+        private var loggedRemoteData = false
         @Volatile var lastActivity: Long = System.currentTimeMillis()
 
         fun onPacket(
@@ -530,6 +537,10 @@ class CombinedTunnelEngine(
             payload: ByteArray,
         ) {
             lastActivity = System.currentTimeMillis()
+            if (debugPackets < 6) {
+                debugPackets++
+                Log.i(TAG, "tcp flags=$flags seq=$seq ack=$ack len=${payload.size} expected=$appSeq")
+            }
             if ((flags and RST) != 0) {
                 close()
                 return
@@ -618,6 +629,10 @@ class CombinedTunnelEngine(
                         return
                     }
                     if (read == 0) continue
+                    if (!loggedRemoteData) {
+                        loggedRemoteData = true
+                        Log.i(TAG, "tcp remote data len=$read seq=$serverSeq ack=$appSeq")
+                    }
                     awaitWindow()
                     sendTcp(dstIp, srcIp, dstPort, srcPort, serverSeq, appSeq, PSH or ACK, buffer.copyOf(read))
                     serverSeq = (serverSeq + read) and 0xffffffff

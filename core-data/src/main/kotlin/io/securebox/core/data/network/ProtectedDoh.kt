@@ -1,5 +1,7 @@
 package io.securebox.core.data.network
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.VpnService
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -21,9 +23,16 @@ class ProtectedSocketFactory(
 ) : SocketFactory() {
     override fun createSocket(): Socket {
         val socket = Socket()
-        // The VPN app's own traffic may already be excluded on some Android builds. protect()
-        // returning false is not fatal there; continue with the socket.
-        vpn.protect(socket)
+        if (!vpn.protect(socket)) {
+            val manager = vpn.getSystemService(ConnectivityManager::class.java)
+            val network =
+                manager?.allNetworks?.firstOrNull { network ->
+                    val capabilities = manager.getNetworkCapabilities(network) ?: return@firstOrNull false
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        !capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+                }
+            if (network != null) runCatching { network.bindSocket(socket) }
+        }
         return socket
     }
 
