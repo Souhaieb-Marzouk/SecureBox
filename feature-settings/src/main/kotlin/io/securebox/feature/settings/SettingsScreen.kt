@@ -46,6 +46,9 @@ import io.securebox.feature.update.UpdateSection
 
 private const val GITHUB_URL = "https://github.com/Souhaieb-Marzouk/SecureBox"
 private const val LICENSE_URL = "$GITHUB_URL/blob/main/LICENSE"
+private const val RELEASES_URL = "$GITHUB_URL/releases"
+private const val ISSUES_URL = "$GITHUB_URL/issues"
+private const val PRIVACY_URL = "$GITHUB_URL/blob/main/PRIVACY.md"
 
 @Composable
 fun SettingsRoute(
@@ -388,15 +391,59 @@ fun SettingsScreen(
                     text = stringResource(R.string.settings_about_version, state.installedVersion),
                     style = MaterialTheme.typography.bodyLarge,
                 )
+                Text(
+                    text = stringResource(R.string.settings_about_designer),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+                Text(
+                    text = stringResource(R.string.settings_about_copyright),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.settings_about_license_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.settings_about_tech),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.settings_about_package, context.packageName),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
                 LinkRow(
                     icon = SecureBoxIcons.Globe,
                     label = stringResource(R.string.settings_about_github),
                     onClick = { openUrl(GITHUB_URL) },
                 )
                 LinkRow(
+                    icon = SecureBoxIcons.Download,
+                    label = stringResource(R.string.settings_about_releases),
+                    onClick = { openUrl(RELEASES_URL) },
+                )
+                LinkRow(
+                    icon = SecureBoxIcons.Alert,
+                    label = stringResource(R.string.settings_about_issues),
+                    onClick = { openUrl(ISSUES_URL) },
+                )
+                LinkRow(
+                    icon = SecureBoxIcons.Shield,
+                    label = stringResource(R.string.settings_about_privacy),
+                    onClick = { openUrl(PRIVACY_URL) },
+                )
+                LinkRow(
                     icon = SecureBoxIcons.Shield,
                     label = stringResource(R.string.settings_about_license),
                     onClick = { openUrl(LICENSE_URL) },
+                )
+                Text(
+                    text = stringResource(R.string.settings_about_disclaimer),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

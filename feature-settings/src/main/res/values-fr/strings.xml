@@ -51,8 +51,17 @@
     <string name="settings_privacy_row_body">Ce que SecureBox fait de vos données — et ce qu\'il ne fait jamais.</string>
     <string name="settings_section_about">À propos</string>
     <string name="settings_about_version">Version %1$s</string>
+    <string name="settings_about_designer">Conçu et architecturé par Souhaieb Marzouk</string>
+    <string name="settings_about_copyright">Copyright © 2026 Souhaieb Marzouk. Tous droits réservés.</string>
+    <string name="settings_about_license_note">Le code source est sous licence Apache 2.0.</string>
+    <string name="settings_about_tech">Développé avec Kotlin, Jetpack Compose, Hilt et AndroidX.</string>
+    <string name="settings_about_package">Paquet %1$s</string>
     <string name="settings_about_github">Voir le code sur GitHub</string>
+    <string name="settings_about_releases">Versions publiées</string>
+    <string name="settings_about_issues">Signaler un problème</string>
+    <string name="settings_about_privacy">Politique de confidentialité</string>
     <string name="settings_about_license">Licence : Apache 2.0</string>
+    <string name="settings_about_disclaimer">Projet open source indépendant. Android est une marque de Google LLC.</string>
 
     <string name="privacy_title">Politique de confidentialité</string>
     <string name="privacy_subtitle">La version courte et honnête de ce que fait SecureBox.</string>

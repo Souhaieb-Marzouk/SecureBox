@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v1.0.0</b></span>
+      <span>Baseline <b>v1.0.1</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -173,7 +173,7 @@
   </section>
 
   <footer>
-    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v1.0.0</span>.</div>
+    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v1.0.1</span>.</div>
   </footer>
 </div>
 
@@ -186,6 +186,17 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-087",
+    "p": "P3",
+    "type": "feature",
+    "area": "About",
+    "milestone": "v1.0.1",
+    "status": "done",
+    "title": "About attribution and legal details",
+    "desc": "About credits Souhaieb Marzouk as designer/architect, adds the 2026 copyright/all-rights-reserved notice, Apache 2.0 source-license note, package name, technology credits, GitHub source/releases/issues/privacy/license links and the Android trademark disclaimer. Localized EN/FR and large-font safe.",
+    "doneAt": "2026-11-09"
+  },
   {
     "id": "SB-086",
     "p": "P2",
@@ -1087,6 +1098,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "v1.0.1: About now credits Souhaieb Marzouk and includes copyright, license, package, technical and GitHub links." },
   { d: "2026-11-09", t: "v1.0.0 official release: combined firewall + DNS, feed domains, accessibility, TV QA and signed APKs. SB-046/SB-048 closed." },
   { d: "2026-11-09", t: "v0.9.7 fixes large-font Settings layout, reboot persistence, DNS switch state and quick off/on recovery; SB-046/SB-048 retest pending." },
   { d: "2026-11-09", t: "Added docs/QA_v1.0.0.md with step-by-step accessibility and end-to-end QA for SB-046/SB-048." },
@@ -1249,7 +1261,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v1.0.0";
+  el("footVersion").textContent = "v1.0.1";
 }
 
 function renderLog() {

@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v1.0.0` — Complete firewall + DNS protection |
+| **Current release** | `v1.0.1` — Complete firewall + DNS protection |
 | **Verified on** | Physical Android phone and Android TV box |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |

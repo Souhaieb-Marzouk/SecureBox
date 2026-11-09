@@ -9,6 +9,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [1.0.1] - 2026-11-09
+
+### Added
+
+- About now credits **Souhaieb Marzouk** as designer/architect.
+- Added copyright/all-rights-reserved notice, Apache 2.0 license note, package name, technology credits, GitHub source/releases/issues/privacy links and the Android trademark disclaimer.
+
 ## [1.0.0] - 2026-11-09
 
 ### Official release

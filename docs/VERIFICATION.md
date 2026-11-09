@@ -71,3 +71,10 @@ Universal APK SHA-256: `cbb6df745d90fb6c8915af4ebe77c66769b75f9ce8744d999213bcc4
 - Includes the v0.9.7 large-font, reboot-state and quick-toggle fixes.
 - SB-046 (accessibility) and SB-048 (end-to-end QA/v1.0.0) closed.
 - IPv6 remains deferred (SB-086).
+## v1.0.1 — About attribution (2026-11-09)
+
+- Version: **1.0.1 (versionCode 24)**.
+- Universal APK SHA-256: `76d3d2f5f14c5fa289e45b1d015177b0383087c7e26ee252a502577eca791b9e`
+- About credits Souhaieb Marzouk, includes copyright/all-rights-reserved, Apache 2.0 license, package name, technology credits, GitHub source/releases/issues/privacy/license links and Android trademark disclaimer.
+- Localized EN/FR; card layout remains large-font safe.
+- Build and signed APK verified; no protection behavior changed.
