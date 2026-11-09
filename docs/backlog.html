@@ -1140,12 +1140,14 @@ function matches(item) {
 }
 
 function counts() {
-  const open = ITEMS.filter((i) => !isDone(i));
-  const actionable = open.filter((i) => !isBlocked(i));
+  const done = ITEMS.filter(isDone);
+  const blocked = ITEMS.filter(isBlocked);
+  const open = ITEMS.filter((i) => !isDone(i) && !isBlocked(i));
+  const actionable = open;
   return {
     open: open.length,
-    blocked: ITEMS.filter(isBlocked).length,
-    done: ITEMS.length - open.length,
+    blocked: blocked.length,
+    done: done.length,
     p0: actionable.filter((i) => i.p === "P0").length,
     p1: actionable.filter((i) => i.p === "P1").length,
     p2: actionable.filter((i) => i.p === "P2").length,
