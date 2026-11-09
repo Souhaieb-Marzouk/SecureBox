@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.9.0</b></span>
+      <span>Baseline <b>v0.9.5</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -186,6 +186,17 @@
 
 /* DATA_START */
 const ITEMS = [
+  {
+    "id": "SB-085",
+    "p": "P0",
+    "type": "test",
+    "area": "Shield",
+    "milestone": "v0.9.5",
+    "status": "done",
+    "title": "On-device verification of combined firewall and DNS",
+    "desc": "Physical phone test with both switches enabled in one VPN: internet works; a selected blocked app has no internet; a non-blocked app works; an ad/tracker domain is blocked; DNS statistics increment. IPv6 remains deferred; Android TV and long-transfer testing remain.",
+    "doneAt": "2026-11-09"
+  },
   {
     "id": "SB-084",
     "p": "P1",
@@ -1061,6 +1072,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "v0.9.5 verified on a physical phone: combined firewall + DNS, blocked app, DNS blocking and stats all work." },
   { d: "2026-11-09", t: "v0.9.0: combined all-app forwarding VPN — allowed TCP/UDP relayed, blocked app UIDs dropped, DNS filtered by DoH in the same tunnel." },
   { d: "2026-11-08", t: "v0.8.0: protection statistics page, one-switch DNS Shield VPN with no Private DNS, and TV focus anchors so remote users can scroll text-only sections." },
   { d: "2026-11-08", t: "v0.7.0: Privacy Shield with private browser ad/tracker/annoyance filtering, Standard/High tracking modes, AdGuard/Cloudflare/Quad9 DNS presets with DoH test and Private DNS guidance, and local SHA-256 hash-prefix Safe Browsing." },
@@ -1215,7 +1227,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.9.0";
+  el("footVersion").textContent = "v0.9.5";
 }
 
 function renderLog() {

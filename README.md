@@ -24,7 +24,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Every number is explained.** Each screen has a one-sentence "what this does", and every technical term has an inline "What is this?" chip.
 - **One codebase, two shells.** A touch-first bottom-navigation shell for phones and a D-pad-first 10-foot shell for TV boxes, selected automatically and overridable at any time.
 
-## What works today (v0.4.0)
+## What works today (v0.9.5)
 
 - **First-run onboarding**: language selection (EN/FR), automatic TV/phone detection with manual override, and plain-language permission explainers.
 - **Two UI shells**: `PhoneShell` (bottom bar on phones, navigation rail on tablets) and `TvShell` (sidebar + large focus rings), sharing one navigation graph.
