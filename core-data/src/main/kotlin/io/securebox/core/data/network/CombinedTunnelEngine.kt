@@ -226,7 +226,10 @@ class CombinedTunnelEngine(
         val target = runCatching { InetAddress.getByName("1.1.1.1") }.getOrNull() ?: return null
         val socket = DatagramSocket()
         return runCatching {
-            if (!vpn.protect(socket)) error("protect failed")
+            if (!vpn.protect(socket)) {
+                Log.w(TAG, "dns fallback protect returned false; binding underlying network")
+                bindUnderlying(socket)
+            }
             socket.soTimeout = 3_000
             socket.send(DatagramPacket(query, query.size, target, 53))
             val buffer = ByteArray(4_096)
@@ -243,6 +246,29 @@ class CombinedTunnelEngine(
         if (blocked.isEmpty()) return false
         val uid = uidResolver.resolve(key)
         return uid >= 0 && uid in blocked
+    }
+
+    /** bindSocket() fallback when protect() returns false on an OEM build. */
+    private fun bindUnderlying(socket: Socket): Boolean {
+        val manager = vpn.getSystemService(ConnectivityManager::class.java) ?: return false
+        val network =
+            manager.allNetworks.firstOrNull { network ->
+                val capabilities = manager.getNetworkCapabilities(network) ?: return@firstOrNull false
+                capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    !capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_VPN)
+            } ?: return false
+        return runCatching { network.bindSocket(socket) }.isSuccess
+    }
+
+    private fun bindUnderlying(socket: DatagramSocket): Boolean {
+        val manager = vpn.getSystemService(ConnectivityManager::class.java) ?: return false
+        val network =
+            manager.allNetworks.firstOrNull { network ->
+                val capabilities = manager.getNetworkCapabilities(network) ?: return@firstOrNull false
+                capabilities.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    !capabilities.hasTransport(android.net.NetworkCapabilities.TRANSPORT_VPN)
+            } ?: return false
+        return runCatching { network.bindSocket(socket) }.isSuccess
     }
 
     private fun sendTcp(
@@ -551,7 +577,10 @@ class CombinedTunnelEngine(
             thread(name = "securebox-tcp-connect", isDaemon = true) {
                 val created = Socket()
                 runCatching {
-                    if (!vpn.protect(created)) error("protect failed")
+                    if (!vpn.protect(created)) {
+                        Log.w(TAG, "protect returned false; binding underlying network")
+                        if (!bindUnderlying(created)) Log.w(TAG, "underlying bind failed; trying connect")
+                    }
                     created.connect(InetSocketAddress(target, dstPort), 10_000)
                     // TCP_NODELAY is only valid after the socket is connected; setting it before
                     // connect() throws immediately on Android and made every TCP SYN fail.
@@ -642,7 +671,10 @@ class CombinedTunnelEngine(
         init {
             if (target != null) {
                 runCatching {
-                    if (!vpn.protect(socket)) error("protect failed")
+                    if (!vpn.protect(socket)) {
+                        Log.w(TAG, "udp protect returned false; binding underlying network")
+                        bindUnderlying(socket)
+                    }
                     socket.connect(InetSocketAddress(target, dstPort))
                 }.onFailure { close() }
                 thread(name = "securebox-udp-read", isDaemon = true) {

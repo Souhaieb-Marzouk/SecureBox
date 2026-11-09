@@ -9,6 +9,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.3] - 2026-11-09
+
+### Fixed
+
+- Outbound TCP aborted when `VpnService.protect()` returned `false` even though the VPN app's sockets were usable. The engine now binds the socket to a non-VPN network and continues.
+- UDP and the DNS fallback use the same underlying-network binding fallback.
+
 ## [0.9.2] - 2026-11-09
 
 ### Fixed

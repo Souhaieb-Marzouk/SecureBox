@@ -1,7 +1,6 @@
 package io.securebox.core.data.network
 
 import android.net.VpnService
-import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -22,10 +21,9 @@ class ProtectedSocketFactory(
 ) : SocketFactory() {
     override fun createSocket(): Socket {
         val socket = Socket()
-        if (!vpn.protect(socket)) {
-            runCatching { socket.close() }
-            throw IOException("DoH socket could not be protected from the VPN")
-        }
+        // The VPN app's own traffic may already be excluded on some Android builds. protect()
+        // returning false is not fatal there; continue with the socket.
+        vpn.protect(socket)
         return socket
     }
 
