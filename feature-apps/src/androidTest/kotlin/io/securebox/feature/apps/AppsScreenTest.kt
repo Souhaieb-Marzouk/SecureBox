@@ -68,7 +68,14 @@ class AppsScreenTest {
     fun listsInstalledAppsWithRisk() {
         composeRule.setContent {
             SecureBoxTheme(darkTheme = true) {
-                AppsScreen(state = state, onFilter = {}, onSelect = {}, onRefresh = {})
+                AppsScreen(
+                    state = state,
+                    onFilter = {},
+                    onSelect = {},
+                    onRefresh = {},
+                    onBlock = { _, _ -> },
+                    onBypass = { _, _ -> },
+                )
             }
         }
         scrollTo("Banking")
@@ -87,6 +94,8 @@ class AppsScreenTest {
                     onFilter = { filter.value = it },
                     onSelect = {},
                     onRefresh = {},
+                    onBlock = { _, _ -> },
+                    onBypass = { _, _ -> },
                 )
             }
         }
