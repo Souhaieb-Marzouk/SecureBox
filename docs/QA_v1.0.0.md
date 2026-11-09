@@ -1,5 +1,7 @@
 # v1.0.0 QA Guide
 
+> **Status: completed.** SecureBox 1.0.0 (versionCode 23) was published on 2026-11-09. The guide remains for regression testing and future releases.
+
 This is the working checklist for the last two P3 items:
 
 - **SB-046 — Accessibility pass**

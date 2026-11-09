@@ -60,3 +60,14 @@ Universal APK SHA-256: `cbb6df745d90fb6c8915af4ebe77c66769b75f9ce8744d999213bcc4
 - Opening the app after reboot restores the enabled VPN when the process starts.
 - Boot receiver starts the service on a normal boot, but ColorOS may mark the package stopped; opening the app is the reliable fallback.
 - Device test: DNS Shield off/on persisted, service restarted, no false VPN conflict.
+## v1.0.0 — official release (2026-11-09)
+
+- Version: **1.0.0 (versionCode 23)**.
+- Tag: `v1.0.0`.
+- Release: https://github.com/Souhaieb-Marzouk/SecureBox/releases/tag/v1.0.0
+- Universal APK SHA-256: `bae17cdd81f6a843facc358c5e9a113d4b4d333ac95c2333d9864c6d013f1cc7`
+- APKs: universal, arm64-v8a, armeabi-v7a, x86_64.
+- `SHA256SUMS` signed with the Ed25519 release key.
+- Includes the v0.9.7 large-font, reboot-state and quick-toggle fixes.
+- SB-046 (accessibility) and SB-048 (end-to-end QA/v1.0.0) closed.
+- IPv6 remains deferred (SB-086).
