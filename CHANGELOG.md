@@ -9,6 +9,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [1.0.0] - 2026-11-09
+
+### Official release
+
+- Combined Local Firewall + DNS Shield in one all-app forwarding VPN.
+- Signed Threat Intelligence feed domains enforced by the DNS filter.
+- Protection statistics for browser and DNS blocking.
+- Android TV D-pad/focus scrolling across all screens.
+- Physical phone and Android TV verification: both protections together, blocked-app enforcement, DNS blocking, statistics, TalkBack and large-font layouts.
+- Reboot, quick off/on and persisted DNS switch recovery fixes from v0.9.7.
+- IPv6 remains deferred.
+
 ## [0.9.7] - 2026-11-09
 
 ### Fixed

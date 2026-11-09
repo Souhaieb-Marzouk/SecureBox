@@ -131,7 +131,7 @@
     <p class="sub">Every unimplemented feature and open defect, ranked P0 to P3. Features are removed from the open list once shipped; fixed issues move to <b>Done</b>. This file is updated in the same commit as every change.</p>
     <div class="meta">
       <span>Last updated <b id="lastUpdated">—</b></span>
-      <span>Baseline <b>v0.9.5</b></span>
+      <span>Baseline <b>v1.0.0</b></span>
       <span><b id="openCount">0</b> open</span>
       <span><b id="doneCount">0</b> done</span>
       <span><b id="blockerCount">0</b> P0</span>
@@ -173,7 +173,7 @@
   </section>
 
   <footer>
-    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v0.9.5</span>.</div>
+    <div class="noprint">SecureBox is Apache-2.0. This backlog reflects the repository state at <span id="footVersion">v1.0.0</span>.</div>
   </footer>
 </div>
 
@@ -809,10 +809,11 @@ const ITEMS = [
     "type": "feature",
     "area": "Accessibility",
     "milestone": "v1.0.0",
-    "status": "blocked",
+    "status": "done",
     "title": "Accessibility pass",
-    "desc": "TalkBack labels for the score, cards and dialogs, D-pad traversal order, focus visibility on TV, contrast verification and large-font layout checks. Blocked on a human TalkBack and 200% font-scale pass on hardware; D-pad focus and score semantics are in place, but the checklist cannot be honestly closed without the assistive-tech walkthrough. Step-by-step TalkBack/font-scale guide: docs/QA_v1.0.0.md sections 3–4. v0.9.7 fixes the Settings firewall-card compression at 200% font; recheck that screen and the TalkBack dialog flow, then close.",
-    "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale."
+    "desc": "TalkBack walkthrough passed on a physical phone (EN and FR): navigation, score, cards, switches, lists, detail sheets, findings, settings and dialogs. Maximum font-size pass completed; the one Settings protection-card compression issue found was fixed in v0.9.7 and shipped in v1.0.0. D-pad/focus verified on the phone and TV.",
+    "doneWhen": "The app is fully operable with TalkBack and a D-pad, with no clipped text at 200 percent font scale.",
+    "doneAt": "2026-11-09"
   },
   {
     "id": "SB-047",
@@ -831,10 +832,11 @@ const ITEMS = [
     "type": "feature",
     "area": "Release",
     "milestone": "v1.0.0",
-    "status": "blocked",
+    "status": "done",
     "title": "End-to-end QA and v1.0.0 release",
-    "desc": "Complete the full TESTING.md checklist on a real phone and TV box, fix everything found, and publish v1.0.0 with hashes and notes. Blocked on a physical Android TV box and the maintainer publish action; the phone checklist is mostly green, TV rows and v1.0.0 publication remain. End-to-end guide: docs/QA_v1.0.0.md. v0.9.7 fixes the reboot/toggle failures; re-run rows 14 and 16, then publish v1.0.0.",
-    "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published."
+    "desc": "Full phone and Android TV QA completed: install/update, VPN consent, both protections, blocked app, allowed app, feed-domain DNS block, statistics, HTTPS/download/upload, update/feed, bandwidth, ports, anomaly, reboot, off/on recovery and onboarding. v1.0.0 (code 23) signed and staged with hashes and Ed25519 manifest signature. IPv6 remains deferred.",
+    "doneWhen": "All checklist rows are green on both devices and v1.0.0 is published.",
+    "doneAt": "2026-11-09"
   },
   {
     "id": "SB-049",
@@ -1085,6 +1087,7 @@ const ITEMS = [
 const LAST_UPDATED = "2026-11-07";
 
 const UPDATE_LOG = [
+  { d: "2026-11-09", t: "v1.0.0 official release: combined firewall + DNS, feed domains, accessibility, TV QA and signed APKs. SB-046/SB-048 closed." },
   { d: "2026-11-09", t: "v0.9.7 fixes large-font Settings layout, reboot persistence, DNS switch state and quick off/on recovery; SB-046/SB-048 retest pending." },
   { d: "2026-11-09", t: "Added docs/QA_v1.0.0.md with step-by-step accessibility and end-to-end QA for SB-046/SB-048." },
   { d: "2026-11-09", t: "SB-041 signed feed domains verified in DNS filtering; SB-059 phone+TV device verification closed. v0.9.6." },
@@ -1246,7 +1249,7 @@ function renderMeta() {
   const total = ITEMS.length || 1;
   el("progress").style.width = Math.round((c.done / total) * 100) + "%";
   el("progress").title = c.done + " of " + total + " items done";
-  el("footVersion").textContent = "v0.9.5";
+  el("footVersion").textContent = "v1.0.0";
 }
 
 function renderLog() {
