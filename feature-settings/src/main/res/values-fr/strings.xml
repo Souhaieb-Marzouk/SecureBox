@@ -126,13 +126,13 @@
     <string name="shield_dns_off">Le DNS privé est désactivé ou automatique</string>
     <string name="shield_dns_body">Le DNS chiffré s’applique à toutes les applications une fois configuré dans Android. Les publicités et pisteurs sont filtrés avant la connexion.</string>
     <string name="shield_dns_shield_title">Bouclier DNS — sans configuration</string>
-    <string name="shield_dns_shield_body">Bloque les domaines publicitaires, de pistage et malveillants pour toutes les applications. Autorisation VPN unique ; aucun nom d’hôte DNS privé nécessaire.</string>
+    <string name="shield_dns_shield_body">Bloque les domaines publicitaires, de pistage et malveillants pour toutes les applications. Fonctionne avec le pare-feu local dans un seul VPN : le trafic autorisé est relayé, les applications bloquées sont coupées.</string>
     <string name="shield_dns_shield_on">Actif</string>
     <string name="shield_dns_shield_off">Inactif</string>
     <string name="shield_dns_shield_status">%1$s · %2$s</string>
-    <string name="shield_dns_shield_firewall">Désactivez d’abord le pare-feu local. Android n’autorise qu’un seul VPN à la fois.</string>
+    <string name="shield_dns_shield_firewall">Le pare-feu local est actif. La protection DNS utilise le même tunnel.</string>
     <string name="shield_dns_shield_private_dns">Le DNS privé est réglé sur %1$s. Android peut contourner le bouclier DNS ; mettez le DNS privé sur Automatique/Désactivé si le filtrage ne fonctionne pas.</string>
-    <string name="shield_dns_shield_note">Seules les requêtes DNS entrent dans le tunnel ; le reste du trafic des applications ne passe pas par SecureBox.</string>
+    <string name="shield_dns_shield_note">SecureBox relaie le trafic autorisé sur l’appareil via des sockets protégées ; il n’est pas envoyé chez nous et le TLS n’est pas intercepté. Les applications bloquées sont coupées.</string>
     <string name="shield_dns_shield_denied">L’autorisation VPN n’a pas été accordée. Le bouclier DNS en a besoin pour intercepter les requêtes DNS.</string>
     <string name="shield_dns_configure">Configurer le DNS</string>
     <string name="shield_dns_test">Tester DoH</string>

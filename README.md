@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Current release** | `v0.8.0` — DNS Shield & Protection Stats |
+| **Current release** | `v0.9.0` — Combined Firewall + DNS |
 | **Min SDK** | 26 (Android 8.0) |
 | **Target SDK** | 34 (Android 14) |
 | **Languages** | English, Français |
@@ -37,7 +37,7 @@ Most "phone cleaners" and "security boosters" are advertising vehicles: they upl
 - **Signed threat feed**: optional Ed25519-verified rules and tracker updates, manual or daily, with a status screen and offline-safe failure.
 - **Per-app bandwidth**: live rates plus 24 h / 7 d / 30 d history, sorted by consumption, with a block switch on every row.
 - **Upload anomaly detector**: 7-day hourly baseline, 3× / 100 MB per hour thresholds, hourly checks and actionable notifications.
-- **Local-only firewall**: block any app's internet with a `VpnService`, Allow all / Block unknown apps presets, persistent local-only notification and conflicting-VPN detection.
+- **Local firewall**: block any app's internet through the combined on-device VPN, Allow all / Block unknown apps presets, persistent notification and conflicting-VPN detection.
 - **Open port monitor**: listening TCP/UDP sockets attributed to apps, with internet-facing flags and an honest "unavailable" state when Android restricts `/proc/net`.
 - **Self-update system**: GitHub Releases API, 12-hour cache, semantic version comparison, SHA-256 verification against the published `SHA256SUMS`, FileProvider hand-off to the system installer, and graceful handling of GitHub rate limits.
 - **Security score**: a transparent 0–100 score with weighted, documented factors, now aware of available updates.

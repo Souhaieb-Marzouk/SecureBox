@@ -1,6 +1,7 @@
 package io.securebox.core.data.network
 
 import android.net.VpnService
+import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -19,7 +20,14 @@ import java.util.concurrent.TimeUnit
 class ProtectedSocketFactory(
     private val vpn: VpnService,
 ) : SocketFactory() {
-    override fun createSocket(): Socket = Socket().also { vpn.protect(it) }
+    override fun createSocket(): Socket {
+        val socket = Socket()
+        if (!vpn.protect(socket)) {
+            runCatching { socket.close() }
+            throw IOException("DoH socket could not be protected from the VPN")
+        }
+        return socket
+    }
 
     override fun createSocket(
         host: String?,

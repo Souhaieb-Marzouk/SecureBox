@@ -84,7 +84,7 @@ fun DnsProtectionRoute(
             if (!enabled) {
                 permissionDenied = false
                 viewModel.stopDnsShield()
-            } else if (!state.firewallRunning) {
+            } else {
                 val intent = VpnService.prepare(context)
                 if (intent == null) {
                     permissionDenied = false
@@ -169,7 +169,6 @@ fun DnsProtectionScreen(
                 Switch(
                     checked = state.dnsShieldRunning,
                     onCheckedChange = onDnsShieldToggle,
-                    enabled = !state.firewallRunning,
                 )
             }
             Text(
@@ -177,13 +176,6 @@ fun DnsProtectionScreen(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (state.firewallRunning) {
-                Text(
-                    text = stringResource(R.string.shield_dns_shield_firewall),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
             if (state.dnsShieldRunning) {
                 Text(
                     text = stringResource(R.string.shield_dns_shield_note),

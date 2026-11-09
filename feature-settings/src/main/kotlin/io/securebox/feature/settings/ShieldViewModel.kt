@@ -9,10 +9,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.securebox.core.domain.model.AppSettings
 import io.securebox.core.domain.model.DnsPreset
 import io.securebox.core.domain.model.TrackingProtectionMode
+import io.securebox.core.domain.network.FirewallRepository
 import io.securebox.core.domain.repository.SettingsRepository
 import io.securebox.core.domain.shield.ShieldStats
 import io.securebox.core.domain.shield.ShieldStatsRepository
-import io.securebox.core.data.network.DnsShieldVpnService
 import io.securebox.core.data.network.SecureBoxVpnService
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +30,7 @@ data class ShieldUiState(
     val stats: ShieldStats = ShieldStats(),
     val dnsShieldRunning: Boolean = false,
     val firewallRunning: Boolean = false,
+    val firewallEnabled: Boolean = false,
 )
 
 @HiltViewModel
@@ -38,6 +39,7 @@ class ShieldViewModel
     constructor(
         private val settingsRepository: SettingsRepository,
         private val statsRepository: ShieldStatsRepository,
+        private val firewallRepository: FirewallRepository,
         @ApplicationContext private val context: Context,
     ) : ViewModel() {
         private val _state = MutableStateFlow(ShieldUiState())
@@ -54,6 +56,16 @@ class ShieldViewModel
                     _state.update { it.copy(stats = stats) }
                 }
             }
+            viewModelScope.launch {
+                firewallRepository.state.collect { firewall ->
+                    _state.update {
+                        it.copy(
+                            firewallRunning = firewall.enabled,
+                            firewallEnabled = firewall.enabled,
+                        )
+                    }
+                }
+            }
             refreshPrivateDns()
             refreshDnsShield()
         }
@@ -61,22 +73,25 @@ class ShieldViewModel
         fun refreshDnsShield() {
             _state.update {
                 it.copy(
-                    dnsShieldRunning = DnsShieldVpnService.isRunning,
-                    firewallRunning = SecureBoxVpnService.isRunning,
+                    dnsShieldRunning = it.settings.dnsShieldEnabled && SecureBoxVpnService.isRunning,
+                    firewallRunning = it.firewallEnabled,
                 )
             }
         }
 
         fun startDnsShield() {
-            context.startForegroundService(Intent(context, DnsShieldVpnService::class.java))
-            _state.update { it.copy(dnsShieldRunning = true) }
+            viewModelScope.launch {
+                settingsRepository.setDnsShieldEnabled(true)
+                context.startForegroundService(Intent(context, SecureBoxVpnService::class.java))
+                _state.update { it.copy(dnsShieldRunning = true) }
+            }
         }
 
         fun stopDnsShield() {
-            context.startService(
-                Intent(context, DnsShieldVpnService::class.java).setAction(DnsShieldVpnService.ACTION_STOP),
-            )
-            _state.update { it.copy(dnsShieldRunning = false) }
+            viewModelScope.launch {
+                settingsRepository.setDnsShieldEnabled(false)
+                _state.update { it.copy(dnsShieldRunning = false) }
+            }
         }
 
         fun recordBrowserSession(

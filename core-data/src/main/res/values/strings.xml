@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="vpn_session_name">SecureBox firewall</string>
-    <string name="vpn_notification_title">SecureBox firewall is on</string>
-    <string name="vpn_notification_text">SecureBox inspects traffic locally on your device. Nothing is sent to us.</string>
+    <string name="vpn_session_name">SecureBox network protection</string>
+    <string name="vpn_notification_title">Network protection is on</string>
+    <string name="vpn_notification_text">Firewall and DNS filtering run on-device. Allowed traffic is forwarded directly to the internet and is not stored or sent to us.</string>
     <string name="vpn_notification_stop">Turn off</string>
-    <string name="vpn_channel_name">Firewall status</string>
-    <string name="vpn_channel_description">Shows when the local firewall is running.</string>
+    <string name="vpn_channel_name">Network protection</string>
+    <string name="vpn_channel_description">Shows when the combined firewall and DNS protection VPN is running.</string>
     <string name="dns_shield_session_name">SecureBox DNS shield</string>
     <string name="dns_shield_notification_title">SecureBox DNS shield is on</string>
     <string name="dns_shield_notification_text">DNS queries are filtered on this device. Other app traffic is not routed through SecureBox.</string>

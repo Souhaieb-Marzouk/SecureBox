@@ -12,10 +12,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.securebox.core.data.R
-import io.securebox.core.domain.network.FirewallPreset
+import io.securebox.core.domain.model.AppSettings
 import io.securebox.core.domain.network.FirewallRepository
-import java.io.FileInputStream
-import java.io.IOException
+import io.securebox.core.domain.repository.SettingsRepository
+import io.securebox.core.domain.shield.ShieldStatsRepository
+import java.net.Inet4Address
+import java.net.InetAddress
+import java.net.URI
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,25 +26,37 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
- * Local-only firewall.
+ * Combined network-protection VPN.
  *
- * The blocked apps are the only ones allowed into the tunnel; every packet they send is discarded
- * before it can reach the network. All other apps bypass the VPN and work normally. Nothing is
- * forwarded anywhere, so no traffic ever leaves the device through SecureBox.
+ * This is the forwarding data plane: every app is inside the tunnel, allowed TCP/UDP flows are
+ * relayed through protected sockets, blocked app UIDs are dropped, and DNS is answered locally
+ * through DoH. It replaces the old "only blocked apps are in the tunnel" firewall, which could not
+ * filter DNS for other apps.
+ *
+ * Privacy change: allowed app traffic is relayed by SecureBox. It is not inspected at TLS level,
+ * and no traffic is sent to a SecureBox server; forwarding happens on-device through protected
+ * sockets. The UI and docs must say that plainly.
  */
 @AndroidEntryPoint
 class SecureBoxVpnService : VpnService() {
     @Inject
     lateinit var firewallRepository: FirewallRepository
 
+    @Inject
+    lateinit var settingsRepository: SettingsRepository
+
+    @Inject
+    lateinit var statsRepository: ShieldStatsRepository
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var tunnel: ParcelFileDescriptor? = null
-    private var pump: Thread? = null
-    private var lastBlocked: Set<String>? = null
+    private var engine: CombinedTunnelEngine? = null
     private var stateJob: Job? = null
+    private var lastPreset: String? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -58,53 +73,64 @@ class SecureBoxVpnService : VpnService() {
         if (intent?.action == ACTION_STOP) {
             scope.launch {
                 firewallRepository.setEnabled(false)
+                settingsRepository.setDnsShieldEnabled(false)
                 stopSelf()
             }
             return START_NOT_STICKY
         }
 
         startInForeground()
-
-        // A second onStartCommand must not stack collectors that race to rebuild the tunnel.
         stateJob?.cancel()
         stateJob =
             scope.launch {
-                firewallRepository.state.collectLatest { state ->
-                    if (!state.enabled) {
+                combine(firewallRepository.state, settingsRepository.settings) { firewall, settings ->
+                    firewall to settings
+                }.collectLatest { (firewall, settings) ->
+                    if (!firewall.enabled && !settings.dnsShieldEnabled) {
                         stopSelf()
                         return@collectLatest
                     }
-                    establish(state.effectiveBlockedPackages)
+                    if (engine == null || lastPreset != settings.dnsPreset.name) {
+                        if (!establish(settings)) {
+                            stopSelf()
+                            return@collectLatest
+                        }
+                    }
+                    engine?.update(
+                        blocked = uids(firewall.effectiveBlockedPackages),
+                        dnsFilter = settings.dnsShieldEnabled,
+                    )
                 }
             }
         return START_STICKY
     }
 
     override fun onRevoke() {
-        scope.launch { firewallRepository.setEnabled(false) }
+        scope.launch {
+            firewallRepository.setEnabled(false)
+            settingsRepository.setDnsShieldEnabled(false)
+        }
         stopSelf()
         super.onRevoke()
     }
 
     override fun onDestroy() {
         stateJob?.cancel()
-        closeTunnel()
+        closeEngine()
         isRunning = false
         firewallRepository.setServiceRunning(false)
         scope.cancel()
         super.onDestroy()
     }
 
-    private fun establish(blocked: Set<String>) {
+    private fun establish(settings: AppSettings): Boolean {
         synchronized(this) {
-            if (blocked.isEmpty()) {
-                // A VPN with no allowed applications would capture the whole device; never do that.
-                stopSelf()
-                return
-            }
-            if (blocked == lastBlocked && tunnel != null) return
-
-            closeTunnel()
+            closeEngine()
+            val host = runCatching { URI(settings.dnsPreset.dohUrl).host }.getOrNull() ?: return false
+            val addresses =
+                runCatching { InetAddress.getAllByName(host).filterIsInstance<Inet4Address>() }
+                    .getOrDefault(emptyList())
+            if (addresses.isEmpty()) return false
 
             val builder =
                 Builder()
@@ -112,66 +138,36 @@ class SecureBoxVpnService : VpnService() {
                     .addAddress("10.111.0.1", 32)
                     .addAddress("fd00:111::1", 128)
                     .addRoute("0.0.0.0", 0)
-                    // Without an IPv6 route a blocked app could bypass the firewall over IPv6.
+                    // IPv6 is routed into the tunnel so apps cannot bypass filtering; the current
+                    // forwarder handles IPv4 and drops IPv6, causing apps to fall back to IPv4.
                     .addRoute("::", 0)
                     .addDnsServer("10.111.0.2")
-                    .addDnsServer("fd00:111::2")
                     .setBlocking(true)
+                    .setMtu(1500)
 
-            var added = 0
-            for (packageName in blocked) {
-                val result = runCatching { builder.addAllowedApplication(packageName) }
-                if (result.isSuccess) added++
-            }
-
-            // If every package was uninstalled, establishing would route all traffic and block it.
-            if (added == 0) {
-                stopSelf()
-                return
-            }
-
-            val descriptor = runCatching { builder.establish() }.getOrNull()
-            if (descriptor == null) {
-                stopSelf()
-                return
-            }
-
+            val descriptor = runCatching { builder.establish() }.getOrNull() ?: return false
+            val doh = DohWireClient(this, settings.dnsPreset.dohUrl, host, addresses)
+            val created = CombinedTunnelEngine(this, descriptor, doh, statsRepository, scope)
             tunnel = descriptor
-            lastBlocked = blocked
-            startPump(descriptor)
+            engine = created
+            lastPreset = settings.dnsPreset.name
+            created.start()
+            return true
         }
     }
 
-    private fun startPump(descriptor: ParcelFileDescriptor) {
-        pump =
-            Thread {
-                if (NativePacketPump.available) {
-                    runCatching { NativePacketPump.drain(descriptor.fd) }
-                } else {
-                    val buffer = ByteArray(32 * 1024)
-                    try {
-                        FileInputStream(descriptor.fileDescriptor).use { input ->
-                            while (!Thread.currentThread().isInterrupted) {
-                                if (input.read(buffer) < 0) break
-                            }
-                        }
-                    } catch (_: IOException) {
-                        // Tunnel closed.
-                    }
-                }
-            }.apply {
-                name = "securebox-vpn-pump"
-                isDaemon = true
-                start()
-            }
-    }
+    private fun uids(packages: Set<String>): Set<Int> =
+        packages
+            .mapNotNull { packageName ->
+                runCatching { packageManager.getPackageUid(packageName, 0) }.getOrNull()
+            }.toSet()
 
-    private fun closeTunnel() {
-        pump?.interrupt()
-        pump = null
+    private fun closeEngine() {
+        engine?.close()
+        engine = null
         runCatching { tunnel?.close() }
         tunnel = null
-        lastBlocked = null
+        lastPreset = null
     }
 
     private fun startInForeground() {
@@ -222,8 +218,8 @@ class SecureBoxVpnService : VpnService() {
     }
 
     companion object {
-        const val ACTION_STOP: String = "io.securebox.action.STOP_FIREWALL"
-        private const val CHANNEL_ID = "firewall_status"
+        const val ACTION_STOP: String = "io.securebox.action.STOP_NETWORK_PROTECTION"
+        private const val CHANNEL_ID = "network_protection"
         private const val NOTIFICATION_ID = 4101
 
         @Volatile

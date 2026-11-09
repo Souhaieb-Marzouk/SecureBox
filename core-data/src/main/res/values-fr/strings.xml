@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="vpn_session_name">Pare-feu SecureBox</string>
-    <string name="vpn_notification_title">Le pare-feu SecureBox est actif</string>
-    <string name="vpn_notification_text">SecureBox inspecte le trafic localement sur votre appareil. Rien ne nous est envoyé.</string>
+    <string name="vpn_session_name">Protection réseau SecureBox</string>
+    <string name="vpn_notification_title">La protection réseau est active</string>
+    <string name="vpn_notification_text">Le pare-feu et le filtrage DNS fonctionnent sur l’appareil. Le trafic autorisé est relayé directement vers Internet, sans être stocké ni envoyé chez nous.</string>
     <string name="vpn_notification_stop">Désactiver</string>
-    <string name="vpn_channel_name">État du pare-feu</string>
-    <string name="vpn_channel_description">Indique quand le pare-feu local est actif.</string>
+    <string name="vpn_channel_name">Protection réseau</string>
+    <string name="vpn_channel_description">Indique quand le VPN combiné pare-feu et DNS est actif.</string>
     <string name="dns_shield_session_name">Bouclier DNS SecureBox</string>
     <string name="dns_shield_notification_title">Le bouclier DNS SecureBox est actif</string>
     <string name="dns_shield_notification_text">Les requêtes DNS sont filtrées sur cet appareil. Le reste du trafic des applications ne passe pas par SecureBox.</string>

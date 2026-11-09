@@ -102,6 +102,10 @@ class SettingsRepositoryImpl
             dataStore.edit { it[Keys.DNS_PRESET] = preset.name }
         }
 
+        override suspend fun setDnsShieldEnabled(enabled: Boolean) {
+            dataStore.edit { it[Keys.DNS_SHIELD_ENABLED] = enabled }
+        }
+
         override suspend fun recordPermissionSnapshot(
             usageAccessGranted: Boolean,
             notificationsGranted: Boolean,
@@ -136,6 +140,7 @@ class SettingsRepositoryImpl
                 hideAnnoyances = this[Keys.HIDE_ANNOYANCES] ?: true,
                 safeBrowsing = this[Keys.SAFE_BROWSING] ?: true,
                 dnsPreset = enumOrDefault(this[Keys.DNS_PRESET], DnsPreset.ADGUARD),
+                dnsShieldEnabled = this[Keys.DNS_SHIELD_ENABLED] ?: false,
             )
 
         private inline fun <reified T : Enum<T>> enumOrDefault(
@@ -159,6 +164,7 @@ class SettingsRepositoryImpl
             val HIDE_ANNOYANCES = booleanPreferencesKey("hide_annoyances")
             val SAFE_BROWSING = booleanPreferencesKey("safe_browsing")
             val DNS_PRESET = stringPreferencesKey("dns_preset")
+            val DNS_SHIELD_ENABLED = booleanPreferencesKey("dns_shield_enabled")
             val UPDATE_INTERVAL = longPreferencesKey("update_check_interval_hours")
             val USAGE_ACCESS = booleanPreferencesKey("usage_access_granted")
             val NOTIFICATIONS = booleanPreferencesKey("notifications_granted")

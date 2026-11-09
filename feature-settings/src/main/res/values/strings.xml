@@ -126,13 +126,13 @@
     <string name="shield_dns_off">Private DNS is off or automatic</string>
     <string name="shield_dns_body">Encrypted DNS applies to every app on this device once you set it in Android. Ads and trackers are filtered before a connection is made.</string>
     <string name="shield_dns_shield_title">DNS Shield — no setup</string>
-    <string name="shield_dns_shield_body">Blocks ad, tracker and malicious domains for every app. One-time VPN permission; no Private DNS hostname needed.</string>
+    <string name="shield_dns_shield_body">Blocks ad, tracker and malicious domains for every app. Runs together with the Local firewall in one VPN: allowed traffic is forwarded, blocked apps are dropped.</string>
     <string name="shield_dns_shield_on">On</string>
     <string name="shield_dns_shield_off">Off</string>
     <string name="shield_dns_shield_status">%1$s · %2$s</string>
-    <string name="shield_dns_shield_firewall">Turn off the Local firewall first. Android allows one VPN at a time.</string>
+    <string name="shield_dns_shield_firewall">The Local firewall is active. DNS protection runs in the same tunnel.</string>
     <string name="shield_dns_shield_private_dns">Private DNS is set to %1$s. Android may bypass DNS Shield; set Private DNS to Automatic/Off if filtering does not work.</string>
-    <string name="shield_dns_shield_note">Only DNS queries enter the tunnel; other app traffic is not routed through SecureBox.</string>
+    <string name="shield_dns_shield_note">SecureBox relays allowed app traffic on-device through protected sockets; it is not sent to us and TLS is not intercepted. Blocked apps are dropped.</string>
     <string name="shield_dns_shield_denied">VPN permission was not granted. DNS Shield needs it to intercept DNS queries.</string>
     <string name="shield_dns_configure">Set up DNS</string>
     <string name="shield_dns_test">Test DoH</string>

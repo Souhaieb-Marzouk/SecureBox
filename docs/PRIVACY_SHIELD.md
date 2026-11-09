@@ -1,8 +1,8 @@
 # Privacy Shield
 
-SecureBox 0.7 adds a private browser, local request filtering and encrypted-DNS guidance. The goal is
-honest, useful protection on a normal Android phone or TV box — not a promise that every ad in every
-app can be removed.
+SecureBox 0.9 adds a private browser, a combined forwarding firewall/DNS engine and protection
+statistics. The goal is honest, useful protection on a normal Android phone or TV box — not a
+promise that every ad in every app can be removed.
 
 ## What the private browser does
 
@@ -23,33 +23,42 @@ Open **Privacy shield → Open private browser**.
 The browser is a normal WebView. It does not inject ads into other apps and does not proxy other
 apps' traffic.
 
-## System-wide DNS protection
+## System-wide DNS protection and the per-app firewall
 
-Android does not let a normal app change Private DNS silently. There are two paths:
+Android gives a normal app only one VPN. SecureBox 0.9 therefore uses **one combined forwarding
+engine** instead of two mutually exclusive services:
 
-### DNS Shield (recommended, no Private DNS setup)
+- **All apps are inside the tunnel.** This is required so every app’s DNS can be filtered.
+- Allowed apps’ **TCP and UDP flows are forwarded on-device** through protected sockets.
+- Apps selected in **Local firewall** are identified by UID; their TCP connections are reset and
+  their UDP packets are dropped.
+- DNS is answered locally: the query is checked against the ad/tracker list, then forwarded over
+  **DNS-over-HTTPS** to AdGuard, Cloudflare for Families or Quad9.
+- **Local firewall and DNS protection can be enabled at the same time.** They are two controls on
+  the same VPN, not two VPNs.
 
-Turn on **Privacy shield → Set up DNS → DNS Shield**. It uses Android's VPN permission once and
-creates a **DNS-only VPN**:
+### Privacy meaning of the forwarding engine
 
-- The VPN exposes a private DNS server address and routes only that address into the tunnel.
-- All other app traffic bypasses SecureBox and uses the normal network.
-- DNS queries are filtered against the local ad/tracker list, then forwarded to the selected
-  provider over DNS-over-HTTPS.
-- No Private DNS hostname is needed. This is the path for TV boxes that do not expose Private DNS.
-- Android allows one VPN at a time: turn off the Local firewall before enabling DNS Shield.
-- Apps that use their own DoH/DoT resolver can bypass any DNS filter, including this one.
+This is a real change from 0.8:
 
-### Private DNS (optional)
+- Before, SecureBox only captured packets and discarded them. It **never forwarded** app traffic.
+- Now, allowed app traffic is relayed by SecureBox’s local sockets. It goes directly from the device
+  to the destination; it is **not sent to a SecureBox server**, not stored, and TLS is not
+  intercepted.
+- SecureBox is therefore in the data path for allowed apps, like any local VPN firewall. The
+  notification and the DNS screen say this explicitly.
+- The engine handles IPv4 TCP/UDP. IPv6 is routed into the tunnel and dropped, so apps fall back to
+  IPv4; this can make some IPv6-only destinations unreachable.
+- Per-app blocking needs UID attribution. On Android 10+ this uses
+  `ConnectivityManager.getConnectionOwnerUid`; on older boxes it falls back to `/proc/net`. When the
+  UID cannot be determined, SecureBox allows the flow rather than breaking an unknown app. This is a
+  real limitation, not a hidden bypass guarantee.
 
-The DNS screen also shows the current Private DNS hostname and offers three presets:
+### Private DNS (still optional)
 
-- **AdGuard DNS** — ads and trackers system-wide.
-- **Cloudflare for Families** — malware and adult content (not most ads).
-- **Quad9** — known malware/phishing domains.
-
-It can copy the DoT hostname and open Android's Private DNS settings. Android's system-wide
-encrypted DNS is **DNS-over-TLS (DoT)**; DoH is used for the connection test.
+The DNS screen also shows the current Private DNS hostname and offers three presets. Private DNS
+works outside the VPN; if it is available it applies to every app in addition to the tunnel. Android
+uses **DNS-over-TLS (DoT)** for Private DNS; DoH is used by the engine and the connection test.
 
 ## Protection statistics
 
@@ -102,11 +111,14 @@ an API key and sends URL prefixes to Google.
 - **YouTube in-stream ads cannot be removed reliably** by DNS or an embedded browser. YouTube serves
   video ads from the same video infrastructure; blocking it would break playback. SecureBox does not
   pretend otherwise.
-- **System-wide ad blocking in every app** is only possible at DNS level — either the one-switch
-  DNS Shield VPN or Private DNS with the AdGuard preset. It blocks ad/tracker domains, not every ad
-  served from a first-party domain.
+- **System-wide ad blocking in every app** is DNS-level: the local blocklist plus AdGuard DNS. It
+  blocks ad/tracker domains, not every ad served from a first-party domain.
 - **Filtering HTTPS inside other apps** requires root, a modified client or a MITM proxy. SecureBox
   does not MITM user traffic.
+- The forwarding engine is IPv4-first. IPv6 packets are dropped so they cannot bypass the firewall;
+  apps normally fall back to IPv4.
+- Per-app blocking requires a readable UID. If the device refuses UID attribution, the flow is
+  allowed; the firewall cannot guarantee blocking on that firmware.
 - Cookie notices and popups vary by site. Cosmetic rules cover common patterns and are deliberately
   conservative so they do not hide login or checkout elements.
 - The private browser does not store or upload browsing history. The DoH test sends a single
@@ -117,9 +129,11 @@ an API key and sends URL prefixes to Google.
 - `ShieldScreen.kt` — hub with modes/toggles/DNS status/stats entry.
 - `ShieldStatsScreen.kt` — cumulative protection counters and reset.
 - `BrowserScreen.kt` — WebView, request blocking, hash checks, cosmetic filtering.
-- `DnsProtectionScreen.kt` — DNS Shield switch, presets, DoH test, Private DNS instructions.
+- `DnsProtectionScreen.kt` — DNS switch, presets, DoH test, Private DNS guidance.
 - `BrowserFilters.kt` — tracking parameters and cosmetic CSS; hosts come from `DnsBlocklist`.
 - `DohClient.kt` — wire-format DoH probe.
-- `core-data/network/DnsShieldVpnService.kt` — DNS-only VPN, local blocklist and DoH forwarding.
+- `core-data/network/SecureBoxVpnService.kt` — one all-app VPN, UID blocking, DNS and DoH.
+- `core-data/network/CombinedTunnelEngine.kt` — IPv4 TCP/UDP forwarding data plane.
+- `core-data/network/ProtectedDoh.kt` — protected DoH sockets that bypass the tunnel.
 - `SafeBrowsingStore.kt` + `core-domain/security/SafeBrowsingHash.kt` — prefix checks.
 - `ShieldViewModel.kt` — persisted shield settings, DNS test and stats state.

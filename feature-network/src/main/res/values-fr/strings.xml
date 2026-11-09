@@ -15,7 +15,7 @@
     <string name="network_firewall_on">Actif — %1$d applications bloquées</string>
     <string name="network_firewall_waiting">Actif — choisissez des applications à bloquer</string>
     <string name="network_firewall_off">Désactivé</string>
-    <string name="network_firewall_local_only">Fonctionne entièrement sur cet appareil. Aucun trafic n\'est envoyé à SecureBox.</string>
+    <string name="network_firewall_local_only">Fonctionne sur l’appareil. Le trafic autorisé est relayé directement vers Internet ; les applications bloquées sont coupées. Rien n’est envoyé à SecureBox.</string>
     <string name="network_firewall_other_vpn">Un autre VPN est actif. Android n\'autorise qu\'un seul VPN à la fois : le pare-feu ne peut pas démarrer tant qu\'il n\'est pas désactivé.</string>
     <string name="network_preset_allow_all">Autoriser toutes les applications</string>
     <string name="network_preset_block_unknown">Bloquer les applications inconnues</string>

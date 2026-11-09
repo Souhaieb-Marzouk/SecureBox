@@ -1,20 +1,18 @@
 # Firewall edge cases
 
-The SecureBox firewall is a local `VpnService`: blocked apps are routed into the tunnel and their
-packets are discarded. It never forwards traffic. This document records how it behaves in the
+SecureBox 0.9 uses one all-app `VpnService`. Allowed IPv4 TCP/UDP flows are forwarded through
+protected sockets; blocked apps’ TCP connections are reset and their UDP packets are dropped; DNS is
+intercepted and forwarded over DoH. This document records how the combined engine behaves in the
 situations that usually surprise users.
 
 ## Private DNS (DNS over TLS)
 
-**Behaviour:** blocked apps lose DNS along with everything else, because their packets are dropped
-before reaching the resolver.
+**Behaviour:** blocked apps lose all internet access, including DNS. Allowed apps use the tunnel’s
+DoH resolver unless Private DNS is configured, in which case Android may prefer Private DNS and
+bypass SecureBox’s DNS filter.
 
-**What the user sees:** the app behaves as if it is offline. Allowed apps are unaffected and keep
-using the system's Private DNS setting.
-
-**Limitation:** SecureBox does not answer DNS for blocked apps, so their lookups time out rather
-than failing fast. This is intentional: answering would require a full DNS proxy and would leak
-which domains an app tried to reach.
+**What the user sees:** a blocked app behaves as if it is offline. If an allowed app still shows ads,
+turn Private DNS to Automatic/Off or pick a blocking Private DNS provider.
 
 ## Another VPN is active
 
@@ -29,9 +27,9 @@ SecureBox does not try to fight the other VPN or silently disable it.
 If another app is configured as always-on, it owns the VPN slot.
 
 **Behaviour:** same as above — the conflict banner appears. If SecureBox itself is set as
-always-on, Android may start the service before the user unlocks the device; the service then waits
-for the state flow and only establishes once at least one app is blocked. An empty blocklist never
-creates a tunnel.
+always-on, Android may start the service before the user unlocks the device; the service waits for
+the state flow and establishes when either the Local firewall or DNS protection is enabled. When
+both are off, it does not create a tunnel.
 
 ## Work profile and secondary users
 

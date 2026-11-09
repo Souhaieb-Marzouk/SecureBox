@@ -44,6 +44,8 @@ public interface SettingsRepository {
 
     public suspend fun setDnsPreset(preset: DnsPreset)
 
+    public suspend fun setDnsShieldEnabled(enabled: Boolean)
+
     public suspend fun recordPermissionSnapshot(
         usageAccessGranted: Boolean,
         notificationsGranted: Boolean,

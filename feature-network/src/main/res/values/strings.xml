@@ -15,7 +15,7 @@
     <string name="network_firewall_on">Active — %1$d apps blocked</string>
     <string name="network_firewall_waiting">On — choose apps to block</string>
     <string name="network_firewall_off">Off</string>
-    <string name="network_firewall_local_only">Runs entirely on this device. No traffic is sent to SecureBox.</string>
+    <string name="network_firewall_local_only">Runs on-device. Allowed traffic is forwarded directly to the internet; blocked apps are dropped. Nothing is sent to SecureBox.</string>
     <string name="network_firewall_other_vpn">Another VPN is active. Android allows one VPN at a time, so the firewall cannot start until it is turned off.</string>
     <string name="network_preset_allow_all">Allow all apps</string>
     <string name="network_preset_block_unknown">Block unknown apps</string>

@@ -9,6 +9,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - v1.0.0: TalkBack and 200% font pass, physical TV verification, and a decision on forwarding DNS for domain blocking.
 
+## [0.9.0] - 2026-11-09
+
+### Added
+
+- One all-app forwarding VPN that relays allowed TCP/UDP traffic, blocks selected apps by UID and filters DNS at the same time.
+- Local firewall and DNS protection can now be enabled together.
+
+### Changed
+
+- Privacy model: allowed app traffic is now relayed on-device through protected sockets. It is not sent to a SecureBox server, not stored and TLS is not intercepted.
+- The separate DNS-only VPN service was removed.
+
+### Limited
+
+- IPv4 TCP/UDP forwarding; IPv6 is routed into the tunnel and dropped so apps fall back to IPv4.
+- Per-app blocking depends on UID attribution (`getConnectionOwnerUid` on Android 10+, `/proc/net` fallback). Unknown UIDs are allowed.
+- This is a new engine and needs physical device validation.
+
 ## [0.8.0] - 2026-11-08
 
 ### Added

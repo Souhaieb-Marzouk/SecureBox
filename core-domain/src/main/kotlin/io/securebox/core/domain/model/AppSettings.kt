@@ -88,6 +88,8 @@ public data class AppSettings(
     val hideAnnoyances: Boolean = true,
     val safeBrowsing: Boolean = true,
     val dnsPreset: DnsPreset = DnsPreset.ADGUARD,
+    /** True when the combined all-app DNS filter is active alongside the firewall. */
+    val dnsShieldEnabled: Boolean = false,
 ) {
     public companion object {
         public const val DEFAULT_UPDATE_INTERVAL_HOURS: Long = 12L

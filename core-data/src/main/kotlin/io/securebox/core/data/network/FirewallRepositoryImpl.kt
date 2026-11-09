@@ -61,7 +61,12 @@ class FirewallRepositoryImpl
         override suspend fun setEnabled(enabled: Boolean) {
             dataStore.edit { it[Keys.ENABLED] = enabled }
             if (!enabled) {
-                stopService()
+                val dnsEnabled = dataStore.data.first()[Keys.DNS_SHIELD_ENABLED] ?: false
+                if (dnsEnabled) {
+                    refreshStatus()
+                } else {
+                    stopService()
+                }
             } else {
                 refreshStatus()
                 startService()
@@ -146,5 +151,6 @@ class FirewallRepositoryImpl
             val ENABLED = booleanPreferencesKey("firewall_enabled")
             val PRESET = stringPreferencesKey("firewall_preset")
             val BLOCKED = stringSetPreferencesKey("firewall_blocked_packages")
+            val DNS_SHIELD_ENABLED = booleanPreferencesKey("dns_shield_enabled")
         }
     }
