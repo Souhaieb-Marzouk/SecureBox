@@ -41,22 +41,24 @@ jobs:
           "$SDKMANAGER" "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
       - name: Reject hardcoded user-facing strings
-        run: ./gradlew verifyNoHardcodedStrings --stacktrace
+        run: gradle verifyNoHardcodedStrings --stacktrace
 
       - name: Verify the signed threat feed
         run: node tools/verify-release.mjs --file threat-intel/latest.json --sig threat-intel/latest.json.sig --key docs/threat-feed-public.pem
 
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest test --stacktrace
+        run: gradle testDebugUnitTest test --stacktrace
 
       - name: Lint (HardcodedText is an error)
-        run: ./gradlew lintDebug --stacktrace
+        run: gradle lintDebug --stacktrace
 
       - name: Assemble debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -117,7 +119,9 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
       - name: Run instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -127,7 +131,7 @@ jobs:
           arch: ${{ matrix.arch }}
           disable-animations: true
           script: >
-            ./gradlew
+            gradle
             :feature-onboarding:connectedDebugAndroidTest
             :feature-apps:connectedDebugAndroidTest
             :feature-threats:connectedDebugAndroidTest
